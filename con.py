@@ -41,6 +41,7 @@ def insert_deal(ticket, number, time, symbol, type, volume, price, sl, tp, commi
     db.commit()
     return True
 
+
 def get_positions():
     db = get_db()
     cursor = db.cursor()
