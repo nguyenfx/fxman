@@ -115,8 +115,8 @@ var url  = "http://45.32.116.92/fxman/" + name;
 var xhr  = new XMLHttpRequest()
 xhr.open('GET', url, true)
 xhr.onload = function () {
-    var accounts = JSON.parse(xhr.responseText);
     if (xhr.readyState == 4 && xhr.status == "200") {
+        var accounts = JSON.parse(xhr.responseText);
         var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
         tbody.innerHTML = "";
         for (i = accounts.length - 1; i >= 0 ; i--) {
@@ -127,8 +127,27 @@ xhr.onload = function () {
             }
             if(name == "accounts") {
               var row1 = tbody.insertRow(1);
-              row1.innerHTML += '<td colspan=15><canvas id="profit' + accounts[i][0] + '" width="600" height="100"></canvas></td><td colspan=4><canvas id="symbol' + accounts[i][0] + '" width="200" height="100"></canvas></td>';
-
+              row1.innerHTML += '<td colspan=15><canvas id="profit' + i + '" width="600" height="100"></canvas></td><td colspan=4><canvas id="symbol' + accounts[i][0] + '" width="200" height="100"></canvas></td>';
+              var xhr1  = new XMLHttpRequest()
+              xhr1.open('GET', 'http://45.32.116.92/fxman/dailyprofits?number=' + accounts[i][0], true)
+              xhr1.onload = function () {
+                  if (xhr1.readyState == 4 && xhr1.status == "200") {
+                    var profits = JSON.parse(xhr1.responseText);
+                    const myChart = new Chart('profit' + i, {
+                      type: 'bar',
+                      data: {
+                          datasets: transformArrayOfArrays(profits, 'date', 'profit')
+                      },
+                      options: {
+                          parsing: {
+                              xAxisKey: 'date',
+                              yAxisKey: 'profit'
+                          }
+                      }
+                    });
+                  }
+              }
+              xhr1.send(null);
             }
         }
     } else {
@@ -137,6 +156,7 @@ xhr.onload = function () {
 }
 xhr.send(null);
 }
+
 function loads() {
   load("accounts");
   load("positions");
@@ -144,9 +164,7 @@ function loads() {
 }
 
 loads();
-setInterval(loads, 30);
-
-const data = [[114, 8], [84, 17], [54, 31], [24, 17], [7, 2]];
+setInterval(loads, 5000);
 
 function transformArrayOfArrays(source, ...names) {
   const defaultName = i => "field" + i;
@@ -158,36 +176,9 @@ function transformArrayOfArrays(source, ...names) {
   });
 }
 
-$(() => {
-  $("#chart").dxChart({
-    dataSource: transformArrayOfArrays(data, "days", "percent"),
-    rotated: true,
-    series: [{
-      argumentField: "days",
-      valueField: "percent",
-      type: "spline"
-    }],
-    title: {
-      text: "Days before Christmas to start shopping",
-      subtitle: {
-        text: "Made-up data"
-      }
-    },
-    legend: {
-      visible: false
-    },
-    argumentAxis: {
-      title: {
-        text: "Days before Christmas"
-      }
-    },
-    valueAxis: {
-      title: {
-        text: "Percent of People"
-      }
-    }
-  });
-});
+
+
+
 
     </script>
   </body>
