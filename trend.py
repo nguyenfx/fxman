@@ -14,6 +14,7 @@ headers = {
 
 def fetch():
     for symbol in Symbol.symbols:
+        Symbol.symbols[symbol] = 0
         response = requests.get(url + symbol, headers=headers)
         detail = json.loads(response.text)
         positions = detail["positions"]
@@ -30,8 +31,7 @@ def fetch():
                     Symbol.symbols[symbol] = 1
                 elif lots_ratio < 55 and traders_ratio < 55:
                     Symbol.symbols[symbol] = -1
-                else:
-                    Symbol.symbols[symbol] = 0
+                break
     print(Symbol.symbols)
 
 

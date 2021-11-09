@@ -146,7 +146,7 @@ def after_request(response):
 if __name__ == "__main__":
     trend.fetch()
     scheduler = BackgroundScheduler(daemon=True, timezone="Europe/Berlin")
-    scheduler.add_job(trend.fetch, 'interval', minutes=1)
+    scheduler.add_job(trend.fetch, 'interval', minutes=15)
     scheduler.start()
     create_tables()
     app.run(host='127.0.0.1', port=8000, debug=False)
