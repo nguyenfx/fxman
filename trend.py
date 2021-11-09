@@ -18,22 +18,18 @@ def fetch():
         response = requests.get(url + symbol, headers=headers)
         detail = json.loads(response.text)
         positions = detail["positions"]
-        for position in positions:
-            traders_is_low = position["traders_is_low"]
-            weekend = position["weekend"]
-            day = position["datetime"]
-            year = int(day["year"])
-            month = int(day["month"])
-            date = int(day["date"])
-            current = datetime.datetime.now()
-            if not traders_is_low and not weekend and current.year == year and current.month == month and current.day == date :
-                lots_ratio = int(position["lots_ratio"])
-                traders_ratio = int(position["traders_ratio"])
-                if lots_ratio > 55 and traders_ratio > 55:
-                    Symbol.symbols[symbol] = 1
-                if lots_ratio < 45 and traders_ratio < 45:
-                    Symbol.symbols[symbol] = -1
-                break
+        positions.sort(key=lambda x: x["dateline"], reverse=True)
+        position = positions[0]
+        print(position)
+        traders_is_low = position["traders_is_low"]
+        weekend = position["weekend"]
+        if not traders_is_low and not weekend:
+            lots_ratio = int(position["lots_ratio"])
+            traders_ratio = int(position["traders_ratio"])
+            if lots_ratio > 55 and traders_ratio > 55:
+                Symbol.symbols[symbol] = 1
+            if lots_ratio < 45 and traders_ratio < 45:
+                Symbol.symbols[symbol] = -1
     print(Symbol.symbols)
 
 
