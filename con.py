@@ -4,7 +4,7 @@ from db import get_db
 def get_accounts():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM accounts"
+    statement = "SELECT * FROM accounts ORDER BY broker, name, number"
     cursor.execute(statement)
     return cursor.fetchall()
 
@@ -27,7 +27,7 @@ def upsert_account(number, name, broker, server, deposit, credit, withdraw, bala
 def get_deals():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM deals"
+    statement = "SELECT * FROM deals ORDER BY number, symbol, type, volume"
     cursor.execute(statement)
     return cursor.fetchall()
 
@@ -45,7 +45,7 @@ def insert_deal(ticket, number, time, symbol, type, volume, price, sl, tp, commi
 def get_positions():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM positions"
+    statement = "SELECT * FROM positions ORDER BY number, symbol, type, volume"
     cursor.execute(statement)
     return cursor.fetchall()
 
