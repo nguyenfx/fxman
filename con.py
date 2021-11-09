@@ -27,7 +27,7 @@ def upsert_account(number, name, broker, server, deposit, credit, withdraw, bala
 def get_deals():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM deals ORDER BY number, symbol, type, volume LIMIT 100"
+    statement = "SELECT * FROM deals ORDER BY time, number, symbol, type, volume LIMIT 100"
     cursor.execute(statement)
     return cursor.fetchall()
 
@@ -67,3 +67,21 @@ def reset_positions(number):
     cursor.execute(statement, [number])
     db.commit()
     return True
+
+
+def get_dailyprofits(number):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT number, DATE(REPLACE(time, '.', '-')) as date, printf('%.2f', SUM(profit - commission + " \
+                "swap)) AS dprofit FROM deals WHERE number = ? GROUP BY date ORDER BY date"
+    cursor.execute(statement, [number])
+    return cursor.fetchall()
+
+
+def get_symbolprofits(number):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT number, symbol, printf('%.2f', SUM(profit - commission + " \
+                "swap)) AS sprofit FROM deals WHERE number = ? GROUP BY symbol ORDER BY sprofit"
+    cursor.execute(statement, [number])
+    return cursor.fetchall()

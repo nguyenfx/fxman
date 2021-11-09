@@ -103,6 +103,22 @@ def reset_positions():
     return jsonify(result)
 
 
+@app.route("/dailyprofits", methods=["GET"])
+def get_dailyprofits():
+    details = request.args
+    number = details.get("number")
+    dailyprofits = con.get_dailyprofits(number)
+    return jsonify(dailyprofits)
+
+
+@app.route("/symbolprofits", methods=["GET"])
+def get_symbolprofits():
+    details = request.args
+    number = details.get("number")
+    symbolprofits = con.get_symbolprofits(number)
+    return jsonify(symbolprofits)
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
