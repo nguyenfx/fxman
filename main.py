@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 import con
 from db import create_tables
 
@@ -34,8 +34,8 @@ def upsert_account():
     drawdown = details["drawdown"]
     lastupdate = details["lastupdate"]
     result = con.upsert_account(number, name, broker, server, deposit, credit, withdraw, balance,
-                             equity, margin, deals, netvolume, netprofit, positions, floatvolume, floatprofit,
-                             depositload, drawdown, lastupdate)
+                                equity, margin, deals, netvolume, netprofit, positions, floatvolume, floatprofit,
+                                depositload, drawdown, lastupdate)
     return jsonify(result)
 
 
@@ -62,7 +62,8 @@ def insert_deal():
     profit = details["profit"]
     magic = details["magic"]
     comment = details["comment"]
-    result = con.insert_deal(ticket, number, time, symbol, type, volume, price, sl, tp, commission, swap, profit, magic, comment)
+    result = con.insert_deal(ticket, number, time, symbol, type, volume, price, sl, tp, commission, swap, profit, magic,
+                             comment)
     return jsonify(result)
 
 
@@ -89,7 +90,8 @@ def insert_position():
     profit = details["profit"]
     magic = details["magic"]
     comment = details["comment"]
-    result = con.insert_position(ticket, number, time, symbol, type, volume, price, sl, tp, commission, swap, profit, magic, comment)
+    result = con.insert_position(ticket, number, time, symbol, type, volume, price, sl, tp, commission, swap, profit,
+                                 magic, comment)
     return jsonify(result)
 
 
@@ -101,15 +103,9 @@ def reset_positions():
     return jsonify(result)
 
 
-@app.after_request
-def after_request(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
-    response.headers[
-        "Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, " \
-                                          "Authorization "
-    return response
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 
 if __name__ == "__main__":

@@ -2,12 +2,109 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <style>
+      .styled-table {
+          border-collapse: collapse;
+          margin: 10px 0;
+          font-size: 0.8em;
+          font-family: sans-serif;
+          min-width: 400px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .styled-table thead tr {
+          background-color: #009879;
+          color: #ffffff;
+          text-align: left;
+      }
+      .styled-table th,
+      .styled-table td {
+          padding: 5px 7px;
+      }
+      .styled-table tbody tr {
+          border-bottom: 1px solid #dddddd;
+      }
+
+      .styled-table tbody tr:nth-of-type(even) {
+          background-color: #f3f3f3;
+      }
+
+      .styled-table tbody tr:last-of-type {
+          border-bottom: 2px solid #009879;
+      }
+    </style>
+    <title>Statistics</title>
   </head>
   <body>
-    <table id="accounts">
+  <h1>Accounts</h1>
+    <table id="accounts" class="styled-table">
+      <thead>
+        <tr>
+          <td>Number</td>
+          <td>Broker</td>
+          <td>Name</td>
+          <td>Server</td>
+          <td>Deposit</td>
+          <td>Credit</td>
+          <td>Withdraw</td>
+          <td>Balance</td>
+          <td>Equity</td>
+          <td>Margin</td>
+          <td>Deals</td>
+          <td>N.Volume</td>
+          <td>N.Profit</td>
+          <td>Positions</td>
+          <td>F.Volume</td>
+          <td>F.Profit</td>
+          <td>D.Load</td>
+          <td>Drawdown</td>
+          <td>Last updated</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
-    <table id="positions">
+  <h1>Positions</h1>
+    <table id="positions" class="styled-table">
+      <thead>
+        <tr>
+          <td>Ticket</td>
+          <td>A.Number</td>
+          <td>Open time</td>
+          <td>Symbol</td>
+          <td>Type</td>
+          <td>Volume</td>
+          <td>Price</td>
+          <td>SL</td>
+          <td>TP</td>
+          <td>Commission</td>
+          <td>Swa[</td>
+          <td>Profit</td>
+          <td>Magic</td>
+          <td>Comment</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  <h1>Deals</h1>
+    <table id="deals" class="styled-table">
+      <thead>
+        <tr>
+          <td>Ticket</td>
+          <td>A.Number</td>
+          <td>Open time</td>
+          <td>Symbol</td>
+          <td>Type</td>
+          <td>Volume</td>
+          <td>Price</td>
+          <td>SL</td>
+          <td>TP</td>
+          <td>Commission</td>
+          <td>Swa[</td>
+          <td>Profit</td>
+          <td>Magic</td>
+          <td>Comment</td>
+        </tr>
+      </thead>
+      <tbody></tbody>
     </table>
 
   <script>
@@ -18,10 +115,10 @@ xhr.open('GET', url, true)
 xhr.onload = function () {
     var accounts = JSON.parse(xhr.responseText);
     if (xhr.readyState == 4 && xhr.status == "200") {
-        var table = document.getElementById(name);
-        table.innerHTML = "";
+        var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
+        tbody.innerHTML = "";
         for (i = accounts.length - 1; i >= 0 ; i--) {
-            var row = table.insertRow(0);
+            var row = tbody.insertRow(0);
             for (j = accounts[i].length - 1; j >= 0; j--) {
               var cell = row.insertCell(0);
               cell.innerHTML = accounts[i][j];
@@ -36,6 +133,7 @@ xhr.send(null);
 function loads() {
 load("accounts");
 load("positions");
+load("deals");
 }
 
 loads();

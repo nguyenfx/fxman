@@ -27,7 +27,7 @@ def upsert_account(number, name, broker, server, deposit, credit, withdraw, bala
 def get_deals():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM deals ORDER BY number, symbol, type, volume"
+    statement = "SELECT * FROM deals ORDER BY number, symbol, type, volume LIMIT 100"
     cursor.execute(statement)
     return cursor.fetchall()
 
