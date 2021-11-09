@@ -77,7 +77,7 @@ def reset_positions(number):
 def get_dailyprofits(number):
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT DATE(REPLACE(time, '.', '-')) as date, SUM(profit - commission + swap) AS dprofit FROM deals " \
+    statement = "SELECT DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals " \
                 "WHERE number = ? GROUP BY date ORDER BY date "
     cursor.execute(statement, [number])
     return cursor.fetchall()
