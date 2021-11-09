@@ -8,7 +8,8 @@
           margin: 10px 0;
           font-size: 0.8em;
           font-family: sans-serif;
-          min-width: 400px;
+          min-width: 800px;
+          max-width: 800px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       .styled-table thead tr {
@@ -124,6 +125,11 @@ xhr.onload = function () {
               var cell = row.insertCell(0);
               cell.innerHTML = accounts[i][j];
             }
+            if(name == "accounts") {
+              var row1 = tbody.insertRow(1);
+              row1.innerHTML += '<td colspan=15><canvas id="profit' + accounts[i][0] + '" width="600" height="100"></canvas></td><td colspan=4><canvas id="symbol' + accounts[i][0] + '" width="200" height="100"></canvas></td>';
+
+            }
         }
     } else {
         console.error(users);
@@ -139,6 +145,50 @@ function loads() {
 
 loads();
 setInterval(loads, 30);
+
+const data = [[114, 8], [84, 17], [54, 31], [24, 17], [7, 2]];
+
+function transformArrayOfArrays(source, ...names) {
+  const defaultName = i => "field" + i;
+  return source.map(a => {
+     return a.reduce((r, v, i) => {
+       r[i < names.length ? names[i] : defaultName(i)] = v;
+       return r;
+     }, {});
+  });
+}
+
+$(() => {
+  $("#chart").dxChart({
+    dataSource: transformArrayOfArrays(data, "days", "percent"),
+    rotated: true,
+    series: [{
+      argumentField: "days",
+      valueField: "percent",
+      type: "spline"
+    }],
+    title: {
+      text: "Days before Christmas to start shopping",
+      subtitle: {
+        text: "Made-up data"
+      }
+    },
+    legend: {
+      visible: false
+    },
+    argumentAxis: {
+      title: {
+        text: "Days before Christmas"
+      }
+    },
+    valueAxis: {
+      title: {
+        text: "Percent of People"
+      }
+    }
+  });
+});
+
     </script>
   </body>
 </html>

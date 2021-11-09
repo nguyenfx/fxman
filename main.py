@@ -1,5 +1,7 @@
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
 import con
+import trend
 from db import create_tables
 
 app = Flask(__name__)
@@ -119,6 +121,14 @@ def get_symbolprofits():
     return jsonify(symbolprofits)
 
 
+@app.route("/trend", methods=["GET"])
+def get_trend():
+    details = request.args
+    symbol = details.get("symbol")
+    ret = trend.get(symbol)
+    return jsonify(ret)
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -134,5 +144,9 @@ def after_request(response):
 
 
 if __name__ == "__main__":
+    trend.fetch()
+    scheduler = BackgroundScheduler(daemon=True, timezone="Europe/Berlin")
+    scheduler.add_job(trend.fetch, 'interval', minutes=1)
+    scheduler.start()
     create_tables()
     app.run(host='127.0.0.1', port=8000, debug=False)
