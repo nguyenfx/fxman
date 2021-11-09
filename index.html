@@ -1,0 +1,45 @@
+    <!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <table id="accounts">
+    </table>
+    <table id="positions">
+    </table>
+
+  <script>
+function load(name) {
+var url  = "http://45.32.116.92/fxman/" + name;
+var xhr  = new XMLHttpRequest()
+xhr.open('GET', url, true)
+xhr.onload = function () {
+    var accounts = JSON.parse(xhr.responseText);
+    if (xhr.readyState == 4 && xhr.status == "200") {
+        var table = document.getElementById(name);
+        table.innerHTML = "";
+        for (i = accounts.length - 1; i >= 0 ; i--) {
+            var row = table.insertRow(0);
+            for (j = accounts[i].length - 1; j >= 0; j--) {
+              var cell = row.insertCell(0);
+              cell.innerHTML = accounts[i][j];
+            }
+        }
+    } else {
+        console.error(users);
+    }
+}
+xhr.send(null);
+}
+function loads() {
+load("accounts");
+load("positions");
+}
+
+loads();
+setInterval(loads, 30);
+    </script>
+  </body>
+</html>
