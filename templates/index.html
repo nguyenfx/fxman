@@ -110,51 +110,53 @@
     </table>
 
   <script>
+
 function load(name) {
-var url  = "http://45.32.116.92/fxman/" + name;
-var xhr  = new XMLHttpRequest()
-xhr.open('GET', url, true)
-xhr.onload = function () {
-    if (xhr.readyState == 4 && xhr.status == "200") {
-        var accounts = JSON.parse(xhr.responseText);
-        var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
-        tbody.innerHTML = "";
-        for (i = accounts.length - 1; i >= 0 ; i--) {
-            var row = tbody.insertRow(0);
-            for (j = accounts[i].length - 1; j >= 0; j--) {
-              var cell = row.insertCell(0);
-              cell.innerHTML = accounts[i][j];
+    var xhr  = new XMLHttpRequest()
+    xhr.open('GET', "http://45.32.116.92/fxman/" + name, true)
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var data = JSON.parse(xhr.responseText);
+            var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
+            while (tbody.firstChild) {
+                tbody.firstChild.remove();
             }
-            if(name == "accounts") {
-              var row1 = tbody.insertRow(1);
-              row1.innerHTML += '<td colspan=15><canvas id="profit' + i + '" width="600" height="100"></canvas></td><td colspan=4><canvas id="symbol' + accounts[i][0] + '" width="200" height="100"></canvas></td>';
-              var xhr1  = new XMLHttpRequest()
-              xhr1.open('GET', 'http://45.32.116.92/fxman/dailyprofits?number=' + accounts[i][0], true)
-              xhr1.onload = function () {
-                  if (xhr1.readyState == 4 && xhr1.status == "200") {
-                    var profits = JSON.parse(xhr1.responseText);
-                    const myChart = new Chart('profit' + i, {
-                      type: 'bar',
-                      data: {
-                          datasets: transformArrayOfArrays(profits, 'date', 'profit')
-                      },
-                      options: {
-                          parsing: {
-                              xAxisKey: 'date',
-                              yAxisKey: 'profit'
-                          }
-                      }
-                    });
-                  }
-              }
-              xhr1.send(null);
+            for (i = data.length - 1; i >= 0 ; i--) {
+                var row = tbody.insertRow(0);
+                for (j = data[i].length - 1; j >= 0; j--) {
+                    var cell = row.insertCell(0);
+                    cell.innerHTML = data[i][j];
+                }
+                if(name == "accounts") {
+                    var accountid = data[i][0];
+                    var row1 = tbody.insertRow(1);
+                    row1.innerHTML += '<td colspan=15><canvas id="profit' + accountid + '" width="600" height="100"></canvas></td><td colspan=4><canvas id="symbol' + accountid + '" width="200" height="100"></canvas></td>';
+                    var xhr1  = new XMLHttpRequest()
+                    xhr1.open('GET', 'http://45.32.116.92/fxman/dailyprofits?number=' + accountid, true)
+                    xhr1.onload = function () {
+                        if (xhr1.readyState == 4 && xhr1.status == "200") {
+                            var profits = JSON.parse(xhr1.responseText);
+                            if(window.chart instanceof Chart) {
+                                window.chart.destroy();
+                            }
+                            const chart = new Chart('profit' + accountid, {
+                                type: 'bar',
+                                data: {
+                                    datasets: [{
+                                        data: transformArrayOfArrays(profits, 'x', 'y')
+                                    }]
+                                },
+                            });
+                        }
+                    }
+                    xhr1.send(null);
+                }
             }
+        } else {
+            console.error(users);
         }
-    } else {
-        console.error(users);
     }
-}
-xhr.send(null);
+    xhr.send(null);
 }
 
 function loads() {
@@ -164,7 +166,7 @@ function loads() {
 }
 
 loads();
-setInterval(loads, 5000);
+setInterval(loads, 10000);
 
 function transformArrayOfArrays(source, ...names) {
   const defaultName = i => "field" + i;
@@ -175,10 +177,6 @@ function transformArrayOfArrays(source, ...names) {
      }, {});
   });
 }
-
-
-
-
 
     </script>
   </body>
