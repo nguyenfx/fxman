@@ -6,6 +6,7 @@ import json
 class Symbol:
     ffsymbols = {"EURUSD": 0, "GBPUSD": 0, "AUDUSD": 0, "NZDUSD": 0, "USDJPY": 0, "USDCHF": 0, "USDCAD": 0}
     mfsymbols = {}
+    bnsymbols = {}
 
 
 ffurl = "https://www.forexfactory.com/explorerapi.php?content=positions&do=positions_graph_data&interval=D1&limit=2&currency="
@@ -54,25 +55,47 @@ def MFget(symbol):
     return Symbol.mfsymbols.get(symbol)
 
 
+def BNfetch():
+    Symbol.bnsymbols.clear()
+    apis = {'topLongShortAccountRatio', 'topLongShortPositionRatio', 'globalLongShortAccountRatio'}
+    sumratio = 0
+    for api in apis:
+        response = requests.get("https://fapi.binance.com/futures/data/" + api + "?symbol=BTCUSDT&period=4h",
+                                headers=headers)
+        rows = json.loads(response.text)
+        ratio = float(rows[-1]['longShortRatio'])
+        sumratio += ratio
+    trend = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
+    Symbol.bnsymbols["BTCUSD"] = trend
+    print(Symbol.bnsymbols)
+
+
+def BNget(symbol):
+    return Symbol.bnsymbols.get(symbol)
+
+
 def fetch():
     FFfetch()
     MFfetch()
+    BNfetch()
 
 
 def get(symbol):
     ff = FFget(symbol)
     mf = MFget(symbol)
+    bn = BNget(symbol)
     if ff and mf:
         return int((ff + mf) / 2)
     elif ff and not mf:
         return ff
     elif not ff and mf:
         return mf
+    elif bn:
+        return bn
     else:
         return 0
 
 
 if __name__ == "__main__":
-    FFfetch()
-    MFfetch()
+    fetch()
     print(get("EURUSD"), get("GBPUSD"), get("XAUUSD"), get("BTCUSD"))
