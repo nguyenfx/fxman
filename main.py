@@ -1,12 +1,16 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
+from flask_caching import Cache
 import con
 import trend
 from db import create_tables
 
+cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 app = Flask(__name__)
+cache.init_app(app)
 
 
+@cache.cached(timeout=600)
 @app.route('/accounts', methods=["GET"])
 def get_accounts():
     accounts = con.get_accounts()
@@ -41,6 +45,7 @@ def upsert_account():
     return jsonify(result)
 
 
+@cache.cached(timeout=300)
 @app.route('/deals', methods=["GET"])
 def get_deals():
     deals = con.get_deals()
@@ -69,6 +74,7 @@ def insert_deal():
     return jsonify(result)
 
 
+@cache.cached(timeout=300)
 @app.route('/positions', methods=["GET"])
 def get_positions():
     positions = con.get_positions()
@@ -105,6 +111,7 @@ def reset_positions():
     return jsonify(result)
 
 
+@cache.cached(timeout=300)
 @app.route("/dailyprofits", methods=["GET"])
 def get_dailyprofits():
     details = request.args
@@ -113,6 +120,7 @@ def get_dailyprofits():
     return jsonify(dailyprofits)
 
 
+@cache.cached(timeout=300)
 @app.route("/symbolprofits", methods=["GET"])
 def get_symbolprofits():
     details = request.args
@@ -121,6 +129,7 @@ def get_symbolprofits():
     return jsonify(symbolprofits)
 
 
+@cache.memoize(timeout=300)
 @app.route("/trend", methods=["GET"])
 def get_trend():
     details = request.args
@@ -129,6 +138,7 @@ def get_trend():
     return jsonify(ret)
 
 
+@cache.cached(timeout=600)
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -139,7 +149,8 @@ def after_request(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Credentials"] = "true"
     response.headers["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+    response.headers[
+        "Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     return response
 
 
