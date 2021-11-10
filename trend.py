@@ -65,7 +65,9 @@ def get(symbol):
     mf = MFget(symbol)
     if ff and mf:
         return int((ff + mf) / 2)
-    elif mf:
+    elif ff and not mf:
+        return ff
+    elif not ff and mf:
         return mf
     else:
         return 0
