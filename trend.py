@@ -20,8 +20,7 @@ def FFfetch():
         response = requests.get(ffurl + symbol, headers=headers)
         detail = json.loads(response.text)
         positions = detail["positions"]
-        positions.sort(key=lambda x: x["dateline"], reverse=True)
-        position = positions[0]
+        position = positions[-1]
         traders_is_low = position["traders_is_low"]
         weekend = position["weekend"]
         if not traders_is_low and not weekend:

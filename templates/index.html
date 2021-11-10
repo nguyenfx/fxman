@@ -42,8 +42,8 @@
       <thead>
         <tr>
           <td>Number</td>
-          <td>Broker</td>
           <td>Name</td>
+          <td>Broker</td>
           <td>Server</td>
           <td>Deposit</td>
           <td>Credit</td>
@@ -166,7 +166,7 @@ function loads() {
 }
 
 loads();
-setInterval(loads, 10000);
+setInterval(loads, 60000);
 
 function transformArrayOfArrays(source, ...names) {
   const defaultName = i => "field" + i;
