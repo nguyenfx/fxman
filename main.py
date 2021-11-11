@@ -154,6 +154,13 @@ def get_trend():
     return jsonify(trend[0])
 
 
+@cache.cached(timeout=300)
+@app.route("/sentiments", methods=["GET"])
+def get_sentiments():
+    sentiments = con.get_sentiments()
+    return jsonify(sentiments)
+
+
 @cache.cached(timeout=600)
 @app.route('/')
 def home():
