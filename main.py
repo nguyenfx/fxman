@@ -8,8 +8,7 @@ from db import create_tables
 
 class FxFlask(Flask):
     def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
-        with self.app_context():
-            init()
+        init()
         super(FxFlask, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
 
 
