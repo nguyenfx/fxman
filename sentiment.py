@@ -63,7 +63,7 @@ def BNfetch():
 
 
 def fetch():
-    FFfetch()
+    # FFfetch()
     MFfetch()
     BNfetch()
 
