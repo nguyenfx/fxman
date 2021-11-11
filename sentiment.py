@@ -27,8 +27,8 @@ def FFfetch():
             traders_ratio = int(position["traders_ratio"])
             value = lots_ratio - 50 + traders_ratio - 50
             con.insert_sentiment(symbol, value)
-            logging.basicConfig(filename='/var/log/uwsgi/fxman.log', level=logging.INFO)
-            logging.info('%s %s', symbol, value)
+            if not value == 0:
+                print(symbol, value)
 
 
 def MFfetch():
@@ -44,8 +44,8 @@ def MFfetch():
         long = int(longbar.get("style")[-4:-2])
         value = long - short
         con.insert_sentiment(symbol, value)
-        logging.basicConfig(filename='/var/log/uwsgi/fxman.log', level=logging.INFO)
-        logging.info('%s %s', symbol, value)
+        if not value == 0:
+            print(symbol, value)
 
 
 def BNfetch():
@@ -58,8 +58,8 @@ def BNfetch():
         sumratio += ratio
     value = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
     con.insert_sentiment(symbol, value)
-    logging.basicConfig(filename='/var/log/uwsgi/fxman.log', level=logging.INFO)
-    logging.info('%s %s', symbol, value)
+    if not value == 0:
+        print(symbol, value)
 
 
 def fetch():
