@@ -1,6 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
 from flask_caching import Cache
+import atexit
 import con
 import sentiment
 from db import create_tables
@@ -8,7 +9,8 @@ from db import create_tables
 
 class FxFlask(Flask):
     def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
-        init()
+        with self.app_context():
+            init()
         super(FxFlask, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
 
 
@@ -23,6 +25,7 @@ def init():
     scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
     scheduler.add_job(sentiment.fetch, 'interval', minutes=7)
     scheduler.start()
+    atexit.register(lambda: scheduler.shutdown())
 
 
 @cache.cached(timeout=600)
