@@ -154,10 +154,16 @@ def after_request(response):
     return response
 
 
-if __name__ == "__main__":
+def init():
     trend.fetch()
     scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
     scheduler.add_job(trend.fetch, 'interval', minutes=7)
     scheduler.start()
     create_tables()
+
+
+init()
+
+
+if __name__ == "__main__":
     app.run(host='127.0.0.1', port=8000, debug=False)
