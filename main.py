@@ -5,9 +5,25 @@ import con
 import trend
 from db import create_tables
 
+
+class FxFlask(Flask):
+    def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+        with self.app_context():
+            init()
+        super(FxFlask, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
+
+
+app = FxFlask(__name__)
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
-app = Flask(__name__)
 cache.init_app(app)
+
+
+def init():
+    trend.fetch()
+    scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
+    scheduler.add_job(trend.fetch, 'interval', minutes=7)
+    scheduler.start()
+    create_tables()
 
 
 @cache.cached(timeout=600)
@@ -152,17 +168,6 @@ def after_request(response):
     response.headers[
         "Access-Control-Allow-Headers"] = "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
     return response
-
-
-def init():
-    trend.fetch()
-    scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
-    scheduler.add_job(trend.fetch, 'interval', minutes=7)
-    scheduler.start()
-    create_tables()
-
-
-init()
 
 
 if __name__ == "__main__":
