@@ -65,6 +65,40 @@ def insert_position(ticket, number, time, symbol, type, volume, price, sl, tp, c
     return True
 
 
+def get_sentiments():
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT * FROM sentiments ORDER BY symbol "
+    cursor.execute(statement)
+    return cursor.fetchall()
+
+
+def get_sentiment(symbol):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT value FROM sentiments WHERE symbol = ?  "
+    cursor.execute(statement, [symbol])
+    return cursor.fetchone()
+
+
+def insert_sentiment(symbol, value):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
+    cursor.execute(statement, [symbol, value])
+    db.commit()
+    return True
+
+
+def reset_sentiments():
+    db = get_db()
+    cursor = db.cursor()
+    statement = "UPDATE sentiments SET value = 0 "
+    cursor.execute(statement)
+    db.commit()
+    return True
+
+
 def reset_positions(number):
     db = get_db()
     cursor = db.cursor()

@@ -2,7 +2,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
 from flask_caching import Cache
 import con
-import trend
+import sentiment
 from db import create_tables
 
 
@@ -19,21 +19,21 @@ cache.init_app(app)
 
 
 def init():
-    trend.fetch()
-    scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
-    scheduler.add_job(trend.fetch, 'interval', minutes=7)
-    scheduler.start()
     create_tables()
+    sentiment.fetch()
+    scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
+    scheduler.add_job(sentiment.fetch, 'interval', minutes=7)
+    scheduler.start()
 
 
 @cache.cached(timeout=600)
-@app.route('/accounts', methods=["GET"])
+@app.route('/accounts/', methods=["GET"])
 def get_accounts():
     accounts = con.get_accounts()
     return jsonify(accounts)
 
 
-@app.route("/account", methods=["POST"])
+@app.route("/account/", methods=["POST"])
 def upsert_account():
     details = request.get_json()
     number = details["number"]
@@ -150,8 +150,8 @@ def get_symbolprofits():
 def get_trend():
     details = request.args
     symbol = details.get("symbol")
-    ret = trend.get(symbol)
-    return jsonify(ret)
+    trend = con.get_sentiment(symbol)
+    return jsonify(trend[0])
 
 
 @cache.cached(timeout=600)
