@@ -22,10 +22,16 @@ cache.init_app(app)
 def init():
     create_tables()
     sentiment.fetch()
-    scheduler = BackgroundScheduler(daemon=True, timezone="Asia/Singapore")
+    scheduler = BackgroundScheduler(daemon=True, timezone="UTC")
     scheduler.add_job(sentiment.fetch, 'interval', minutes=7)
     scheduler.start()
     atexit.register(lambda: scheduler.shutdown())
+
+
+@app.route('/cron/', methods=["GET"])
+def cron():
+    sentiment.fetch()
+    return "OK", 200
 
 
 @cache.cached(timeout=600)
