@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import con
+import logging
 
 
 headers = {
@@ -26,7 +27,8 @@ def FFfetch():
             traders_ratio = int(position["traders_ratio"])
             value = lots_ratio - 50 + traders_ratio - 50
             con.insert_sentiment(symbol, value)
-            print(symbol, value)
+            logging.basicConfig(filename='/var/log/uwsgi/fxman.log', level=logging.INFO)
+            logging.info('%s %s', symbol, value)
 
 
 def MFfetch():
@@ -42,7 +44,8 @@ def MFfetch():
         long = int(longbar.get("style")[-4:-2])
         value = long - short
         con.insert_sentiment(symbol, value)
-        print(symbol, value)
+        logging.basicConfig(filename='/var/log/uwsgi/fxman.log', level=logging.INFO)
+        logging.info('%s %s', symbol, value)
 
 
 def BNfetch():
@@ -55,11 +58,11 @@ def BNfetch():
         sumratio += ratio
     value = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
     con.insert_sentiment(symbol, value)
-    print(symbol, value)
+    logging.basicConfig(filename='/var/log/uwsgi/fxman.log', level=logging.INFO)
+    logging.info('%s %s', symbol, value)
 
 
 def fetch():
-    con.reset_sentiments()
     FFfetch()
     MFfetch()
     BNfetch()

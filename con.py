@@ -90,15 +90,6 @@ def insert_sentiment(symbol, value):
     return True
 
 
-def reset_sentiments():
-    db = get_db()
-    cursor = db.cursor()
-    statement = "UPDATE sentiments SET value = 0 "
-    cursor.execute(statement)
-    db.commit()
-    return True
-
-
 def reset_positions(number):
     db = get_db()
     cursor = db.cursor()
