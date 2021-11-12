@@ -14,7 +14,7 @@ class FxFlask(Flask):
         super(FxFlask, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
 
 
-app = FxFlask(__name__)
+app = FxFlask(__name__, static_url_path='/static')
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 

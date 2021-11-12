@@ -32,10 +32,8 @@
       .styled-table tbody tr:last-of-type {
           border-bottom: 2px solid #009879;
       }
-
-    
+	
 	</style>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<title>Statistics</title>
 </head>
 <body>
@@ -123,6 +121,8 @@
 		</td>
 	</tr>
 </table>
+</body>
+</html>
 <script>
 function loadsentiments() {
 	var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCAD", "GBPAUD", "GBPNZD", "GBPCAD", "AUDNZD", "AUDCAD", "XAUUSD", "BTCUSD"];
@@ -176,26 +176,7 @@ function load(name) {
                 if(name == "accounts") {
                     var accountid = data[i][0];
                     var row1 = tbody.insertRow(1);
-                    row1.innerHTML += '<td colspan=15><canvas id="profit' + accountid + '" width="600" height="100"></canvas></td><td colspan=4><canvas id="symbol' + accountid + '" width="200" height="100"></canvas></td>';
-                    var xhr1  = new XMLHttpRequest()
-                    xhr1.open('GET', 'http://45.32.116.92/fxman/dailyprofits?number=' + accountid, true)
-                    xhr1.onload = function () {
-                        if (xhr1.readyState == 4 && xhr1.status == "200") {
-                            var profits = JSON.parse(xhr1.responseText);
-                            if(window.chart instanceof Chart) {
-                                window.chart.destroy();
-                            }
-                            const chart = new Chart('profit' + accountid, {
-                                type: 'bar',
-                                data: {
-                                    datasets: [{
-                                        data: transform(profits, 'x', 'y')
-                                    }]
-                                },
-                            });
-                        }
-                    }
-                    xhr1.send(null);
+                    row1.innerHTML += '<td colspan=14 align="center"><img src="/static/d' + accountid + '.png"/></td><td colspan=5 align="center"><img src="/static/s' + accountid + '.png"/></td>';
                 }
             }
         } else {
@@ -224,6 +205,5 @@ function transform(source, ...names) {
      }, {});
   });
 }
+
 </script>
-</body>
-</html>

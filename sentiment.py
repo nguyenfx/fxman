@@ -66,7 +66,7 @@ def fetch():
     MFfetch()
     BNfetch()
     sentiments = con.get_sentiments()
-    file = open('sentiments.txt', 'w')
+    file = open('static/sentiments.txt', 'w')
     file.writelines(json.dumps(sentiments))
     file.close()
 

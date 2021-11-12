@@ -103,7 +103,7 @@ def get_dailyprofits(number):
     db = get_db()
     cursor = db.cursor()
     statement = "SELECT DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals " \
-                "WHERE number = ? GROUP BY date ORDER BY date "
+                "WHERE number = ? AND (type = 0 OR type = 1) GROUP BY date ORDER BY date "
     cursor.execute(statement, [number])
     return cursor.fetchall()
 
@@ -111,7 +111,7 @@ def get_dailyprofits(number):
 def get_symbolprofits(number):
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? GROUP BY " \
-                "symbol ORDER BY sprofit DESC "
+    statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? AND (type = 0 " \
+                "OR type = 1) GROUP BY symbol ORDER BY sprofit DESC "
     cursor.execute(statement, [number])
     return cursor.fetchall()
