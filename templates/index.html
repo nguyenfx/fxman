@@ -200,6 +200,11 @@ function loads() {
 }
 
 loads();
-setInterval(loads, 30000);
+setInterval(loads, 30 * 1000);
+
+function reload() {
+	location.reload()
+}
+setInterval(reload, 30 * 60 * 1000);
 
 </script>
