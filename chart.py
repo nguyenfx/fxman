@@ -11,7 +11,7 @@ def dailychart(number):
     y = np.asarray(y)
     colors = np.array([(1, 0, 0)] * len(y))
     colors[y >= 0] = (0, 0, 1)
-    plt.figure(figsize=(12, 2))
+    plt.figure(figsize=(10, 2))
     plt.xticks(rotation=45, fontsize=6, ha="right")
     plt.yticks(fontsize=6)
     plt.bar(x, y, color=colors)
