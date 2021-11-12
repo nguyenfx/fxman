@@ -99,6 +99,23 @@ def insert_sentiment(symbol, value):
     return True
 
 
+def get_statistic(number):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT * FROM statistic WHERE number = ? ORDER BY date "
+    cursor.execute(statement, [number])
+    return cursor.fetchall()
+
+
+def get_symbolprofits(number):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? AND (type = 0 " \
+                "OR type = 1) GROUP BY symbol ORDER BY sprofit DESC "
+    cursor.execute(statement, [number])
+    return cursor.fetchall()
+
+
 def get_dailyprofits(number):
     db = get_db()
     cursor = db.cursor()
@@ -118,10 +135,46 @@ def get_dailybalances(number):
     return cursor.fetchall()
 
 
-def get_symbolprofits(number):
+def calculate_all_statistic():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? AND (type = 0 " \
-                "OR type = 1) GROUP BY symbol ORDER BY sprofit DESC "
-    cursor.execute(statement, [number])
-    return cursor.fetchall()
+    statement = "INSERT OR REPLACE INTO statistic SELECT number, DATE(REPLACE(time, '.', '-')) AS date, SUM(profit  " \
+                "- commission + swap) AS dprofit, 0, 0, 0 FROM deals WHERE type = 0 OR type = 1 GROUP BY number, date "
+    cursor.execute(statement)
+    statement = "UPDATE statistic SET balance = (SELECT balance FROM (SELECT number, date, SUM(dprofit) OVER (PARTITION BY number ORDER " \
+                "BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS balance FROM (SELECT number, " \
+                "DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals GROUP " \
+                "BY number, date ORDER BY date) GROUP BY number, date) AS sub WHERE statistic.number = sub.number AND statistic.date = " \
+                "sub.date) "
+    cursor.execute(statement)
+    statement = "UPDATE statistic SET percent = profit / balance * 100 "
+    cursor.execute(statement)
+    statement = "UPDATE statistic SET growth = (SELECT growth FROM (SELECT number, date, SUM(percent) OVER (PARTITION BY number ORDER BY date ROWS " \
+                "BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS growth FROM statistic GROUP BY number, date ORDER by date) AS sub WHERE " \
+                "statistic.number = sub.number AND statistic.date = sub.date) "
+    cursor.execute(statement)
+    db.commit()
+    return True
+
+
+def calculate_last_statistic():
+    db = get_db()
+    cursor = db.cursor()
+    statement = "INSERT OR REPLACE INTO statistic SELECT number, DATE(REPLACE(time, '.', '-')) AS date, SUM(profit  " \
+                "- commission + swap) AS dprofit, 0, 0, 0 FROM deals WHERE type = 0 OR type = 1 GROUP BY number, date ORDER BY date DESC LIMIT 100 "
+    cursor.execute(statement)
+    statement = "UPDATE statistic SET balance = (SELECT balance FROM (SELECT number, date, SUM(dprofit) OVER (PARTITION BY number ORDER " \
+                "BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS balance FROM (SELECT number, " \
+                "DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals GROUP " \
+                "BY number, date ORDER BY date DESC LIMIT 100) GROUP BY number, date) AS sub WHERE statistic.number = sub.number AND statistic.date = " \
+                "sub.date) "
+    cursor.execute(statement)
+    statement = "UPDATE statistic SET percent = profit / balance * 100 ORDER BY date DESC LIMIT 100 "
+    cursor.execute(statement)
+    statement = "UPDATE statistic SET growth = (SELECT growth FROM (SELECT number, date, SUM(percent) OVER (PARTITION BY number ORDER BY date ROWS " \
+                "BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS growth FROM statistic GROUP BY number, date ORDER by date DESC LIMIT 100) AS sub WHERE " \
+                "statistic.number = sub.number AND statistic.date = sub.date) "
+    cursor.execute(statement)
+    db.commit()
+    return True
+#

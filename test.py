@@ -1,9 +1,14 @@
-import con
+import db, con
 
 
 
 
 
 if __name__ == "__main__":
-    balance = con.get_dailybalances(11582098)
-    print(balance)
+    db.create_tables()
+    con.calculate_last_statistic()
+    accounts = con.get_accounts()
+    for account in accounts:
+        number = account[0]
+        stats = con.get_statistic(number)
+        print(stats)
