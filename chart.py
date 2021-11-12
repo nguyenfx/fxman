@@ -11,7 +11,7 @@ def save_image(title, number, data, width):
     colors[y >= 0] = (0, 0, 1)
     plt.figure(figsize=(width, 2))
     plt.xticks(rotation=45, fontsize=6, ha="right")
-    plt.yticks(fontsize=7)
+    plt.yticks(fontsize=6)
     plt.title(title, fontsize=8)
     plt.tight_layout()
     plt.bar(x, y, color=colors)
@@ -24,7 +24,7 @@ def save_images():
     for account in accounts:
         number = account[0]
         dp = con.get_dailyprofits(number)
-        save_image("Daily profit", number, dp, 8)
+        save_image("Daily profit", number, dp, 10)
         sp = con.get_symbolprofits(number)
         save_image("Symbols profit", number, sp, 4)
 
