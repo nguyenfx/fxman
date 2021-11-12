@@ -152,7 +152,7 @@ function loadsentiments() {
                     var time = document.getElementById("time")
 		            var date = new Date(data[i][1] * 1000)
 		            var now = Math.floor((new Date()).getTime() / 1000);
-		            time.innerHTML = "Last updated: " + date.toISOString().slice(0, 19).replace('T', ' ') + " " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
+		            time.innerHTML = "Last updated: " + date.toISOString().slice(0, 19).replace('T', ' ') + " UTC " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
 		        }
             }
             
