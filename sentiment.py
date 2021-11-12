@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from datetime import datetime
 import requests
 import json
 import con
@@ -43,8 +44,6 @@ def MFfetch():
         long = int(longbar.get("style")[-4:-2])
         value = long - short
         con.insert_sentiment(symbol, value)
-        if not value == 0:
-            print(symbol, value)
 
 
 def BNfetch():
@@ -57,15 +56,18 @@ def BNfetch():
         sumratio += ratio
     value = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
     con.insert_sentiment(symbol, value)
-    if not value == 0:
-        print(symbol, value)
 
 
 def fetch():
     # FFfetch()
     MFfetch()
     BNfetch()
+    today = datetime.utcnow()
+    epoch = datetime(1970, 1, 1)
+    timestamp = (today - epoch).total_seconds()
+    con.insert_sentiment("Time", int(timestamp))
     sentiments = con.get_sentiments()
+    print(json.dumps(sentiments))
     file = open('static/sentiments.txt', 'w')
     file.writelines(json.dumps(sentiments))
     file.close()

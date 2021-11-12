@@ -37,7 +37,7 @@
 	<title>Statistics</title>
 </head>
 <body>
-<h4>Sentiments</h4>
+<h4>Sentiments</h4><h5 id="time"></h5>
 <table id="sentiments" class="styled-table">
 	<thead></thead>
 	<tbody></tbody>
@@ -148,7 +148,13 @@ function loadsentiments() {
                     cell1.innerHTML = data[i][0];
                     cell2.innerHTML = data[i][1];
                 }
+                if(data[i][0] == "Time") {
+                    var time = document.getElementById("time")
+		            var date = new Date(data[i][1] * 1000)
+		            time.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ');
+		        }
             }
+            
         } else {
             console.error(users);
         }
@@ -162,7 +168,6 @@ function load(name) {
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
-            console.info(data)
             var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
             while (tbody.firstChild) {
                 tbody.firstChild.remove();
@@ -204,6 +209,14 @@ function transform(source, ...names) {
        return r;
      }, {});
   });
+}
+
+function format_time(s) {
+  const dtFormat = new Intl.DateTimeFormat('en-US', {
+    timeStyle: 'medium',
+    timeZone: 'UTC'
+  });
+  return dtFormat.format(new Date(s));
 }
 
 </script>
