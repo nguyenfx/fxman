@@ -47,7 +47,7 @@ def insert_deal(ticket, number, time, symbol, type, volume, price, sl, tp, commi
 def get_positions():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM positions ORDER BY number, symbol, type, volume "
+    statement = "SELECT * FROM positions ORDER BY time "
     cursor.execute(statement)
     return cursor.fetchall()
 
@@ -61,6 +61,15 @@ def insert_position(ticket, number, time, symbol, type, volume, price, sl, tp, c
     cursor.execute(statement,
                    [ticket, number, time, symbol, type, volume, price, sl, tp, commission, swap, profit, magic,
                     comment])
+    db.commit()
+    return True
+
+
+def reset_positions(number):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "DELETE FROM positions WHERE number = ? "
+    cursor.execute(statement, [number])
     db.commit()
     return True
 
@@ -86,15 +95,6 @@ def insert_sentiment(symbol, value):
     cursor = db.cursor()
     statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
     cursor.execute(statement, [symbol, value])
-    db.commit()
-    return True
-
-
-def reset_positions(number):
-    db = get_db()
-    cursor = db.cursor()
-    statement = "DELETE FROM positions WHERE number = ? "
-    cursor.execute(statement, [number])
     db.commit()
     return True
 

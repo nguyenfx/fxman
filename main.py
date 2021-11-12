@@ -28,20 +28,14 @@ def init():
     atexit.register(lambda: scheduler.shutdown())
 
 
-@app.route('/cron/', methods=["GET"])
-def cron():
-    sentiment.fetch()
-    return "OK", 200
-
-
-@cache.cached(timeout=600)
-@app.route('/accounts/', methods=["GET"])
+@cache.cached(timeout=300)
+@app.route('/accounts', methods=["GET"])
 def get_accounts():
     accounts = con.get_accounts()
     return jsonify(accounts)
 
 
-@app.route("/account/", methods=["POST"])
+@app.route("/account", methods=["POST"])
 def upsert_account():
     details = request.get_json()
     number = details["number"]
@@ -135,7 +129,7 @@ def reset_positions():
     return jsonify(result)
 
 
-@cache.cached(timeout=300)
+@cache.memoize(timeout=300)
 @app.route("/dailyprofits", methods=["GET"])
 def get_dailyprofits():
     details = request.args
@@ -144,7 +138,7 @@ def get_dailyprofits():
     return jsonify(dailyprofits)
 
 
-@cache.cached(timeout=300)
+@cache.memoize(timeout=300)
 @app.route("/symbolprofits", methods=["GET"])
 def get_symbolprofits():
     details = request.args
@@ -169,7 +163,7 @@ def get_sentiments():
     return jsonify(sentiments)
 
 
-@cache.cached(timeout=600)
+@cache.cached(timeout=300)
 @app.route('/')
 def home():
     return render_template('index.html')
