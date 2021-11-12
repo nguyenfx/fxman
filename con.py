@@ -47,7 +47,7 @@ def insert_deal(ticket, number, time, symbol, type, volume, price, sl, tp, commi
 def get_positions():
     db = get_db()
     cursor = db.cursor()
-    statement = "SELECT * FROM positions ORDER BY time "
+    statement = "SELECT * FROM positions ORDER BY time DESC "
     cursor.execute(statement)
     return cursor.fetchall()
 
