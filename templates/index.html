@@ -202,22 +202,4 @@ function loads() {
 loads();
 setInterval(loads, 30000);
 
-function transform(source, ...names) {
-  const defaultName = i => "field" + i;
-  return source.map(a => {
-     return a.reduce((r, v, i) => {
-       r[i < names.length ? names[i] : defaultName(i)] = v;
-       return r;
-     }, {});
-  });
-}
-
-function format_time(s) {
-  const dtFormat = new Intl.DateTimeFormat('en-US', {
-    timeStyle: 'medium',
-    timeZone: 'UTC'
-  });
-  return dtFormat.format(new Date(s));
-}
-
 </script>
