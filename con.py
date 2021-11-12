@@ -108,6 +108,16 @@ def get_dailyprofits(number):
     return cursor.fetchall()
 
 
+def get_dailybalances(number):
+    db = get_db()
+    cursor = db.cursor()
+    statement = "SELECT date, SUM(dprofit) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) FROM " \
+                "(SELECT DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals " \
+                "WHERE number = ? GROUP BY date ORDER BY date) "
+    cursor.execute(statement, [number])
+    return cursor.fetchall()
+
+
 def get_symbolprofits(number):
     db = get_db()
     cursor = db.cursor()

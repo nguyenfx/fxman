@@ -130,24 +130,6 @@ def reset_positions():
 
 
 @cache.memoize(timeout=300)
-@app.route("/dailyprofits", methods=["GET"])
-def get_dailyprofits():
-    details = request.args
-    number = details.get("number")
-    dailyprofits = con.get_dailyprofits(number)
-    return jsonify(dailyprofits)
-
-
-@cache.memoize(timeout=300)
-@app.route("/symbolprofits", methods=["GET"])
-def get_symbolprofits():
-    details = request.args
-    number = details.get("number")
-    symbolprofits = con.get_symbolprofits(number)
-    return jsonify(symbolprofits)
-
-
-@cache.memoize(timeout=300)
 @app.route("/trend", methods=["GET"])
 def get_trend():
     details = request.args
