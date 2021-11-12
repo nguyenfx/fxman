@@ -151,7 +151,8 @@ function loadsentiments() {
                 if(data[i][0] == "Time") {
                     var time = document.getElementById("time")
 		            var date = new Date(data[i][1] * 1000)
-		            time.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ');
+		            var now = Math.floor((new Date()).getTime() / 1000);
+		            time.innerHTML = "Last updated: " + date.toISOString().slice(0, 19).replace('T', ' ') + " " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
 		        }
             }
             
