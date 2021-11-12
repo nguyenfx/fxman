@@ -6,7 +6,7 @@ import db, con
 
 if __name__ == "__main__":
     db.create_tables()
-    con.calculate_last_statistic()
+    con.calculate_all_statistic()
     accounts = con.get_accounts()
     for account in accounts:
         number = account[0]

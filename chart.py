@@ -4,7 +4,7 @@ import con
 
 
 def chart():
-    con.calculate_all_statistic()
+    con.calculate_last_statistic()
     accounts = con.get_accounts()
     for account in accounts:
         number = account[0]
