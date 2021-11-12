@@ -1,15 +1,15 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <style>
+<head>
+	<meta charset="utf-8">
+	<style>
       .styled-table {
           border-collapse: collapse;
-          margin: 10px 0;
-          font-size: 0.8em;
+          margin: 5px 0;
+          font-size: 0.7em;
           font-family: sans-serif;
           min-width: 800px;
-          max-width: 800px;
+          max-width: 1600px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       .styled-table thead tr {
@@ -19,7 +19,7 @@
       }
       .styled-table th,
       .styled-table td {
-          padding: 5px 7px;
+          padding: 3px 5px;
       }
       .styled-table tbody tr {
           border-bottom: 1px solid #dddddd;
@@ -32,131 +32,100 @@
       .styled-table tbody tr:last-of-type {
           border-bottom: 2px solid #009879;
       }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/themes/redmond/jquery-ui.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/css/ui.jqgrid.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
-    <title>Statistics</title>
-  </head>
-  <body>
-  <h2>Sentiments</h2>
-    <table id="sentiments" class="styled-table">
-      <thead></thead>
-      <tbody></tbody>
-    </table>
-  <h2>Accounts</h2>
-    <table id="accounts" class="styled-table">
-      <thead>
-        <tr>
-          <td>Number</td>
-          <td>Name</td>
-          <td>Broker</td>
-          <td>Server</td>
-          <td>Deposit</td>
-          <td>Credit</td>
-          <td>Withdraw</td>
-          <td>Balance</td>
-          <td>Equity</td>
-          <td>Margin</td>
-          <td>Deals</td>
-          <td>N.Volume</td>
-          <td>N.Profit</td>
-          <td>Positions</td>
-          <td>F.Volume</td>
-          <td>F.Profit</td>
-          <td>D.Load</td>
-          <td>Drawdown</td>
-          <td>Last updated</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  <script>
-    $(function () {
-        "use strict";
-        $("#positions1").jqGrid({
-            url:'http://45.32.116.92/fxman/positions',
-            datatype: "json",
-            mtype : 'GET',
-            rowNum:10,
-            loadonce: true,
-            rowList:[10,20,30],
-            pager: '#pager2',
-            sortname: 'Ticket',
-            viewrecords: true,
-            sortorder: "desc",
-            caption:""
-            colNames:['Ticket', 'A.Number', 'Title', 'Body'],
-            colModel: [
-                { name: "Ticket" },
-                { name: "Number" },
-                { name: "OpenTime" },
-                { name: "Symbol" },
-                { name: "Type" },
-                { name: "Volume" },
-                { name: "Price" },
-                { name: "SL" },
-                { name: "TP" },
-                { name: "Commission" },
-                { name: "Swap" },
-                { name: "Profit" },
-                { name: "Magic" },
-                { name: "Comment" }
-            ]
-        });
-    });
-    </script>
-  <table id="positions1" class="styled-table"></table>
-  <table id="deals1" class="styled-table"></table>
-  <h2>Positions</h2>
-    <table id="positions" class="styled-table">
-      <thead>
-        <tr>
-          <td>Ticket</td>
-          <td>A.Number</td>
-          <td>Open time</td>
-          <td>Symbol</td>
-          <td>Type</td>
-          <td>Volume</td>
-          <td>Price</td>
-          <td>SL</td>
-          <td>TP</td>
-          <td>Commission</td>
-          <td>Swap</td>
-          <td>Profit</td>
-          <td>Magic</td>
-          <td>Comment</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  <h2>Deals</h2>
-    <table id="deals" class="styled-table">
-      <thead>
-        <tr>
-          <td>Ticket</td>
-          <td>A.Number</td>
-          <td>Closed time</td>
-          <td>Symbol</td>
-          <td>Type</td>
-          <td>Volume</td>
-          <td>Price</td>
-          <td>SL</td>
-          <td>TP</td>
-          <td>Commission</td>
-          <td>Swap</td>
-          <td>Profit</td>
-          <td>Magic</td>
-          <td>Comment</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
 
-  <script>
+    
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<title>Statistics</title>
+</head>
+<body>
+<h4>Sentiments</h4>
+<table id="sentiments" class="styled-table">
+	<thead></thead>
+	<tbody></tbody>
+</table>
+<h4>Accounts</h4>
+<table id="accounts" class="styled-table">
+	<thead>
+	<tr>
+		<td>Number</td>
+		<td>Name</td>
+		<td>Broker</td>
+		<td>Server</td>
+		<td>Deposit</td>
+		<td>Credit</td>
+		<td>Withdraw</td>
+		<td>Balance</td>
+		<td>Equity</td>
+		<td>Margin</td>
+		<td>Deals</td>
+		<td>N.Volume</td>
+		<td>N.Profit</td>
+		<td>Positions</td>
+		<td>F.Volume</td>
+		<td>F.Profit</td>
+		<td>D.Load</td>
+		<td>Drawdown</td>
+		<td>Last updated</td>
+	</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+<table>
+	<tr>
+		<td valign="top">
+			<h4>Positions</h4>
+			<table id="positions" class="styled-table">
+				<thead>
+				<tr>
+					<td>Ticket</td>
+					<td>A.Number</td>
+					<td>O.Time</td>
+					<td>Symbol</td>
+					<td>Type</td>
+					<td>Volume</td>
+					<td>Price</td>
+					<td>SL</td>
+					<td>TP</td>
+					<td>Comm</td>
+					<td>Swap</td>
+					<td>Profit</td>
+					<td>Magic</td>
+					<td>Comment</td>
+				</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</td>
+		<td valign="top">
+			<h4>Deals</h4>
+			<table id="deals" class="styled-table">
+				<thead>
+				<tr>
+					<td>Ticket</td>
+					<td>A.Number</td>
+					<td>C.Time</td>
+					<td>Symbol</td>
+					<td>Type</td>
+					<td>Volume</td>
+					<td>Price</td>
+					<td>SL</td>
+					<td>TP</td>
+					<td>Comm</td>
+					<td>Swap</td>
+					<td>Profit</td>
+					<td>Magic</td>
+					<td>Comment</td>
+				</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</td>
+	</tr>
+</table>
+<script>
 function loadsentiments() {
+	var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCAD", "GBPAUD", "GBPNZD", "GBPCAD", "AUDNZD", "AUDCAD", "XAUUSD", "BTCUSD"];
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "http://45.32.116.92/fxman/sentiments", true)
     xhr.onload = function () {
@@ -173,7 +142,7 @@ function loadsentiments() {
             var row1 = thead.insertRow(0);
             var row2 = tbody.insertRow(0);
             for (i = data.length - 1; i >= 0 ; i--) {
-                if(data[i][1] != 0) {
+                if(symbols.includes(data[i][0])) {
                     var cell1 = row1.insertCell(0);
                     var cell2 = row2.insertCell(0);
                     cell1.innerHTML = data[i][0];
@@ -193,6 +162,7 @@ function load(name) {
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
+            console.info(data)
             var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
             while (tbody.firstChild) {
                 tbody.firstChild.remove();
@@ -219,7 +189,7 @@ function load(name) {
                                 type: 'bar',
                                 data: {
                                     datasets: [{
-                                        data: transformArrayOfArrays(profits, 'x', 'y')
+                                        data: transform(profits, 'x', 'y')
                                     }]
                                 },
                             });
@@ -245,7 +215,7 @@ function loads() {
 loads();
 setInterval(loads, 60000);
 
-function transformArrayOfArrays(source, ...names) {
+function transform(source, ...names) {
   const defaultName = i => "field" + i;
   return source.map(a => {
      return a.reduce((r, v, i) => {
@@ -254,7 +224,6 @@ function transformArrayOfArrays(source, ...names) {
      }, {});
   });
 }
-
-    </script>
-  </body>
+</script>
+</body>
 </html>
