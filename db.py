@@ -6,36 +6,13 @@ DATABASE = "fxman.db"
 class Database:
 
     def __init__(self):
-        self.mm_connection = sqlite3.connect("file::memory:?cache=shared", uri=True)
         self.db_connection = sqlite3.connect(DATABASE)
         self.create_tables()
-
-    def get_mm_conn(self):
-        return self.mm_connection
 
     def get_db_conn(self):
         return self.db_connection
 
     def create_tables(self):
-        caches = [
-            # """DROP TABLE IF EXISTS sentiments""",
-            # """DROP TABLE IF EXISTS status""",
-            """CREATE TABLE IF NOT EXISTS sentiments(
-                    symbol TEXT NOT NULL  PRIMARY KEY,  
-                    value INTEGER NOT NULL DEFAULT 0
-                )            
-            """,
-            """CREATE TABLE IF NOT EXISTS status(
-                    number TEXT NOT NULL  PRIMARY KEY,  
-                    online INTEGER NOT NULL DEFAULT 0
-                )            
-            """,
-        ]
-        mm_conn = self.get_mm_conn()
-        cursor = mm_conn.cursor()
-        for cache in caches:
-            cursor.execute(cache)
-        mm_conn.commit()
         tables = [
             # """DROP TABLE IF EXISTS accounts""",
             # """DROP TABLE IF EXISTS deals""",
@@ -43,6 +20,8 @@ class Database:
             # """DROP TABLE IF EXISTS positions""",
             # """DROP INDEX IF EXISTS idx_position_ticket_number""",
             # """DROP TABLE IF EXISTS statistic""",
+            # """DROP TABLE IF EXISTS sentiments""",
+            # """DROP TABLE IF EXISTS status""",
             """CREATE TABLE IF NOT EXISTS accounts(
                     number INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
@@ -111,6 +90,16 @@ class Database:
                     percent  REAL NOT NULL DEFAULT 0.0,
                     growth  REAL NOT NULL DEFAULT 0.0,
                     UNIQUE(number, date)
+                )            
+            """,
+            """CREATE TABLE IF NOT EXISTS sentiments(
+                                symbol TEXT NOT NULL  PRIMARY KEY,  
+                                value INTEGER NOT NULL DEFAULT 0
+                            )            
+                        """,
+            """CREATE TABLE IF NOT EXISTS status(
+                    number TEXT NOT NULL  PRIMARY KEY,  
+                    online INTEGER NOT NULL DEFAULT 0
                 )            
             """,
         ]

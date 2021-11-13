@@ -9,9 +9,6 @@ class Controller:
     def get_db(self):
         return self.database.get_db_conn()
 
-    def get_mm(self):
-        return self.database.get_mm_conn()
-
     def get_accounts(self):
         db = self.get_db()
         cursor = db.cursor()
@@ -81,48 +78,48 @@ class Controller:
         return True
 
     def get_status(self):
-        mm = self.get_mm()
-        cursor = mm.cursor()
+        db = self.get_db()
+        cursor = db.cursor()
         statement = "SELECT * FROM status ORDER BY number "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def reset_status(self):
-        mm = self.get_mm()
-        cursor = mm.cursor()
+        db = self.get_db()
+        cursor = db.cursor()
         statement = "UPDATE status SET online = 0 "
         cursor.execute(statement)
-        mm.commit()
+        db.commit()
         return True
 
     def upsert_status(self, number, online):
-        mm = self.get_mm()
-        cursor = mm.cursor()
+        db = self.get_db()
+        cursor = db.cursor()
         statement = "INSERT OR REPLACE INTO status(number, online) VALUES (?, ?) "
         cursor.execute(statement, [number, online])
-        mm.commit()
+        db.commit()
         return True
 
     def get_sentiments(self):
-        mm = self.get_mm()
-        cursor = mm.cursor()
+        db = self.get_db()
+        cursor = db.cursor()
         statement = "SELECT * FROM sentiments ORDER BY symbol "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def get_sentiment(self, symbol):
-        mm = self.get_mm()
-        cursor = mm.cursor()
+        db = self.get_db()
+        cursor = db.cursor()
         statement = "SELECT value FROM sentiments WHERE symbol = ?  "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
     def upsert_sentiment(self, symbol, value):
-        mm = self.get_mm()
-        cursor = mm.cursor()
+        db = self.get_db()
+        cursor = db.cursor()
         statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
         cursor.execute(statement, [symbol, value])
-        mm.commit()
+        db.commit()
         return True
 
     def get_statistic(self, number):

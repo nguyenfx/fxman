@@ -1,8 +1,10 @@
+import chart
 from con import Controller
 import sen
 
 if __name__ == "__main__":
     sen.fetch()
+    chart.gen_chart()
     con = Controller()
     sentiments = con.get_sentiments()
     print(sentiments)
