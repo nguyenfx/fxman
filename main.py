@@ -1,24 +1,18 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
 from flask_caching import Cache
+import uwsgidecorators
 import atexit
 import con
 import sentiment
 from db import create_tables
 
-
-class FxFlask(Flask):
-    def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
-        with self.app_context():
-            init()
-        super(FxFlask, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
-
-
-app = FxFlask(__name__, static_url_path='/static')
+app = Flask(__name__, static_url_path='/static')
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 
+@uwsgidecorators.postfork
 def init():
     create_tables()
     sentiment.fetch()
