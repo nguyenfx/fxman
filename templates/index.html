@@ -21,14 +21,20 @@
       .styled-table td {
           padding: 3px 5px;
       }
+      .styled-table td.positive {
+          padding: 3px 5px;
+          color: #0000ff;
+      }
+      .styled-table td.negative {
+          padding: 3px 5px;
+          color: #ff0000;
+      }
       .styled-table tbody tr {
           border-bottom: 1px solid #dddddd;
       }
-
       .styled-table tbody tr:nth-of-type(even) {
           background-color: #f3f3f3;
       }
-
       .styled-table tbody tr:last-of-type {
           border-bottom: 2px solid #009879;
       }
@@ -57,12 +63,12 @@
 		<td>Equity</td>
 		<td>Margin</td>
 		<td>Deals</td>
-		<td>N.Volume</td>
-		<td>N.Profit</td>
+		<td>Net volume</td>
+		<td>Net profit</td>
 		<td>Positions</td>
-		<td>F.Volume</td>
-		<td>F.Profit</td>
-		<td>D.Load</td>
+		<td>Float volume</td>
+		<td>Float loss</td>
+		<td>Deposit load</td>
 		<td>Drawdown</td>
 		<td>Last updated</td>
 	</tr>
@@ -77,8 +83,8 @@
 				<thead>
 				<tr>
 					<td>Ticket</td>
-					<td>A.Number</td>
-					<td>O.Time</td>
+					<td>Account</td>
+					<td>Open time</td>
 					<td>Symbol</td>
 					<td>Type</td>
 					<td>Volume</td>
@@ -101,8 +107,8 @@
 				<thead>
 				<tr>
 					<td>Ticket</td>
-					<td>A.Number</td>
-					<td>C.Time</td>
+					<td>Account</td>
+					<td>Closed time</td>
 					<td>Symbol</td>
 					<td>Type</td>
 					<td>Volume</td>
@@ -125,7 +131,7 @@
 </html>
 <script>
 function loadsentiments() {
-	var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCAD", "GBPAUD", "GBPNZD", "GBPCAD", "AUDNZD", "AUDCAD", "XAUUSD", "BTCUSD"];
+	var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD", "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "XAUUSD", "BTCUSD"];
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "http://45.32.116.92/fxman/sentiments", true)
     xhr.onload = function () {
@@ -145,6 +151,11 @@ function loadsentiments() {
                 if(symbols.includes(data[i][0])) {
                     var cell1 = row1.insertCell(0);
                     var cell2 = row2.insertCell(0);
+                    if(data[i][1] > 0) {
+                        cell2.classList.add('positive');
+                    } else if(data[i][1] < 0) {
+                        cell2.classList.add('negative');
+                    }
                     cell1.innerHTML = data[i][0];
                     cell2.innerHTML = data[i][1];
                 }
@@ -178,6 +189,13 @@ function load(name) {
                 for (j = data[i].length - 1; j >= 0; j--) {
                     var cell = row.insertCell(0);
                     cell.innerHTML = data[i][j];
+                    if((name == "accounts" && (j == 12 || j == 15)) || (name != "accounts" && j == 11)) {
+	                    if(data[i][j] > 0) {
+	                        cell.classList.add('positive');
+	                    } else if(data[i][j] < 0) {
+	                        cell.classList.add('negative');
+	                    }
+                    }
                 }
                 if(name == "accounts") {
                     var accountid = data[i][0];
