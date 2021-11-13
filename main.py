@@ -136,9 +136,9 @@ def get_sentiments():
     return jsonify(sentiments)
 
 
-@cache.cached(timeout=0)
+@cache.cached(timeout=60)
 @app.route("/status", methods=["GET"])
-def get_sentiments():
+def get_status():
     status = con.get_status()
     con.reset_status();
     return jsonify(status)
