@@ -4,7 +4,6 @@ from flask_caching import Cache
 from uwsgidecorators import postfork
 from con import Controller
 import sen
-import chart
 
 con = Controller()
 app = Flask(__name__, static_url_path='/static')
@@ -15,7 +14,6 @@ cache.init_app(app)
 @postfork
 def init():
     sen.fetch()
-    chart.gen_chart()
 
 
 @cache.cached(timeout=300)
