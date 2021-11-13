@@ -136,6 +136,14 @@ def get_sentiments():
     return jsonify(sentiments)
 
 
+@cache.cached(timeout=0)
+@app.route("/status", methods=["GET"])
+def get_sentiments():
+    status = con.get_status()
+    con.reset_status();
+    return jsonify(status)
+
+
 @cache.cached(timeout=300)
 @app.route('/')
 def home():

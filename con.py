@@ -1,3 +1,4 @@
+from datetime import datetime
 from db import Database
 
 
@@ -117,8 +118,11 @@ class Controller:
     def upsert_sentiment(self, symbol, value):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
-        cursor.execute(statement, [symbol, value])
+        statement = "INSERT OR REPLACE INTO sentiments(symbol, value, timestamp) VALUES (?, ?, ?) "
+        today = datetime.utcnow()
+        epoch = datetime(1970, 1, 1)
+        timestamp = (today - epoch).total_seconds()
+        cursor.execute(statement, [symbol, value, timestamp])
         db.commit()
         return True
 
