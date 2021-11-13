@@ -18,6 +18,8 @@ class Database:
 
     def create_tables(self):
         caches = [
+            # """DROP TABLE IF EXISTS sentiments""",
+            # """DROP TABLE IF EXISTS status""",
             """CREATE TABLE IF NOT EXISTS sentiments(
                     symbol TEXT NOT NULL  PRIMARY KEY,  
                     value INTEGER NOT NULL DEFAULT 0
@@ -33,6 +35,7 @@ class Database:
         cursor = mm_conn.cursor()
         for cache in caches:
             cursor.execute(cache)
+        mm_conn.commit()
         tables = [
             # """DROP TABLE IF EXISTS accounts""",
             # """DROP TABLE IF EXISTS deals""",
@@ -115,3 +118,5 @@ class Database:
         cursor = db_conn.cursor()
         for table in tables:
             cursor.execute(table)
+        db_conn.commit()
+        print("Tables created!")

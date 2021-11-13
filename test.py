@@ -1,11 +1,13 @@
-import db, con
-
-
-
-
+from con import Controller
+import sen
 
 if __name__ == "__main__":
-    db.create_tables()
+    sen.fetch()
+    con = Controller()
+    sentiments = con.get_sentiments()
+    print(sentiments)
+    status = con.get_status()
+    print(status)
     con.calculate_all_statistic()
     accounts = con.get_accounts()
     for account in accounts:

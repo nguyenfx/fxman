@@ -10,7 +10,7 @@ class Controller:
         return self.database.get_db_conn()
 
     def get_mm(self):
-        return self.database.get_db_conn()
+        return self.database.get_mm_conn()
 
     def get_accounts(self):
         db = self.get_db()
