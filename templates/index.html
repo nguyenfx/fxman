@@ -43,12 +43,17 @@
 	<title>Statistics</title>
 </head>
 <body>
-<h4>Sentiments</h4><h5 id="time"></h5>
+<h4>Market sentiments</h4><h5 id="time"></h5>
 <table id="sentiments" class="styled-table">
 	<thead></thead>
 	<tbody></tbody>
 </table>
-<h4>Accounts</h4>
+<h4>Terminal online status</h4>
+<table id="status" class="styled-table">
+	<thead></thead>
+	<tbody></tbody>
+</table>
+<h4>Accounts list</h4>
 <table id="accounts" class="styled-table">
 	<thead>
 	<tr>
@@ -71,6 +76,7 @@
 		<td>Deposit load</td>
 		<td>Drawdown</td>
 		<td>Last updated</td>
+		<td>Last online</td>
 	</tr>
 	</thead>
 	<tbody></tbody>
@@ -78,7 +84,7 @@
 <table>
 	<tr>
 		<td valign="top">
-			<h4>Positions</h4>
+			<h4>Open positions</h4>
 			<table id="positions" class="styled-table">
 				<thead>
 				<tr>
@@ -102,7 +108,7 @@
 			</table>
 		</td>
 		<td valign="top">
-			<h4>Deals</h4>
+			<h4>Closed deals</h4>
 			<table id="deals" class="styled-table">
 				<thead>
 				<tr>
@@ -133,7 +139,7 @@
 function loadsentiments() {
 	var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD", "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "XAUUSD", "BTCUSD"];
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://45.32.116.92/fxman/sentiments", true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/sentiments", true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -174,9 +180,47 @@ function loadsentiments() {
     xhr.send(null);
 }
 
+function loadstatus() {
+    var xhr  = new XMLHttpRequest()
+    xhr.open('GET', "http://fxman.mooo.com/fxman/status", true)
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var data = JSON.parse(xhr.responseText);
+            var thead = document.getElementById("status").getElementsByTagName('thead')[0];
+            var tbody = document.getElementById("status").getElementsByTagName('tbody')[0];
+            while (thead.firstChild) {
+                thead.firstChild.remove();
+            }
+            while (tbody.firstChild) {
+                tbody.firstChild.remove();
+            }
+            var row1 = thead.insertRow(0);
+            var row2 = tbody.insertRow(0);
+            for (i = data.length - 1; i >= 0 ; i--) {
+                var cell1 = row1.insertCell(0);
+                var cell2 = row2.insertCell(0);
+                cell1.innerHTML = data[i][0] + " last online";
+                var date = new Date(data[i][2] * 1000)
+	            var now = Math.floor((new Date()).getTime() / 1000);
+	            var diff = Math.floor((now - data[i][2]) / 60)
+	            if(data[i][1] > 0 || diff > 1) {
+                    cell2.classList.add('positive');
+                } else {
+                    cell2.classList.add('negative');
+                }
+	            cell2.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ') + " UTC " + diff + " minutes ago";
+            }
+            
+        } else {
+            console.error(users);
+        }
+    }
+    xhr.send(null);
+}
+
 function load(name) {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://45.32.116.92/fxman/" + name, true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/" + name, true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -212,6 +256,7 @@ function load(name) {
 
 function loads() {
   loadsentiments();
+  loadstatus();
   load("accounts");
   load("positions");
   load("deals");
