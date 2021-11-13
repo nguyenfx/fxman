@@ -94,10 +94,13 @@ class Controller:
         return True
 
     def upsert_status(self, number, online):
+        today = datetime.utcnow()
+        epoch = datetime(1970, 1, 1)
+        timestamp = (today - epoch).total_seconds()
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO status(number, online) VALUES (?, ?) "
-        cursor.execute(statement, [number, online])
+        statement = "INSERT OR REPLACE INTO status(number, online, timestamp) VALUES (?, ?, ?) "
+        cursor.execute(statement, [number, online, timestamp])
         db.commit()
         return True
 
@@ -118,11 +121,8 @@ class Controller:
     def upsert_sentiment(self, symbol, value):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO sentiments(symbol, value, timestamp) VALUES (?, ?, ?) "
-        today = datetime.utcnow()
-        epoch = datetime(1970, 1, 1)
-        timestamp = (today - epoch).total_seconds()
-        cursor.execute(statement, [symbol, value, timestamp])
+        statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
+        cursor.execute(statement, [symbol, value])
         db.commit()
         return True
 
