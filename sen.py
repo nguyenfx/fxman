@@ -2,8 +2,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import requests
 import json
-import con
-
+from con import Controller
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -12,6 +11,8 @@ ffurl = "https://www.forexfactory.com/explorerapi.php?content=positions&do=posit
 mfurl = "https://www.myfxbook.com/community/outlook"
 bnurl = "https://fapi.binance.com/futures/data/"
 bnapis = {'topLongShortAccountRatio', 'topLongShortPositionRatio', 'globalLongShortAccountRatio'}
+
+con = Controller()
 
 
 def FFfetch():
@@ -26,7 +27,7 @@ def FFfetch():
             lots_ratio = int(position["lots_ratio"])
             traders_ratio = int(position["traders_ratio"])
             value = lots_ratio - 50 + traders_ratio - 50
-            con.insert_sentiment(symbol, value)
+            con.upsert_sentiment(symbol, value)
             if not value == 0:
                 print(symbol, value)
 
@@ -43,7 +44,7 @@ def MFfetch():
         short = int(shortbar.get("style")[-4:-2])
         long = int(longbar.get("style")[-4:-2])
         value = long - short
-        con.insert_sentiment(symbol, value)
+        con.upsert_sentiment(symbol, value)
 
 
 def BNfetch():
@@ -55,7 +56,7 @@ def BNfetch():
         ratio = float(rows[-1]['longShortRatio'])
         sumratio += ratio
     value = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
-    con.insert_sentiment(symbol, value)
+    con.upsert_sentiment(symbol, value)
 
 
 def fetch():
@@ -65,19 +66,15 @@ def fetch():
     today = datetime.utcnow()
     epoch = datetime(1970, 1, 1)
     timestamp = (today - epoch).total_seconds()
-    con.insert_sentiment("Time", int(timestamp))
+    con.upsert_sentiment("Time", int(timestamp))
     sentiments = con.get_sentiments()
     print(json.dumps(sentiments))
     file = open('static/sentiments.txt', 'w')
     file.writelines(json.dumps(sentiments))
     file.close()
-
-
-def get(symbol):
-    sentiment = con.get_sentiment(symbol)
-    return sentiment
+    print("Sentiment fetch done, tested:", " EURUSD:", con.get_sentiment("EURUSD")[0], " XAUUSD:",
+          con.get_sentiment("XAUUSD")[0], " BTCUSD:", con.get_sentiment("BTCUSD")[0])
 
 
 if __name__ == "__main__":
     fetch()
-    print(get("EURUSD"), get("GBPUSD"), get("XAUUSD"), get("BTCUSD"))

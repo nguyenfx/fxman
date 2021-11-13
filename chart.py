@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import con
+from con import Controller
 
 
-def chart():
+def gen_chart():
+    con = Controller()
     con.calculate_last_statistic()
     accounts = con.get_accounts()
     for account in accounts:
@@ -14,10 +15,10 @@ def chart():
         colors = np.array([(1, 0, 0)] * len(profit))
         colors[profit >= 0] = (0, 0, 1)
         plt.figure(figsize=(10, 2))
-        plt.xticks(rotation=45, fontsize=6, ha="right",)
+        plt.xticks(rotation=45, fontsize=6, ha="right", )
         plt.yticks([])
-        barplot = plt.bar(date, profit, color=colors, label="Profit")
-        plt.bar_label(barplot, fontsize=6)
+        bar_plot = plt.bar(date, profit, color=colors, label="Profit")
+        plt.bar_label(bar_plot, fontsize=6)
         plt.twinx()
         plt.yticks(fontsize=6)
         plt.grid(linestyle="dotted", color='m')
@@ -29,8 +30,9 @@ def chart():
         plt.plot(date, growth, color="y", label="Growth")
         plt.title("Daily profit, balance and growth", fontsize=8)
         plt.tight_layout()
-        plt.savefig("static/d" + str(number) + ".png")
-        # plt.show()
+        file = "static/d" + str(number) + ".png"
+        plt.savefig(file)
+        print("Charts generated:", file)
         profits = con.get_symbol_profits(number)
         x, y = zip(*profits)
         y = np.asarray(y)
@@ -42,9 +44,10 @@ def chart():
         plt.bar(x, y, color=colors)
         plt.title("Symbols profit", fontsize=8)
         plt.tight_layout()
-        plt.savefig("static/s" + str(number) + ".png")
-        # plt.show()
+        file = "static/s" + str(number) + ".png"
+        plt.savefig(file)
+        print("Charts generated:", file)
 
 
 if __name__ == "__main__":
-    chart()
+    gen_chart()

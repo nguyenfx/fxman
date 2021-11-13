@@ -1,25 +1,21 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
 from flask_caching import Cache
-import uwsgidecorators
-import atexit
-import con
-import sentiment
-from db import create_tables
+from uwsgidecorators import postfork
+from con import Controller
+import sen
+import chart
 
+con = Controller()
 app = Flask(__name__, static_url_path='/static')
 cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 
-@uwsgidecorators.postfork
+@postfork
 def init():
-    create_tables()
-    sentiment.fetch()
-    scheduler = BackgroundScheduler(daemon=True, timezone="UTC")
-    scheduler.add_job(sentiment.fetch, 'interval', minutes=7)
-    scheduler.start()
-    atexit.register(lambda: scheduler.shutdown())
+    sen.fetch()
+    chart.gen_chart()
 
 
 @cache.cached(timeout=300)
