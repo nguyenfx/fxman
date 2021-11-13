@@ -124,7 +124,7 @@ def get_trend():
     details = request.args
     symbol = details.get("symbol")
     number = details.get("number")
-    con.upsert_status(number, 1)
+    #con.upsert_status(number, 1)
     trend = con.get_sentiment(symbol)
     return jsonify(trend[0])
 

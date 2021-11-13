@@ -6,12 +6,12 @@ DATABASE = "fxman.db"
 class Database:
 
     def __init__(self):
-        self.mem_connection = sqlite3.connect("file::memory:?cache=shared", uri=True)
+        self.mm_connection = sqlite3.connect("file::memory:?cache=shared", uri=True)
         self.db_connection = sqlite3.connect(DATABASE)
         self.create_tables()
 
     def get_mm_conn(self):
-        return self.mem_connection
+        return self.mm_connection
 
     def get_db_conn(self):
         return self.db_connection
