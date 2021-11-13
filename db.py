@@ -21,7 +21,7 @@ class Database:
             # """DROP INDEX IF EXISTS idx_position_ticket_number""",
             # """DROP TABLE IF EXISTS statistic""",
             # """DROP TABLE IF EXISTS sentiments""",
-            """DROP TABLE IF EXISTS status""",
+            # """DROP TABLE IF EXISTS status""",
             """CREATE TABLE IF NOT EXISTS accounts(
                     number INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
@@ -100,7 +100,7 @@ class Database:
             """CREATE TABLE IF NOT EXISTS status(
                     number TEXT NOT NULL  PRIMARY KEY,  
                     online INTEGER NOT NULL DEFAULT 0,
-                    timestamp  INTEGER NOT NULL DEFAULT 0
+                    timestamp INTEGER NOT NULL DEFAULT 0
                 )            
             """,
         ]

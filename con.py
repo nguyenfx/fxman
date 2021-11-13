@@ -96,7 +96,7 @@ class Controller:
     def upsert_status(self, number, online):
         today = datetime.utcnow()
         epoch = datetime(1970, 1, 1)
-        timestamp = (today - epoch).total_seconds()
+        timestamp = int((today - epoch).total_seconds())
         db = self.get_db()
         cursor = db.cursor()
         statement = "INSERT OR REPLACE INTO status(number, online, timestamp) VALUES (?, ?, ?) "
