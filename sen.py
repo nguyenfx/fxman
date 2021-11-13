@@ -1,7 +1,9 @@
-from bs4 import BeautifulSoup
-from datetime import datetime
-import requests
 import json
+from datetime import datetime
+
+import requests
+from bs4 import BeautifulSoup
+
 from con import Controller
 
 headers = {

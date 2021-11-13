@@ -1,9 +1,9 @@
-from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, jsonify, request, render_template
 from flask_caching import Cache
 from uwsgidecorators import postfork
-from con import Controller
+
 import sen
+from con import Controller
 
 con = Controller()
 
@@ -17,8 +17,8 @@ def init():
     sen.fetch()
 
 
-@cache.cached(timeout=300)
 @app.route('/accounts', methods=["GET"])
+@cache.cached(timeout=300)
 def get_accounts():
     accounts = con.get_accounts()
     return jsonify(accounts)
@@ -52,8 +52,8 @@ def upsert_account():
     return jsonify(result)
 
 
-@cache.cached(timeout=300)
 @app.route('/deals', methods=["GET"])
+@cache.cached(timeout=300)
 def get_deals():
     deals = con.get_deals()
     return jsonify(deals)
@@ -81,8 +81,8 @@ def insert_deal():
     return jsonify(result)
 
 
-@cache.cached(timeout=300)
 @app.route('/positions', methods=["GET"])
+@cache.cached(timeout=300)
 def get_positions():
     positions = con.get_positions()
     return jsonify(positions)
@@ -118,8 +118,8 @@ def reset_positions():
     return jsonify(result)
 
 
-@cache.memoize(timeout=300)
 @app.route("/trend", methods=["GET"])
+@cache.cached(timeout=300, query_string=True)
 def get_trend():
     details = request.args
     symbol = details.get("symbol")
@@ -129,23 +129,23 @@ def get_trend():
     return jsonify(trend[0])
 
 
-@cache.cached(timeout=300)
 @app.route("/sentiments", methods=["GET"])
+@cache.cached(timeout=300)
 def get_sentiments():
     sentiments = con.get_sentiments()
     return jsonify(sentiments)
 
 
-@cache.cached(timeout=60)
 @app.route("/status", methods=["GET"])
+@cache.cached(timeout=30)
 def get_status():
     status = con.get_status()
     con.reset_status();
     return jsonify(status)
 
 
-@cache.cached(timeout=300)
 @app.route('/')
+@cache.cached(timeout=300)
 def home():
     return render_template('index.html')
 
