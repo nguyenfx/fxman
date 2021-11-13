@@ -31,7 +31,7 @@ def chart():
         plt.tight_layout()
         plt.savefig("static/d" + str(number) + ".png")
         # plt.show()
-        profits = con.get_symbolprofits(number)
+        profits = con.get_symbol_profits(number)
         x, y = zip(*profits)
         y = np.asarray(y)
         colors = np.array([(1, 0, 0)] * len(y))

@@ -3,19 +3,39 @@ import sqlite3
 DATABASE_NAME = "fxman.db"
 
 
+def get_mem():
+    conn = sqlite3.connect(":memory:?cache=shared")
+    return conn
+
+
 def get_db():
     conn = sqlite3.connect(DATABASE_NAME)
     return conn
 
 
 def create_tables():
+    caches = [
+        """CREATE TABLE IF NOT EXISTS sentiments(
+                symbol TEXT NOT NULL  PRIMARY KEY,  
+                value INTEGER NOT NULL DEFAULT 0
+            )            
+        """,
+        """CREATE TABLE IF NOT EXISTS status(
+                number TEXT NOT NULL  PRIMARY KEY,  
+                online INTEGER NOT NULL DEFAULT 0
+            )            
+        """,
+    ]
+    mem = get_mem()
+    cursor = mem.cursor()
+    for cache in caches:
+        cursor.execute(cache)
     tables = [
         # """DROP TABLE IF EXISTS accounts""",
         # """DROP TABLE IF EXISTS deals""",
         # """DROP INDEX IF EXISTS idx_deal_ticket_number""",
         # """DROP TABLE IF EXISTS positions""",
         # """DROP INDEX IF EXISTS idx_position_ticket_number""",
-        # """DROP TABLE IF EXISTS sentiments""",
         # """DROP TABLE IF EXISTS statistic""",
         """CREATE TABLE IF NOT EXISTS accounts(
                 number INTEGER PRIMARY KEY,
@@ -77,11 +97,6 @@ def create_tables():
             )
         """,
         """CREATE INDEX IF NOT EXISTS idx_position_ticket_number ON positions(ticket, number)""",
-        """CREATE TABLE IF NOT EXISTS sentiments(
-                symbol TEXT NOT NULL  PRIMARY KEY,  
-                value INTEGER NOT NULL DEFAULT 0
-            )            
-        """,
         """CREATE TABLE IF NOT EXISTS statistic(
                 number INTEGER NOT NULL,                  
                 date TEXT NOT NULL,

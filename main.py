@@ -134,6 +134,8 @@ def reset_positions():
 def get_trend():
     details = request.args
     symbol = details.get("symbol")
+    number = details.get("number")
+    con.upsert_status(number, 1)
     trend = con.get_sentiment(symbol)
     return jsonify(trend[0])
 
@@ -162,4 +164,5 @@ def after_request(response):
 
 
 if __name__ == "__main__":
+    init()
     app.run(host='127.0.0.1', port=8000, debug=False)

@@ -1,4 +1,4 @@
-from db import get_db
+from db import get_db, get_mem
 
 
 def get_accounts():
@@ -74,28 +74,54 @@ def reset_positions(number):
     return True
 
 
+def get_status():
+    mem = get_mem()
+    cursor = mem.cursor()
+    statement = "SELECT * FROM status ORDER BY number "
+    cursor.execute(statement)
+    return cursor.fetchall()
+
+
+def reset_status():
+    mem = get_mem()
+    cursor = mem.cursor()
+    statement = "UPDATE status SET online = 0 "
+    cursor.execute(statement)
+    mem.commit()
+    return True
+
+
+def upsert_status(number, online):
+    mem = get_mem()
+    cursor = mem.cursor()
+    statement = "INSERT OR REPLACE INTO status(number, online) VALUES (?, ?) "
+    cursor.execute(statement, [number, online])
+    mem.commit()
+    return True
+
+
 def get_sentiments():
-    db = get_db()
-    cursor = db.cursor()
+    mem = get_mem()
+    cursor = mem.cursor()
     statement = "SELECT * FROM sentiments ORDER BY symbol "
     cursor.execute(statement)
     return cursor.fetchall()
 
 
 def get_sentiment(symbol):
-    db = get_db()
-    cursor = db.cursor()
+    mem = get_mem()
+    cursor = mem.cursor()
     statement = "SELECT value FROM sentiments WHERE symbol = ?  "
     cursor.execute(statement, [symbol])
     return cursor.fetchone()
 
 
 def insert_sentiment(symbol, value):
-    db = get_db()
-    cursor = db.cursor()
+    mem = get_mem()
+    cursor = mem.cursor()
     statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
     cursor.execute(statement, [symbol, value])
-    db.commit()
+    mem.commit()
     return True
 
 
@@ -107,30 +133,11 @@ def get_statistic(number):
     return cursor.fetchall()
 
 
-def get_symbolprofits(number):
+def get_symbol_profits(number):
     db = get_db()
     cursor = db.cursor()
     statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? AND (type = 0 " \
                 "OR type = 1) GROUP BY symbol ORDER BY sprofit DESC "
-    cursor.execute(statement, [number])
-    return cursor.fetchall()
-
-
-def get_dailyprofits(number):
-    db = get_db()
-    cursor = db.cursor()
-    statement = "SELECT DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals " \
-                "WHERE number = ? AND (type = 0 OR type = 1) GROUP BY date ORDER BY date "
-    cursor.execute(statement, [number])
-    return cursor.fetchall()
-
-
-def get_dailybalances(number):
-    db = get_db()
-    cursor = db.cursor()
-    statement = "SELECT date, SUM(dprofit) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) FROM " \
-                "(SELECT DATE(REPLACE(time, '.', '-')) AS date, SUM(profit - commission + swap) AS dprofit FROM deals " \
-                "WHERE number = ? GROUP BY date ORDER BY date) "
     cursor.execute(statement, [number])
     return cursor.fetchall()
 
