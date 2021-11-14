@@ -52,6 +52,23 @@
 		<div style="display: table-cell;">
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
+					<h4>Time</h4>
+					<table class="styled-table" width="320">
+						<thead>
+						</thead>
+						<tbody>
+						<tr>
+							<td>Local</td><td id="local_time"></td>
+						</tr>
+						<tr>
+							<td>GMT</td><td id="gmt_time"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
 					<h4 id="sen_title">Market sentiment</h4>
 					<table class="styled-table" width="320">
 						<thead>
@@ -254,7 +271,7 @@ function load(name) {
                 if(name == "accounts") {
                     var accountid = data[i][0];
                     var row1 = tbody.insertRow(1);
-                    row1.innerHTML += '<td colspan=19 align="center"><img src="/fxman/static/d' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/m' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/s' + accountid + '.png?'  + timestamp() + '"/></td>';
+                    row1.innerHTML = '<td colspan=19 align="center"><img src="/fxman/static/d' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/m' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/s' + accountid + '.png?'  + timestamp() + '"/></td>';
                 }
             }
         } else {
@@ -267,6 +284,16 @@ function load(name) {
 function timestamp() {
 	return(Math.floor((new Date()).getTime() / 100000));
 }
+
+function clock() {
+	var local_time = document.getElementById("local_time");
+	var gmt_time = document.getElementById("gmt_time");
+	var date = new Date();
+	local_time.innerHTML = date.toString('en-US').substring(0, date.toString('en-US').indexOf('('));
+	gmt_time.innerHTML = date.toUTCString('en-US');
+}
+
+setInterval(clock, 1000);
 
 function loads() {
   loadsentiments();
