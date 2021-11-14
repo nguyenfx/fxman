@@ -3,9 +3,30 @@ import numpy as np
 
 from con import Controller
 
+Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
+           "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
+           "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "XAUUSD", "BTCUSD"}
+
 
 def gen_chart():
     con = Controller()
+    sentiments = con.get_sentiments()
+    sentiments.reverse()
+    sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
+    symbols, values = zip(*sentiments)
+    values = np.asarray(values)
+    colors = np.array(['coral'] * len(values))
+    colors[values >= 0] = 'c'
+    plt.figure(figsize=(4, 4))
+    plt.xticks([])
+    plt.yticks(fontsize=6)
+    bar_plot = plt.barh(symbols, values, color=colors, label="Sentiment")
+    plt.bar_label(bar_plot, fontsize=6)
+    plt.title("Market sentiment", fontsize=8)
+    plt.tight_layout()
+    file = "static/sentiment.png"
+    plt.savefig(file)
+    print("Charts generated:", file)
     con.calculate_last_statistic()
     accounts = con.get_accounts()
     for account in accounts:
@@ -15,8 +36,8 @@ def gen_chart():
         balance = np.asarray(balance)
         balance[-1] = balance[-1] + account[15]
         profit = np.asarray(profit)
-        colors = np.array([(1, 0, 0)] * len(profit))
-        colors[profit >= 0] = (0, 0, 1)
+        colors = np.array(['r'] * len(profit))
+        colors[profit >= 0] = 'b'
         plt.figure(figsize=(10, 2))
         plt.xticks(rotation=45, fontsize=6, ha="right", )
         plt.yticks([])
@@ -39,8 +60,8 @@ def gen_chart():
         profits = con.get_symbol_profits(number)
         x, y = zip(*profits)
         y = np.asarray(y)
-        colors = np.array([(1, 0, 0)] * len(y))
-        colors[y >= 0] = (0, 0, 1)
+        colors = np.array(['r'] * len(y))
+        colors[y >= 0] = 'b'
         plt.figure(figsize=(4, 2))
         plt.xticks(rotation=45, fontsize=6, ha="right")
         plt.yticks(fontsize=6)

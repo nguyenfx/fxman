@@ -40,19 +40,25 @@
       }
 	
 	
+	
 	</style>
 	<title>Statistics</title>
 </head>
 <body>
-<h4>Market sentiments</h4><h5 id="time"></h5>
-<table class="styled-table" id="sentiments">
-	<thead></thead>
-	<tbody></tbody>
-</table>
-<h4>Terminal online status</h4>
-<table class="styled-table" id="status">
-	<thead></thead>
-	<tbody></tbody>
+<table>
+	<tr>
+		<td valign="top">
+			<h4>Market sentiments</h4><h5 id="time"></h5>
+			<img id="sentiments" src="/fxman/static/sentiments.png"/>
+		</td>
+		<td valign="top">
+			<h4>Terminal online status</h4>
+			<table class="styled-table" id="status">
+				<thead></thead>
+				<tbody></tbody>
+			</table>
+		</td>
+	</tr>
 </table>
 <h4>Accounts list</h4>
 <table class="styled-table" id="accounts">
@@ -139,32 +145,13 @@
 function loadsentiments() {
 	var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD", "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "XAUUSD", "BTCUSD"];
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/sentiments", true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/sentiments?" + new Date().getTime(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
-            var thead = document.getElementById("sentiments").getElementsByTagName('thead')[0];
-            var tbody = document.getElementById("sentiments").getElementsByTagName('tbody')[0];
-            while (thead.firstChild) {
-                thead.firstChild.remove();
-            }
-            while (tbody.firstChild) {
-                tbody.firstChild.remove();
-            }
-            var row1 = thead.insertRow(0);
-            var row2 = tbody.insertRow(0);
+            var image = document.getElementById("sentiments")
+            image.src = "/fxman/static/sentiments.png?" + new Date().getTime();
             for (i = data.length - 1; i >= 0 ; i--) {
-                if(symbols.includes(data[i][0])) {
-                    var cell1 = row1.insertCell(0);
-                    var cell2 = row2.insertCell(0);
-                    if(data[i][1] > 0) {
-                        cell2.classList.add('positive');
-                    } else if(data[i][1] < 0) {
-                        cell2.classList.add('negative');
-                    }
-                    cell1.innerHTML = data[i][0];
-                    cell2.innerHTML = data[i][1];
-                }
                 if(data[i][0] == "Time") {
                     var time = document.getElementById("time")
 		            var date = new Date(data[i][1] * 1000)
@@ -182,7 +169,7 @@ function loadsentiments() {
 
 function loadstatus() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/status", true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/status?" + new Date().getTime(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -220,7 +207,7 @@ function loadstatus() {
 
 function load(name) {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/" + name, true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/" + name + "?" + new Date().getTime(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -244,7 +231,7 @@ function load(name) {
                 if(name == "accounts") {
                     var accountid = data[i][0];
                     var row1 = tbody.insertRow(1);
-                    row1.innerHTML += '<td colspan=14 align="center"><img src="/fxman/static/d' + accountid + '.png"/></td><td colspan=5 align="center"><img src="/fxman/static/s' + accountid + '.png"/></td>';
+                    row1.innerHTML += '<td colspan=14 align="center"><img src="/fxman/static/d' + accountid + '.png?' + new Date().getTime() + '"/></td><td colspan=5 align="center"><img src="/fxman/static/s' + accountid + '.png?'  + new Date().getTime() + '"/></td>';
                 }
             }
         } else {
@@ -269,6 +256,7 @@ function reload() {
 	location.reload()
 }
 setInterval(reload, 30 * 60 * 1000);
+
 
 
 </script>
