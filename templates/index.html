@@ -48,19 +48,26 @@
 <table>
 	<tr>
 		<td valign="top">
-			<h4>Market sentiments</h4><h5 id="time"></h5>
+			<h5 id="time">Market sentiments</h5>
 			<img id="sentiments" src="/fxman/static/sentiments.png"/>
 		</td>
+		<td width="200">
+		</td>
 		<td valign="top">
-			<h4>Terminal online status</h4>
+			<h5>Terminal online status</h5>
 			<table class="styled-table" id="status">
-				<thead></thead>
+				<thead>
+				<tr>
+		<td>Account number</td>
+		<td>Last online</td>
+				</tr>
+				</thead>
 				<tbody></tbody>
 			</table>
 		</td>
 	</tr>
 </table>
-<h4>Accounts list</h4>
+<h5>Accounts list</h5>
 <table class="styled-table" id="accounts">
 	<thead>
 	<tr>
@@ -90,7 +97,7 @@
 <table>
 	<tr>
 		<td valign="top">
-			<h4>Open positions</h4>
+			<h5>Open positions</h5>
 			<table class="styled-table" id="positions">
 				<thead>
 				<tr>
@@ -114,7 +121,7 @@
 			</table>
 		</td>
 		<td valign="top">
-			<h4>Closed deals</h4>
+			<h5>Closed deals</h5>
 			<table class="styled-table" id="deals">
 				<thead>
 				<tr>
@@ -156,7 +163,7 @@ function loadsentiments() {
                     var time = document.getElementById("time")
 		            var date = new Date(data[i][1] * 1000)
 		            var now = Math.floor((new Date()).getTime() / 1000);
-		            time.innerHTML = "Last updated: " + date.toISOString().slice(0, 19).replace('T', ' ') + " UTC " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
+		            time.innerHTML = "Market sentiment, last updated: " + date.toISOString().slice(0, 19).replace('T', ' ') + " UTC " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
 		        }
             }
             
@@ -175,18 +182,14 @@ function loadstatus() {
             var data = JSON.parse(xhr.responseText);
             var thead = document.getElementById("status").getElementsByTagName('thead')[0];
             var tbody = document.getElementById("status").getElementsByTagName('tbody')[0];
-            while (thead.firstChild) {
-                thead.firstChild.remove();
-            }
             while (tbody.firstChild) {
                 tbody.firstChild.remove();
             }
-            var row1 = thead.insertRow(0);
-            var row2 = tbody.insertRow(0);
             for (i = data.length - 1; i >= 0 ; i--) {
-                var cell1 = row1.insertCell(0);
-                var cell2 = row2.insertCell(0);
-                cell1.innerHTML = data[i][0] + " last online";
+                var row = tbody.insertRow(0);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                cell1.innerHTML = data[i][0];
                 var date = new Date(data[i][2] * 1000)
 	            var now = Math.floor((new Date()).getTime() / 1000);
 	            var diff = Math.floor((now - data[i][2]) / 60)
