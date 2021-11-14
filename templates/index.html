@@ -110,17 +110,16 @@
         </div>
     </div>
 </div>
-
-<table>
-	<tr>
-		<td valign="top">
-			<h4>Open positions</h4>
-			<table class="styled-table" id="positions">
+<div>
+	<div style="display: table-row;">
+	    <div style="display: table-cell;">
+		    <h4>Open positions</h4>
+			<table class="styled-table" id="positions" width="640">
 				<thead>
 				<tr>
 					<td>Ticket</td>
 					<td>Account</td>
-					<td>Open time</td>
+					<td>Open</td>
 					<td>Symbol</td>
 					<td>Type</td>
 					<td>Volume</td>
@@ -131,20 +130,19 @@
 					<td>Swap</td>
 					<td>Profit</td>
 					<td>Magic</td>
-					<td>Comment</td>
 				</tr>
 				</thead>
 				<tbody></tbody>
 			</table>
-		</td>
-		<td valign="top">
+	    </div>
+		<div style="display: table-cell;">
 			<h4>Closed deals</h4>
-			<table class="styled-table" id="deals">
+			<table class="styled-table" id="deals" width="640">
 				<thead>
 				<tr>
 					<td>Ticket</td>
 					<td>Account</td>
-					<td>Closed time</td>
+					<td>Closed</td>
 					<td>Symbol</td>
 					<td>Type</td>
 					<td>Volume</td>
@@ -155,14 +153,13 @@
 					<td>Swap</td>
 					<td>Profit</td>
 					<td>Magic</td>
-					<td>Comment</td>
 				</tr>
 				</thead>
 				<tbody></tbody>
 			</table>
-		</td>
-	</tr>
-</table>
+	    </div>
+	</div>
+</div>
 </body>
 </html>
 <script>
@@ -238,6 +235,9 @@ function load(name) {
                 var row = tbody.insertRow(0);
                 for (j = data[i].length - 1; j >= 0; j--) {
                     if(name == "accounts" && (j == 1 || j == 2)) {
+                        continue;
+                    }
+                    if((name == "positions" || name == "deals") && j == data[i].length - 1) {
                         continue;
                     }
                     var cell = row.insertCell(0);
