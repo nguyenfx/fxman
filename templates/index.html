@@ -212,7 +212,7 @@ function loadstatus() {
                 }
 	            cell2.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ') + " GMT<br>" + diff + " minutes ago";
 	            var cell3 = row.insertCell(2);
-	            cell3.innerHTML = "0";
+	            cell3.innerHTML = data[i][3];
             }
             
         } else {
