@@ -12,6 +12,8 @@ def gen_chart():
         number = account[0]
         statistic = con.get_statistic(number)
         _, date, profit, balance, percent, growth = zip(*statistic)
+        balance = np.asarray(balance)
+        balance[-1] = balance[-1] + account[15]
         profit = np.asarray(profit)
         colors = np.array([(1, 0, 0)] * len(profit))
         colors[profit >= 0] = (0, 0, 1)
