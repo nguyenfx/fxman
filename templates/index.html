@@ -151,7 +151,7 @@
 <script>
 function loadsentiments() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/sentiments?" + new Date().getTime(), true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -164,7 +164,7 @@ function loadsentiments() {
 		        }
             }
             var image = document.getElementById("sen_image")
-            image.src = "/fxman/static/sentiments.png?" + new Date().getTime();
+            image.src = "/fxman/static/sentiments.png?" + timestamp();
         } else {
             console.error(users);
         }
@@ -174,7 +174,7 @@ function loadsentiments() {
 
 function loadstatus() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/status?" + new Date().getTime(), true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/status?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -209,7 +209,7 @@ function loadstatus() {
 
 function load(name) {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/" + name + "?" + new Date().getTime(), true)
+    xhr.open('GET', "http://fxman.mooo.com/fxman/" + name + "?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -233,7 +233,7 @@ function load(name) {
                 if(name == "accounts") {
                     var accountid = data[i][0];
                     var row1 = tbody.insertRow(1);
-                    row1.innerHTML += '<td colspan=14 align="center"><img src="/fxman/static/d' + accountid + '.png?' + new Date().getTime() + '"/></td><td colspan=5 align="center"><img src="/fxman/static/s' + accountid + '.png?'  + new Date().getTime() + '"/></td>';
+                    row1.innerHTML += '<td colspan=14 align="center"><img src="/fxman/static/d' + accountid + '.png?' + timestamp() + '"/></td><td colspan=5 align="center"><img src="/fxman/static/s' + accountid + '.png?'  + timestamp() + '"/></td>';
                 }
             }
         } else {
@@ -241,6 +241,10 @@ function load(name) {
         }
     }
     xhr.send(null);
+}
+
+function timestamp() {
+	return(Math.floor((new Date()).getTime() / 100000));
 }
 
 function loads() {
