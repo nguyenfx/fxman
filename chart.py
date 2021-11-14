@@ -24,7 +24,7 @@ def gen_chart():
     plt.bar_label(bar_plot, fontsize=6)
     plt.title("Market sentiment", fontsize=8)
     plt.tight_layout()
-    file = "static/sentiment.png"
+    file = "static/sentiments.png"
     plt.savefig(file)
     print("Charts generated:", file)
     con.calculate_last_statistic()
