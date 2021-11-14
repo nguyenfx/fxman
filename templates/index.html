@@ -42,31 +42,32 @@
           border-bottom: 2px solid #009879;
       }
 	
+	
 	</style>
 	<title>Statistics</title>
 </head>
 <body>
 <div>
-    <div style="display: table-row;">
-	    <div style="display: table-cell;">
-		    <div style="display: table-row;">
-	            <div style="display: table-cell;">
-		            <h4 id="sen_title">Market sentiment</h4>
-		            <table class="styled-table" width="320" >
-			            <thead>
-			            </thead>
+	<div style="display: table-row;">
+		<div style="display: table-cell;">
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<h4 id="sen_title">Market sentiment</h4>
+					<table class="styled-table" width="320">
+						<thead>
+						</thead>
 						<tbody>
-							<tr>
-								<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
-							</tr>
+						<tr>
+							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
+						</tr>
 						</tbody>
 					</table>
-	            </div>
-		    </div>
-		    <div style="display: table-row;">
-	            <div style="display: table-cell;">
-		            <h4>Terminal online status</h4>
-					<table class="styled-table" width="320" id="ter_status">
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<h4>Terminal online status</h4>
+					<table class="styled-table" id="ter_status" width="320">
 						<thead>
 						<tr>
 							<td>Account number</td>
@@ -76,44 +77,44 @@
 						</thead>
 						<tbody></tbody>
 					</table>
-	            </div>
-		    </div>
-	    </div>
-        <div style="display: table-row;">
-	        <div style="display: table-cell;">
-		        <h4>Accounts list</h4>
-				<table class="styled-table" width="960" id="accounts">
-		<thead>
-		<tr>
-			<td>Number</td>
-			<td>Server</td>
-			<td>Deposit</td>
-			<td>Credit</td>
-			<td>Withdraw</td>
-			<td>Balance</td>
-			<td>Equity</td>
-			<td>Margin</td>
-			<td>Deals</td>
-			<td>Net volume</td>
-			<td>Net profit</td>
-			<td>Positions</td>
-			<td>Float volume</td>
-			<td>Float loss</td>
-			<td>Deposit load</td>
-			<td>Drawdown</td>
-			<td>Last updated</td>
-		</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
-	        </div>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+		<div style="display: table-row;">
+			<div style="display: table-cell;">
+				<h4>Accounts list</h4>
+				<table class="styled-table" id="accounts" width="960">
+					<thead>
+					<tr>
+						<td>Number</td>
+						<td>Server</td>
+						<td>Deposit</td>
+						<td>Credit</td>
+						<td>Withdraw</td>
+						<td>Balance</td>
+						<td>Equity</td>
+						<td>Margin</td>
+						<td>Deals</td>
+						<td>Net volume</td>
+						<td>Net profit</td>
+						<td>Positions</td>
+						<td>Float volume</td>
+						<td>Float loss</td>
+						<td>Deposit load</td>
+						<td>Drawdown</td>
+						<td>Last updated</td>
+					</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
 <div>
 	<div style="display: table-row;">
-	    <div style="display: table-cell;">
-		    <h4>Open positions</h4>
+		<div style="display: table-cell;">
+			<h4>Open positions</h4>
 			<table class="styled-table" id="positions" width="640">
 				<thead>
 				<tr>
@@ -134,7 +135,7 @@
 				</thead>
 				<tbody></tbody>
 			</table>
-	    </div>
+		</div>
 		<div style="display: table-cell;">
 			<h4>Closed deals</h4>
 			<table class="styled-table" id="deals" width="640">
@@ -157,7 +158,7 @@
 				</thead>
 				<tbody></tbody>
 			</table>
-	    </div>
+		</div>
 	</div>
 </div>
 </body>
@@ -282,6 +283,7 @@ function reload() {
 	location.reload()
 }
 setInterval(reload, 30 * 60 * 1000);
+
 
 
 
