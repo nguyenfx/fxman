@@ -124,7 +124,8 @@ def get_trend():
     details = request.args
     symbol = details.get("symbol")
     number = details.get("number")
-    con.upsert_status(number, 1)
+    error = details.get("error")
+    con.upsert_status(number, 1, error)
     trend = con.get_sentiment(symbol)
     return jsonify(trend[0])
 
@@ -140,7 +141,7 @@ def get_sentiments():
 @cache.cached(timeout=30)
 def get_status():
     status = con.get_status()
-    con.reset_status();
+    con.reset_status()
     return jsonify(status)
 
 

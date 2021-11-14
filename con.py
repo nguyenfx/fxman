@@ -94,14 +94,14 @@ class Controller:
         db.commit()
         return True
 
-    def upsert_status(self, number, online):
+    def upsert_status(self, number, online, error):
         today = datetime.utcnow()
         epoch = datetime(1970, 1, 1)
         timestamp = int((today - epoch).total_seconds())
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO status(number, online, timestamp) VALUES (?, ?, ?) "
-        cursor.execute(statement, [number, online, timestamp])
+        statement = "INSERT OR REPLACE INTO status(number, online, timestamp, error) VALUES (?, ?, ?, ?) "
+        cursor.execute(statement, [number, online, timestamp, error])
         db.commit()
         return True
 
