@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
+from datetime import datetime
 from con import Controller
 
 Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
@@ -18,11 +18,12 @@ def gen_chart():
     colors = np.array(['coral'] * len(values))
     colors[values >= 0] = 'c'
     plt.figure(figsize=(4, 4))
-    plt.xticks([])
+    plt.xticks(fontsize=6)
     plt.yticks(fontsize=6)
-    bar_plot = plt.barh(symbols, values, color=colors, label="Sentiment")
-    plt.bar_label(bar_plot, fontsize=6)
-    plt.title("Market sentiment", fontsize=8)
+    plt.barh(symbols, values, color=colors, label="Sentiment", zorder=3)
+    plt.grid(linestyle="dotted", zorder=0)
+    today = datetime.utcnow()
+    plt.title("Market sentiment, updated: " + today.strftime('%Y-%m-%d %H:%M:%S GMT'), fontsize=8)
     plt.tight_layout()
     file = "static/sentiments.png"
     plt.savefig(file)
@@ -41,17 +42,17 @@ def gen_chart():
         plt.figure(figsize=(10, 2))
         plt.xticks(rotation=45, fontsize=6, ha="right", )
         plt.yticks([])
-        bar_plot = plt.bar(date, profit, color=colors, label="Profit")
+        bar_plot = plt.bar(date, profit, color=colors, label="Profit", zorder=3)
         plt.bar_label(bar_plot, fontsize=6)
         plt.twinx()
         plt.yticks(fontsize=6)
-        plt.grid(linestyle="dotted", color='m')
-        plt.plot(date, balance, color="m", label="Balance")
+        plt.grid(linestyle="dotted", color='m', zorder=0)
+        plt.plot(date, balance, color="m", label="Balance", zorder=3)
         plt.twinx()
         plt.ylabel("Growth", size=7)
         plt.yticks(fontsize=6)
-        plt.grid(linestyle="dotted", color='y')
-        plt.plot(date, growth, color="y", label="Growth")
+        plt.grid(linestyle="dotted", color='y', zorder=0)
+        plt.plot(date, growth, color="y", label="Growth", zorder=3)
         plt.title("Daily profit, balance and growth", fontsize=8)
         plt.tight_layout()
         file = "static/d" + str(number) + ".png"
