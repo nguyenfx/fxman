@@ -35,7 +35,7 @@ class Controller:
     def get_deals(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM deals ORDER BY time DESC LIMIT 100 "
+        statement = "SELECT * FROM deals ORDER BY time DESC LIMIT (SELECT COUNT(*) FROM positions) "
         cursor.execute(statement)
         return cursor.fetchall()
 
