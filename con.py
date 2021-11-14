@@ -134,6 +134,13 @@ class Controller:
         cursor.execute(statement, [number])
         return cursor.fetchall()
 
+    def get_statistic_m(self, number):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "SELECT number, strftime('%Y-%m', date) AS month, SUM(profit), MAX(balance), SUM(percent), MAX(growth) FROM statistic WHERE number = ? GROUP BY month ORDER BY month "
+        cursor.execute(statement, [number])
+        return cursor.fetchall()
+
     def get_symbol_profits(self, number):
         db = self.get_db()
         cursor = db.cursor()

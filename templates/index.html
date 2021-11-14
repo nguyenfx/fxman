@@ -3,13 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<style>
+	  .table {
+	      padding: 0px 0px;
+	  }
       .styled-table {
           border-collapse: collapse;
           margin: 5px 0;
           font-size: 0.7em;
           font-family: sans-serif;
-          min-width: 800px;
-          max-width: 1600px;
+          min-width: 320px;
+          max-width: 1280px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       }
       .styled-table thead tr {
@@ -39,61 +42,75 @@
           border-bottom: 2px solid #009879;
       }
 	
-	
-	
-	
 	</style>
 	<title>Statistics</title>
 </head>
 <body>
-<table width="1280">
-	<tr>
-		<td valign="top" width="640">
-			<h4 id="sen_title">Market sentiment</h4>
-			<img id="sen_image" src="/fxman/static/sentiments.png"/>
-		</td>
-		<td valign="top" width="640">
-			<h4>Terminal online status</h4>
-			<table class="styled-table" id="status">
-				<thead>
-				<tr>
-					<td>Account number</td>
-					<td>Last online</td>
-					<td>Last error code</td>
-				</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</td>
-	</tr>
-</table>
-<h4>Accounts list</h4>
-<table class="styled-table" id="accounts">
-	<thead>
-	<tr>
-		<td>Number</td>
-		<td>Name</td>
-		<td>Broker</td>
-		<td>Server</td>
-		<td>Deposit</td>
-		<td>Credit</td>
-		<td>Withdraw</td>
-		<td>Balance</td>
-		<td>Equity</td>
-		<td>Margin</td>
-		<td>Deals</td>
-		<td>Net volume</td>
-		<td>Net profit</td>
-		<td>Positions</td>
-		<td>Float volume</td>
-		<td>Float loss</td>
-		<td>Deposit load</td>
-		<td>Drawdown</td>
-		<td>Last updated</td>
-	</tr>
-	</thead>
-	<tbody></tbody>
-</table>
+<div>
+    <div style="display: table-row;">
+	    <div style="display: table-cell;">
+		    <div style="display: table-row;">
+	            <div style="display: table-cell;">
+		            <h4 id="sen_title">Market sentiment</h4>
+		            <table class="styled-table" width="320" >
+			            <thead>
+			            </thead>
+						<tbody>
+							<tr>
+								<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
+							</tr>
+						</tbody>
+					</table>
+	            </div>
+		    </div>
+		    <div style="display: table-row;">
+	            <div style="display: table-cell;">
+		            <h4>Terminal online status</h4>
+					<table class="styled-table" width="320" id="ter_status">
+						<thead>
+						<tr>
+							<td>Account number</td>
+							<td>Last online</td>
+							<td>Last error code</td>
+						</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+	            </div>
+		    </div>
+	    </div>
+        <div style="display: table-row;">
+	        <div style="display: table-cell;">
+		        <h4>Accounts list</h4>
+				<table class="styled-table" width="960" id="accounts">
+		<thead>
+		<tr>
+			<td>Number</td>
+			<td>Server</td>
+			<td>Deposit</td>
+			<td>Credit</td>
+			<td>Withdraw</td>
+			<td>Balance</td>
+			<td>Equity</td>
+			<td>Margin</td>
+			<td>Deals</td>
+			<td>Net volume</td>
+			<td>Net profit</td>
+			<td>Positions</td>
+			<td>Float volume</td>
+			<td>Float loss</td>
+			<td>Deposit load</td>
+			<td>Drawdown</td>
+			<td>Last updated</td>
+		</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	        </div>
+        </div>
+    </div>
+</div>
+
 <table>
 	<tr>
 		<td valign="top">
@@ -159,7 +176,7 @@ function loadsentiments() {
                 if(data[i][0] == "Time") {
                     var title = document.getElementById("sen_title")
 		            var now = Math.floor((new Date()).getTime() / 1000);
-		            title.innerHTML = "Market sentiment, last updated " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
+		            title.innerHTML = "Market sentiment<br>last updated " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
 		            break;
 		        }
             }
@@ -178,7 +195,7 @@ function loadstatus() {
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
-            var tbody = document.getElementById("status").getElementsByTagName('tbody')[0];
+            var tbody = document.getElementById("ter_status").getElementsByTagName('tbody')[0];
             while (tbody.firstChild) {
                 tbody.firstChild.remove();
             }
@@ -195,7 +212,7 @@ function loadstatus() {
                 } else {
                     cell2.classList.add('negative');
                 }
-	            cell2.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ') + " UTC " + diff + " minutes ago";
+	            cell2.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ') + " GMT<br>" + diff + " minutes ago";
 	            var cell3 = row.insertCell(2);
 	            cell3.innerHTML = "0";
             }
@@ -220,6 +237,9 @@ function load(name) {
             for (i = data.length - 1; i >= 0 ; i--) {
                 var row = tbody.insertRow(0);
                 for (j = data[i].length - 1; j >= 0; j--) {
+                    if(name == "accounts" && (j == 1 || j == 2)) {
+                        continue;
+                    }
                     var cell = row.insertCell(0);
                     cell.innerHTML = data[i][j];
                     if((name == "accounts" && (j == 12 || j == 15)) || (name != "accounts" && j == 11)) {
@@ -233,7 +253,7 @@ function load(name) {
                 if(name == "accounts") {
                     var accountid = data[i][0];
                     var row1 = tbody.insertRow(1);
-                    row1.innerHTML += '<td colspan=14 align="center"><img src="/fxman/static/d' + accountid + '.png?' + timestamp() + '"/></td><td colspan=5 align="center"><img src="/fxman/static/s' + accountid + '.png?'  + timestamp() + '"/></td>';
+                    row1.innerHTML += '<td colspan=19 align="center"><img src="/fxman/static/d' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/m' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/s' + accountid + '.png?'  + timestamp() + '"/></td>';
                 }
             }
         } else {
