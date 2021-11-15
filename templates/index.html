@@ -333,8 +333,10 @@ function load(name) {
                     if(name == "accounts" && (j == 1 || j == 2)) {
                         continue;
                     }
-                    if((name == "positions" || name == "deals") && j == data[i].length - 1) {
-                        continue;
+                    if((name == "positions" || name == "deals")) {
+                        if(j == data[i].length - 1) {
+                            continue;
+                        }
                     }
                     var cell = row.insertCell(0);
                     cell.innerHTML = data[i][j];
@@ -343,6 +345,17 @@ function load(name) {
 	                        cell.classList.add('positive');
 	                    } else if(data[i][j] < 0) {
 	                        cell.classList.add('negative');
+	                    }
+                    }
+                    if((name == "positions" || name == "deals")) {
+                        if(j == 4) {
+	                        if(data[i][j] > 0) {
+			                    cell3.classList.add('positive');
+			                    cell3.innerHTML = "Buy";
+			                } else {
+			                    cell3.classList.add('negative');
+			                    cell3.innerHTML = "Sell";
+	                        }
 	                    }
                     }
                 }
