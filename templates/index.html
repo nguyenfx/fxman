@@ -408,15 +408,14 @@ function slowloads() {
   load("deals");
 }
 
-fastloads();
-setInterval(loads, 30 * 1000);
-slowloads();
-setInterval(loads, 300 * 1000);
-
-
 function reload() {
 	location.reload()
 }
+
+fastloads();
+setInterval(fastloads, 30 * 1000);
+slowloads();
+setInterval(slowloads, 300 * 1000);
 setInterval(reload, 30 * 60 * 1000);
 
 
