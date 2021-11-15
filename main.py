@@ -118,18 +118,6 @@ def reset_positions():
     return jsonify(result)
 
 
-@app.route("/trend", methods=["GET"])
-@cache.cached(timeout=300, query_string=True)
-def get_trend():
-    details = request.args
-    symbol = details.get("symbol")
-    number = details.get("number")
-    error = details.get("error")
-    con.upsert_status(number, 1, error)
-    trend = con.get_sentiment(symbol)
-    return jsonify(trend[0])
-
-
 @app.route("/sentiment", methods=["GET"])
 @cache.cached(timeout=300, query_string=True)
 def get_sentiment():

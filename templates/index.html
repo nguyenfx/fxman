@@ -44,6 +44,7 @@
 	
 	
 	
+	
 	</style>
 	<script src="https://s3.tradingview.com/tv.js" type="text/javascript"></script>
 	<title>Statistics</title>
@@ -395,22 +396,29 @@ function clock() {
 
 setInterval(clock, 1000);
 
-function loads() {
+function fastloads() {
   loadstatus();
+  load("accounts");
+}
+
+function slowloads() {
   loadsentiments();
   loadsignals();
-  load("accounts");
   load("positions");
   load("deals");
 }
 
-loads();
+fastloads();
 setInterval(loads, 30 * 1000);
+slowloads();
+setInterval(loads, 300 * 1000);
+
 
 function reload() {
 	location.reload()
 }
 setInterval(reload, 30 * 60 * 1000);
+
 
 
 
