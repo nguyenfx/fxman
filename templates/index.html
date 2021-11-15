@@ -74,7 +74,7 @@
 					<table class="styled-table" id="ter_status" width="320">
 						<thead>
 						<tr>
-							<td>Account number</td>
+							<td>Account</td>
 							<td>Last online</td>
 							<td>Last error code</td>
 						</tr>
@@ -100,6 +100,23 @@
 							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
 						</tr>
 						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<h4>Trade signals</h4>
+					<table class="styled-table" id="signals" width="320">
+						<thead>
+						<tr>
+							<td>Account</td>
+							<td>Symbol</td>
+							<td>Type</td>
+							<td>Risk</td>
+							<td>Time</td>
+						</tr>
+						</thead>
+						<tbody></tbody>
 					</table>
 				</div>
 			</div>
@@ -247,6 +264,47 @@ function loadstatus() {
     xhr.send(null);
 }
 
+function loadsignals() {
+    var xhr  = new XMLHttpRequest()
+    xhr.open('GET', "http://fxman.mooo.com/fxman/signals?" + timestamp(), true)
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var data = JSON.parse(xhr.responseText);
+            var tbody = document.getElementById("signals").getElementsByTagName('tbody')[0];
+            while (tbody.firstChild) {
+                tbody.firstChild.remove();
+            }
+            for (i = data.length - 1; i >= 0 ; i--) {
+                if(data[i][2] < 0) {
+                    continue;
+                }
+                var row = tbody.insertRow(0);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = data[i][0];
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = data[i][1];
+                var cell3 = row.insertCell(2);
+                if(data[i][2] > 0) {
+                    cell3.classList.add('positive');
+                    cell3.innerHTML = "Buy";
+                } else {
+                    cell3.classList.add('negative');
+                    cell3.innerHTML = "Sell";
+                }
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = data[i][3];
+                var cell5 = row.insertCell(4);
+	            var now = Math.floor((new Date()).getTime() / 1000);
+	            var diff = Math.floor((now - data[i][4]) / 60)
+	            cell5.innerHTML = diff + " minutes ago";
+            }
+        } else {
+            console.error(users);
+        }
+    }
+    xhr.send(null);
+}
+
 function load(name) {
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "http://fxman.mooo.com/fxman/" + name + "?" + timestamp(), true)
@@ -304,8 +362,9 @@ function clock() {
 setInterval(clock, 1000);
 
 function loads() {
-  loadsentiments();
   loadstatus();
+  loadsentiments();
+  loadsignals();
   load("accounts");
   load("positions");
   load("deals");
