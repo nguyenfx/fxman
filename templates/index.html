@@ -25,11 +25,9 @@
           padding: 3px 5px;
       }
       .styled-table td.positive {
-          padding: 3px 5px;
           color: #3c78d8;
       }
       .styled-table td.negative {
-          padding: 3px 5px;
           color: #cc0000;
       }
       .styled-table tbody tr {
@@ -55,6 +53,9 @@
 					<h4>Time</h4>
 					<table class="styled-table" width="320">
 						<thead>
+						<tr>
+							<td colspan="2">Clocks</td>
+						</tr>
 						</thead>
 						<tbody>
 						<tr>
@@ -69,21 +70,7 @@
 			</div>
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
-					<h4 id="sen_title">Market sentiment</h4>
-					<table class="styled-table" width="320">
-						<thead>
-						</thead>
-						<tbody>
-						<tr>
-							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div style="display: table-row;">
-				<div style="display: table-cell;">
-					<h4>Terminal online status</h4>
+					<h4>Terminals online status</h4>
 					<table class="styled-table" id="ter_status" width="320">
 						<thead>
 						<tr>
@@ -96,6 +83,27 @@
 					</table>
 				</div>
 			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<h4 id="sen_title">Market sentiments</h4>
+					<table class="styled-table" width="320">
+						<thead>
+						<tr>
+							<td id="sen_time"></td>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<td style="padding: 0px 0px"></td>
+						</tr>
+						<tr>
+							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
 		</div>
 		<div style="display: table-row;">
 			<div style="display: table-cell;">
@@ -189,9 +197,9 @@ function loadsentiments() {
             var data = JSON.parse(xhr.responseText);
             for (i = data.length - 1; i >= 0 ; i--) {
                 if(data[i][0] == "Time") {
-                    var title = document.getElementById("sen_title")
+                    var title = document.getElementById("sen_time")
 		            var now = Math.floor((new Date()).getTime() / 1000);
-		            title.innerHTML = "Market sentiment<br>last updated " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
+		            title.innerHTML = "Last updated " + Math.floor((now - data[i][1]) / 60) + " minutes ago";
 		            break;
 		        }
             }
