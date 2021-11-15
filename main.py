@@ -130,6 +130,18 @@ def get_trend():
     return jsonify(trend[0])
 
 
+@app.route("/sentiment", methods=["GET"])
+@cache.cached(timeout=300, query_string=True)
+def get_sentiment():
+    details = request.args
+    symbol = details.get("symbol")
+    number = details.get("number")
+    error = details.get("error")
+    con.upsert_status(number, 1, error)
+    sentiment = con.get_sentiment(symbol)
+    return jsonify(sentiment[0])
+
+
 @app.route("/sentiments", methods=["GET"])
 @cache.cached(timeout=300)
 def get_sentiments():
@@ -143,6 +155,33 @@ def get_status():
     status = con.get_status()
     con.reset_status()
     return jsonify(status)
+
+
+@app.route("/signals", methods=["GET"])
+@cache.cached(timeout=30)
+def get_signals():
+    signals = con.get_signals()
+    return jsonify(signals)
+
+
+@app.route("/signal", methods=["GET"])
+@cache.cached(timeout=30)
+def get_signal():
+    details = request.args
+    symbol = details.get("symbol")
+    signal = con.get_signal(symbol)
+    return jsonify(signal)
+
+
+@app.route("/signal", methods=["POST"])
+def upsert_signal():
+    details = request.get_json()
+    number = details["number"]
+    symbol = details["symbol"]
+    type = details["type"]
+    risk = details["risk"]
+    result = con.upsert_signal(number, symbol, type, risk)
+    return jsonify(result)
 
 
 @app.route('/')

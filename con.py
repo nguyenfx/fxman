@@ -105,6 +105,31 @@ class Controller:
         db.commit()
         return True
 
+    def get_signals(self):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "SELECT * FROM signals ORDER BY timestamp DESC "
+        cursor.execute(statement)
+        return cursor.fetchall()
+
+    def get_signal(self, symbol):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "SELECT * FROM signals WHERE symbol = ? ORDER BY timestamp DESC "
+        cursor.execute(statement, [symbol])
+        return cursor.fetchall()
+
+    def upsert_signal(self, number, symbol, type, risk):
+        today = datetime.utcnow()
+        epoch = datetime(1970, 1, 1)
+        timestamp = int((today - epoch).total_seconds())
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk, timestamp) VALUES (?, ?, ?, ?, ?) "
+        cursor.execute(statement, [number, symbol, type, risk, timestamp])
+        db.commit()
+        return True
+
     def get_sentiments(self):
         db = self.get_db()
         cursor = db.cursor()

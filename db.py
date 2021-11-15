@@ -22,6 +22,7 @@ class Database:
             # """DROP TABLE IF EXISTS statistic""",
             # """DROP TABLE IF EXISTS sentiments""",
             # """DROP TABLE IF EXISTS status""",
+            # """DROP TABLE IF EXISTS signals""",
             """CREATE TABLE IF NOT EXISTS accounts(
                     number INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
@@ -93,15 +94,24 @@ class Database:
                 )            
             """,
             """CREATE TABLE IF NOT EXISTS sentiments(
-                    symbol TEXT NOT NULL  PRIMARY KEY,  
+                    symbol TEXT NOT NULL PRIMARY KEY,  
                     value INTEGER NOT NULL DEFAULT 0
                 )            
             """,
             """CREATE TABLE IF NOT EXISTS status(
-                    number TEXT NOT NULL  PRIMARY KEY,  
+                    number TEXT NOT NULL PRIMARY KEY,  
                     online INTEGER NOT NULL DEFAULT 0,
                     timestamp INTEGER NOT NULL DEFAULT 0,
                     error INTEGER NOT NULL DEFAULT 0
+                )            
+            """,
+            """CREATE TABLE IF NOT EXISTS signals(
+                    number TEXT NOT NULL,
+                    symbol TEXT NOT NULL,  
+                    type INTEGER NOT NULL DEFAULT -1,
+                    risk INTEGER NOT NULL DEFAULT 0,
+                    timestamp INTEGER NOT NULL DEFAULT 0,
+                    UNIQUE(number, symbol, type)
                 )            
             """,
         ]
