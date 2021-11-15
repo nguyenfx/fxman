@@ -279,7 +279,9 @@ function loadsignals() {
                 tbody.firstChild.remove();
             }
             for (i = data.length - 1; i >= 0 ; i--) {
-                if(data[i][2] < 0) {
+                var now = Math.floor((new Date()).getTime() / 1000);
+	            var diff = Math.floor((now - data[i][4]) / 60)
+                if(data[i][2] < 0 || diff > 240) {
                     continue;
                 }
                 var row = tbody.insertRow(0);
@@ -298,8 +300,6 @@ function loadsignals() {
                 var cell4 = row.insertCell(3);
                 cell4.innerHTML = data[i][3];
                 var cell5 = row.insertCell(4);
-	            var now = Math.floor((new Date()).getTime() / 1000);
-	            var diff = Math.floor((now - data[i][4]) / 60)
 	            cell5.innerHTML = diff + " minutes ago";
 	            var row1 = tbody.insertRow(1);
 	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
