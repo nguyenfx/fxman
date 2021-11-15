@@ -41,7 +41,9 @@
       }
 	
 	
+	
 	</style>
+	<script src="https://s3.tradingview.com/tv.js" type="text/javascript"></script>
 	<title>Statistics</title>
 </head>
 <body>
@@ -59,10 +61,12 @@
 						</thead>
 						<tbody>
 						<tr>
-							<td>Local</td><td id="local_time"></td>
+							<td>Local</td>
+							<td id="local_time"></td>
 						</tr>
 						<tr>
-							<td>GMT</td><td id="gmt_time"></td>
+							<td>GMT</td>
+							<td id="gmt_time"></td>
 						</tr>
 						</tbody>
 					</table>
@@ -120,7 +124,7 @@
 					</table>
 				</div>
 			</div>
-			
+		
 		</div>
 		<div style="display: table-row;">
 			<div style="display: table-cell;">
@@ -297,6 +301,9 @@ function loadsignals() {
 	            var now = Math.floor((new Date()).getTime() / 1000);
 	            var diff = Math.floor((now - data[i][4]) / 60)
 	            cell5.innerHTML = diff + " minutes ago";
+	            var row1 = tbody.insertRow(1);
+	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
+	            tradingview(data[i][1])
             }
         } else {
             console.error(users);
@@ -347,6 +354,29 @@ function load(name) {
     xhr.send(null);
 }
 
+function tradingview(symbol) {
+	  new TradingView.widget({
+		  "width": 320,
+		  "height": 160,
+		  "symbol": "OANDA:" + symbol,
+		  "interval": "240",
+		  "timezone": "Etc/UTC",
+		  "theme": "light",
+		  "style": "1",
+		  "locale": "en",
+		  "toolbar_bg": "#f1f3f6",
+		  "enable_publishing": false,
+		  "hide_top_toolbar": true,
+		  "hide_legend": true,
+		  "save_image": false,
+		  "show_popup_button": true,
+		  "popup_width": "1000",
+		  "popup_height": "650",
+		  "container_id": "tradingview_" + symbol
+		}
+	  );
+}
+
 function timestamp() {
 	return(Math.floor((new Date()).getTime() / 100000));
 }
@@ -379,7 +409,12 @@ function reload() {
 setInterval(reload, 30 * 60 * 1000);
 
 
+</script>
 
+<!-- TradingView Widget BEGIN -->
 
+<div id="tradingview_5733e"></div>
+
+<script type="text/javascript">
 
 </script>
