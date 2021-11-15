@@ -349,7 +349,7 @@ function load(name) {
                     }
                     if((name == "positions" || name == "deals")) {
                         if(j == 4) {
-	                        if(data[i][j] > 0) {
+	                        if(data[i][j] == 0) {
 			                    cell.classList.add('positive');
 			                    cell.innerHTML = "Buy";
 			                } else {
