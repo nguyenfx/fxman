@@ -43,6 +43,7 @@
 	
 	
 	
+	
 	</style>
 	<script src="https://s3.tradingview.com/tv.js" type="text/javascript"></script>
 	<title>Statistics</title>
@@ -127,33 +128,35 @@
 			</div>
 		
 		</div>
-		<div style="display: table-row;">
-			<div style="display: table-cell;">
-				<h4>Accounts list</h4>
-				<table class="styled-table" id="accounts" width="960">
-					<thead>
-					<tr>
-						<td>Number</td>
-						<td>Server</td>
-						<td>Deposit</td>
-						<td>Credit</td>
-						<td>Withdraw</td>
-						<td>Balance</td>
-						<td>Equity</td>
-						<td>Margin</td>
-						<td>Deals</td>
-						<td>Net volume</td>
-						<td>Net profit</td>
-						<td>Positions</td>
-						<td>Float volume</td>
-						<td>Float loss</td>
-						<td>Deposit load</td>
-						<td>Drawdown</td>
-						<td>Last updated</td>
-					</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
+		<div style="display: table-cell;">
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<h4>Accounts list</h4>
+					<table class="styled-table" id="accounts" width="960">
+						<thead>
+						<tr>
+							<td>Number</td>
+							<td>Server</td>
+							<td>Deposit</td>
+							<td>Credit</td>
+							<td>Withdraw</td>
+							<td>Balance</td>
+							<td>Equity</td>
+							<td>Margin</td>
+							<td>Deals</td>
+							<td>Net volume</td>
+							<td>Net profit</td>
+							<td>Positions</td>
+							<td>Float volume</td>
+							<td>Float loss</td>
+							<td>Deposit load</td>
+							<td>Drawdown</td>
+							<td>Last updated</td>
+						</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -408,6 +411,7 @@ function reload() {
 	location.reload()
 }
 setInterval(reload, 30 * 60 * 1000);
+
 
 
 
