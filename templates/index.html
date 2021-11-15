@@ -216,7 +216,7 @@
 <script>
 function loadsentiments() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
+    xhr.open('GET', "https://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -239,7 +239,7 @@ function loadsentiments() {
 
 function loadstatus() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/status?" + timestamp(), true)
+    xhr.open('GET', "https://fxman.mooo.com/fxman/status?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -274,7 +274,7 @@ function loadstatus() {
 
 function loadsignals() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/signals?" + timestamp(), true)
+    xhr.open('GET', "https://fxman.mooo.com/fxman/signals?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
@@ -318,7 +318,7 @@ function loadsignals() {
 
 function load(name) {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "http://fxman.mooo.com/fxman/" + name + "?" + timestamp(), true)
+    xhr.open('GET', "https://fxman.mooo.com/fxman/" + name + "?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
