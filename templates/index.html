@@ -222,9 +222,12 @@ function load_sentiments() {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
             var title = document.getElementById("sen_time")
-            var time = Math.floor(Date.parse(data[0][2]) / 1000)
             var now = Math.floor((new Date()).getTime() / 1000);
+            var time = Math.floor(Date.parse(data[0][2]) / 1000)
             var diff = Math.floor((now - time) / 60);
+            console.info(time);
+            console.info(now);
+            console.info(diff);
             title.innerHTML = "Last updated " + diff + " minutes ago";
             var image = document.getElementById("sen_image")
             image.src = "/fxman/static/sentiments.png?" + timestamp();
@@ -250,9 +253,12 @@ function load_status() {
                 var cell1 = row.insertCell(0);
                 cell1.innerHTML = data[i][0];
                 var cell2 = row.insertCell(1);
+                var now = Math.floor((new Date()).getTime() / 1000);
                 var time = Math.floor(Date.parse(data[i][3]) / 1000)
-	            var now = Math.floor((new Date()).getTime() / 1000);
 	            var diff = Math.floor((now - time) / 60);
+	            console.info(time);
+	            console.info(now);
+	            console.info(diff);
 	            if(data[i][1] == 0 || diff > 5) {
                     cell2.classList.add('negative');
                 } else {
