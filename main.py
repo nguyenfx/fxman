@@ -130,7 +130,7 @@ def get_sentiment():
     if sentiment:
         return jsonify(sentiment[0])
     else:
-        return 0
+        return "0"
 
 
 @app.route("/sentiments", methods=["GET"])
@@ -167,7 +167,7 @@ def get_signal():
     if signal:
         return jsonify(signal[0])
     else:
-        return 0
+        return "0"
 
 
 @app.route("/signal", methods=["POST"])
