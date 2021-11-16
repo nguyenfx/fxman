@@ -161,7 +161,7 @@ def get_signal():
     error = details.get("error")
     con.upsert_status(number, 1, error)
     signal = con.get_signal(symbol)
-    return jsonify(signal)
+    return jsonify(signal[0])
 
 
 @app.route("/signal", methods=["POST"])
