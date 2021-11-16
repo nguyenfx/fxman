@@ -117,7 +117,19 @@ class Controller:
         cursor = db.cursor()
         statement = "SELECT * FROM signals WHERE symbol = ? ORDER BY timestamp DESC "
         cursor.execute(statement, [symbol])
-        return cursor.fetchall()
+        signal = cursor.fetchone()
+        type = signal[2]
+        risk = signal[3]
+        time = signal[4]
+        today = datetime.utcnow()
+        epoch = datetime(1970, 1, 1)
+        timestamp = int((today - epoch).total_seconds())
+        if (timestamp - time) / 60 > 240:
+            if type == 0:
+                return risk
+            elif type == 1:
+                return -risk
+        return 0
 
     def upsert_signal(self, number, symbol, type, risk):
         today = datetime.utcnow()

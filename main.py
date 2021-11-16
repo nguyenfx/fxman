@@ -157,6 +157,9 @@ def get_signals():
 def get_signal():
     details = request.args
     symbol = details.get("symbol")
+    number = details.get("number")
+    error = details.get("error")
+    con.upsert_status(number, 1, error)
     signal = con.get_signal(symbol)
     return jsonify(signal)
 
