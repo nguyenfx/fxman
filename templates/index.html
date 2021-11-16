@@ -223,7 +223,7 @@ function load_sentiments() {
             var data = JSON.parse(xhr.responseText);
             var title = document.getElementById("sen_time")
             var now = Math.floor((new Date()).getTime() / 1000);
-            var time = Math.floor(Date.parse(data[0][2]) / 1000)
+            var time = Math.floor(Date.parse(data[0][2] + " GMT") / 1000)
             var diff = Math.floor((now - time) / 60);
             console.info(time);
             console.info(now);
@@ -254,7 +254,7 @@ function load_status() {
                 cell1.innerHTML = data[i][0];
                 var cell2 = row.insertCell(1);
                 var now = Math.floor((new Date()).getTime() / 1000);
-                var time = Math.floor(Date.parse(data[i][3]) / 1000)
+                var time = Math.floor(Date.parse(data[i][3] + " GMT") / 1000)
 	            var diff = Math.floor((now - time) / 60);
 	            console.info(time);
 	            console.info(now);
