@@ -126,9 +126,9 @@ class Controller:
         timestamp = int((today - epoch).total_seconds())
         if (timestamp - time) / 60 > 240:
             if type == 0:
-                return risk
-            elif type == 1:
                 return -risk
+            elif type == 1:
+                return risk
         return 0
 
     def upsert_signal(self, number, symbol, type, risk):

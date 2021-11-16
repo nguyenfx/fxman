@@ -6,6 +6,8 @@ if __name__ == "__main__":
     sen.fetch()
     chart.gen_chart()
     con = Controller()
+    signal = con.get_signal("CADJPY")
+    print(signal)
     sentiments = con.get_sentiments()
     print(sentiments)
     status = con.get_status()
