@@ -94,9 +94,12 @@ class Database:
                 )            
             """,
             """CREATE TABLE IF NOT EXISTS sentiments(
-                    symbol TEXT NOT NULL PRIMARY KEY,  
-                    value INTEGER NOT NULL DEFAULT 0,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                    site TEXT NOT NULL,
+                    symbol TEXT NOT NULL,  
+                    sentiment INTEGER NOT NULL DEFAULT 0,
+                    contrarian INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(site, symbol)
                 )            
             """,
             """CREATE TABLE IF NOT EXISTS status(

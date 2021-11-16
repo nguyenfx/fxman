@@ -13,7 +13,7 @@ def gen_chart():
     sentiments = con.get_sentiments()
     sentiments.reverse()
     sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
-    symbols, values, timestamp = zip(*sentiments)
+    symbols, values, _, timestamp = zip(*sentiments)
     print(timestamp)
     values = np.asarray(values)
     colors = np.array(['#ff9100'] * len(values))

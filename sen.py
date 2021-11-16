@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -13,43 +12,57 @@ ffurl = "https://www.forexfactory.com/explorerapi.php?content=positions&do=posit
 mfurl = "https://www.myfxbook.com/community/outlook"
 bnurl = "https://fapi.binance.com/futures/data/"
 bnapis = {'topLongShortAccountRatio', 'topLongShortPositionRatio', 'globalLongShortAccountRatio'}
+fcsurl = "https://storage.googleapis.com/public-sentiments-v3/fxcs-sentiments.json"
 
 con = Controller()
 
 
-def FFfetch():
+def ff_fetch():
     for symbol in ffsymbols:
         response = requests.get(ffurl + symbol, headers=headers)
         detail = json.loads(response.text)
         positions = detail["positions"]
         position = positions[-1]
-        traders_is_low = position["traders_is_low"]
-        weekend = position["weekend"]
-        if not traders_is_low and not weekend:
-            lots_ratio = int(position["lots_ratio"])
-            traders_ratio = int(position["traders_ratio"])
-            value = lots_ratio - 50 + traders_ratio - 50
-            con.upsert_sentiment(symbol, value)
-            if not value == 0:
-                print(symbol, value)
+        lots_ratio = int(position["lots_ratio"])
+        traders_ratio = int(position["traders_ratio"])
+        sentiment = lots_ratio - 50 + traders_ratio - 50
+        con.upsert_sentiment("ff", symbol, sentiment, 0)
 
 
-def MFfetch():
+def mf_fetch():
     response = requests.get(mfurl, headers=headers)
     soup = BeautifulSoup(response.content, 'html.parser')
     tbody = soup.find(id="outlookSymbolsTableContent")
     trs = tbody.find_all(class_="outlook-symbol-row")
     for tr in trs:
         symbol = tr.get("symbolname")
-        shortbar = tr.find("div", class_="progress-bar progress-bar-danger")
-        longbar = tr.find("div", class_="progress-bar progress-bar-success")
-        short = int(shortbar.get("style")[-4:-2])
-        long = int(longbar.get("style")[-4:-2])
-        value = long - short
-        con.upsert_sentiment(symbol, value)
+        short_bar = tr.find("div", class_="progress-bar progress-bar-danger")
+        long_bar = tr.find("div", class_="progress-bar progress-bar-success")
+        short = int(short_bar.get("style")[-4:-2])
+        long = int(long_bar.get("style")[-4:-2])
+        sentiment = long - short
+        con.upsert_sentiment("mf", symbol, sentiment, 0)
 
 
-def BNfetch():
+def fc_fetch():
+    response = requests.get(fcsurl, headers=headers)
+    data = json.loads(response.text)
+    sentiments = data["sentiments"]
+    for row in sentiments:
+        symbol = row["instrument"].replace("/", "")
+        short_percentage = int(row["short_percentage"])
+        long_percentage = int(row["long_percentage"])
+        sentiment = long_percentage - short_percentage
+        if row["contrarian_indicator_signal"] == "UP":
+            contrarian = 1
+        elif row["contrarian_indicator_signal"] == "DOWN":
+            contrarian = -1
+        else:
+            contrarian = 0
+        con.upsert_sentiment("fc", symbol, sentiment, contrarian)
+
+
+def bn_fetch():
     symbol = "BTCUSD"
     sumratio = 0
     for api in bnapis:
@@ -57,21 +70,17 @@ def BNfetch():
         rows = json.loads(response.text)
         ratio = float(rows[-1]['longShortRatio'])
         sumratio += ratio
-    value = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
-    con.upsert_sentiment(symbol, value)
+    sentiment = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
+    con.upsert_sentiment("bn", symbol, sentiment, 0)
 
 
 def fetch():
-    # FFfetch()
-    MFfetch()
-    BNfetch()
+    ff_fetch()
+    mf_fetch()
+    fc_fetch()
+    bn_fetch()
     sentiments = con.get_sentiments()
     print(json.dumps(sentiments))
-    file = open('static/sentiments.txt', 'w')
-    file.writelines(json.dumps(sentiments))
-    file.close()
-    print("Sentiment fetch done, tested:", " EURUSD:", con.get_sentiment("EURUSD")[0], " XAUUSD:",
-          con.get_sentiment("XAUUSD")[0], " BTCUSD:", con.get_sentiment("BTCUSD")[0])
 
 
 if __name__ == "__main__":

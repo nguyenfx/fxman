@@ -1,11 +1,16 @@
 import chart
 from con import Controller
-import sen
+import sen, json
 
-if __name__ == "__main__":
+import requests
+from bs4 import BeautifulSoup
+from sen import ff_fetch
+
+con = Controller()
+
+def test_all():
     sen.fetch()
     chart.gen_chart()
-    con = Controller()
     signal = con.get_signal("CADJPY")
     print(signal)
     sentiments = con.get_sentiments()
@@ -18,4 +23,8 @@ if __name__ == "__main__":
         number = account[0]
         stats = con.get_statistic(number)
         print(stats)
+
+
+if __name__ == "__main__":
+    ff_fetch()
 

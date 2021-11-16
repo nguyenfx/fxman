@@ -133,6 +133,21 @@ def get_sentiment():
         return "0"
 
 
+@app.route("/contrarian", methods=["GET"])
+@cache.cached(timeout=300, query_string=True)
+def get_contrarian():
+    details = request.args
+    symbol = details.get("symbol")
+    number = details.get("number")
+    error = details.get("error")
+    con.upsert_status(number, 1, error)
+    contrarian = con.get_contrarian(symbol)
+    if contrarian:
+        return jsonify(contrarian[0])
+    else:
+        return "0"
+
+
 @app.route("/sentiments", methods=["GET"])
 @cache.cached(timeout=300)
 def get_sentiments():

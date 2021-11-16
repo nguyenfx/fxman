@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from db import Database
 
 
@@ -127,22 +125,29 @@ class Controller:
     def get_sentiments(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM sentiments ORDER BY symbol "
+        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), MAX(contrarian), timestamp FROM sentiments GROUP BY symbol ORDER BY symbol "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def get_sentiment(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT value FROM sentiments WHERE symbol = ?  "
+        statement = "SELECT ROUND(AVG(sentiment) - 0.5) FROM sentiments WHERE symbol = ? GROUP BY symbol "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
-    def upsert_sentiment(self, symbol, value):
+    def get_contrarian(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO sentiments(symbol, value) VALUES (?, ?) "
-        cursor.execute(statement, [symbol, value])
+        statement = "SELECT MAX(contrarian) FROM sentiments WHERE symbol = ? GROUP BY symbol "
+        cursor.execute(statement, [symbol])
+        return cursor.fetchone()
+
+    def upsert_sentiment(self, site, symbol, sentiment, contrarian):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian) VALUES (?, ?, ?, ?) "
+        cursor.execute(statement, [site, symbol, sentiment, contrarian])
         db.commit()
         return True
 
