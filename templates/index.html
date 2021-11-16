@@ -2,8 +2,8 @@
 <html dir="ltr" lang="en">
 <head>
 	<meta charset="utf-8">
-	<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/fxman/static/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/fxman/static/favicon-16x16.png">
 	<style>
 	  .table {
 	      padding: 0px 0px;
@@ -227,9 +227,6 @@ function load_sentiments() {
             var now = Math.floor((new Date()).getTime() / 1000);
             var time = Math.floor(Date.parse(data[0][2] + " GMT") / 1000)
             var diff = Math.floor((now - time) / 60);
-            console.info(time);
-            console.info(now);
-            console.info(diff);
             title.innerHTML = "Last updated " + diff + " minutes ago";
             var image = document.getElementById("sen_image")
             image.src = "/fxman/static/sentiments.png?" + timestamp();
@@ -258,9 +255,6 @@ function load_status() {
                 var now = Math.floor((new Date()).getTime() / 1000);
                 var time = Math.floor(Date.parse(data[i][3] + " GMT") / 1000)
 	            var diff = Math.floor((now - time) / 60);
-	            console.info(time);
-	            console.info(now);
-	            console.info(diff);
 	            if(data[i][1] == 0 || diff > 5) {
                     cell2.classList.add('negative');
                 } else {
