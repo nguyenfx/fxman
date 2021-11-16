@@ -94,7 +94,7 @@
 			</div>
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
-					<h4 id="sen_title">Market sentiments</h4>
+					<h4>Market sentiments</h4>
 					<table class="styled-table" width="320">
 						<thead>
 						<tr>
@@ -108,6 +108,21 @@
 						<tr>
 							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
 						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<h4>Contrarians</h4>
+					<table class="styled-table" id="contrarians" width="320">
+						<thead>
+						<tr>
+							<td>Symbol</td>
+							<td>Type</td>
+						</tr>
+						</thead>
+						<tbody>
 						</tbody>
 					</table>
 				</div>
@@ -223,13 +238,27 @@ function load_sentiments() {
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
-            var title = document.getElementById("sen_time")
+            var sen_title = document.getElementById("sen_time");
             var now = Math.floor((new Date()).getTime() / 1000);
-            var time = Math.floor(Date.parse(data[0][3] + " GMT") / 1000)
+            var time = Math.floor(Date.parse(data[0][3] + " GMT") / 1000);
             var diff = Math.floor((now - time) / 60);
-            title.innerHTML = "Last updated " + diff + " minutes ago";
-            var image = document.getElementById("sen_image")
+            sen_title.innerHTML = "Last updated " + diff + " minutes ago";
+            var image = document.getElementById("sen_image");
             image.src = "/fxman/static/sentiments.png?" + timestamp();
+            var tbody = document.getElementById("contrarians").getElementsByTagName('tbody')[0];
+            for (i = data.length - 1; i >= 0 ; i--) {
+                var row = tbody.insertRow(0);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = data[i][0];
+                var cell2 = row.insertCell(1);
+                if(data[i][2] > 0) {
+                    cell2.classList.add('positive');
+                    cell2.innerHTML = "Bullish";
+                } else {
+                    cell2.classList.add('negative');
+                    cell2.innerHTML = "Bearish";
+                }
+            }
         } else {
             console.error(users);
         }
