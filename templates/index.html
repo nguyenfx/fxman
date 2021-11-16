@@ -258,9 +258,9 @@ function loadstatus() {
                 } else {
                     cell2.classList.add('negative');
                 }
-	            cell2.innerHTML = date.toISOString().slice(0, 19).replace('T', ' ') + " GMT<br>" + diff + " minutes ago";
+	            cell2.innerHTML = data[i][3] + " GMT<br>" + diff + " minutes ago";
 	            var cell3 = row.insertCell(2);
-	            cell3.innerHTML = data[i][3];
+	            cell3.innerHTML = data[i][2];
             }
             
         } else {
