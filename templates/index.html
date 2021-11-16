@@ -215,7 +215,7 @@
 </body>
 </html>
 <script>
-function loadsentiments() {
+function load_sentiments() {
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "https://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
     xhr.onload = function () {
@@ -235,7 +235,7 @@ function loadsentiments() {
     xhr.send(null);
 }
 
-function loadstatus() {
+function load_status() {
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "https://fxman.mooo.com/fxman/status?" + timestamp(), true)
     xhr.onload = function () {
@@ -253,10 +253,10 @@ function loadstatus() {
                 var time = Math.floor(Date.parse(data[i][3]) / 1000)
 	            var now = Math.floor((new Date()).getTime() / 1000);
 	            var diff = Math.floor((now - time) / 60);
-	            if(data[i][1] > 0 || diff > 1) {
-                    cell2.classList.add('positive');
-                } else {
+	            if(data[i][1] == 0 || diff > 5) {
                     cell2.classList.add('negative');
+                } else {
+                    cell2.classList.add('positive');
                 }
 	            cell2.innerHTML = data[i][3] + " GMT<br>" + diff + " minutes ago";
 	            var cell3 = row.insertCell(2);
@@ -270,7 +270,7 @@ function loadstatus() {
     xhr.send(null);
 }
 
-function loadsignals() {
+function load_signals() {
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "https://fxman.mooo.com/fxman/signals?" + timestamp(), true)
     xhr.onload = function () {
@@ -406,14 +406,14 @@ function clock() {
 
 setInterval(clock, 1000);
 
-function fastloads() {
-  loadstatus();
+function fast_loads() {
+  load_status();
   load("accounts");
 }
 
-function slowloads() {
-  loadsentiments();
-  loadsignals();
+function slow_loads() {
+  load_sentiments();
+  load_signals();
   load("positions");
   load("deals");
 }
@@ -422,10 +422,10 @@ function reload() {
 	location.reload()
 }
 
-fastloads();
-setInterval(fastloads, 30 * 1000);
-slowloads();
-setInterval(slowloads, 300 * 1000);
+fast_loads();
+setInterval(fast_loads, 30 * 1000);
+slow_loads();
+setInterval(slow_loads, 300 * 1000);
 setInterval(reload, 30 * 60 * 1000);
 
 
