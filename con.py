@@ -125,7 +125,7 @@ class Controller:
     def get_sentiments(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), MAX(contrarian), timestamp FROM sentiments GROUP BY symbol ORDER BY symbol "
+        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments GROUP BY symbol ORDER BY symbol "
         cursor.execute(statement)
         return cursor.fetchall()
 
@@ -139,7 +139,7 @@ class Controller:
     def get_contrarian(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT MAX(contrarian) FROM sentiments WHERE symbol = ? GROUP BY symbol "
+        statement = "SELECT SUM(contrarian) FROM sentiments WHERE symbol = ? GROUP BY symbol "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
