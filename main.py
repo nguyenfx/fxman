@@ -127,7 +127,10 @@ def get_sentiment():
     error = details.get("error")
     con.upsert_status(number, 1, error)
     sentiment = con.get_sentiment(symbol)
-    return jsonify(sentiment[0])
+    if sentiment:
+        return jsonify(sentiment[0])
+    else:
+        return 0
 
 
 @app.route("/sentiments", methods=["GET"])
@@ -161,7 +164,10 @@ def get_signal():
     error = details.get("error")
     con.upsert_status(number, 1, error)
     signal = con.get_signal(symbol)
-    return jsonify(signal[0])
+    if signal:
+        return jsonify(signal[0])
+    else:
+        return 0
 
 
 @app.route("/signal", methods=["POST"])
