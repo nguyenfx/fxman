@@ -118,6 +118,7 @@ class Controller:
         statement = "SELECT * FROM signals WHERE symbol = ? ORDER BY timestamp DESC "
         cursor.execute(statement, [symbol])
         signal = cursor.fetchone()
+        print(signal)
         type = signal[2]
         risk = signal[3]
         time = signal[4]
