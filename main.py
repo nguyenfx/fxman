@@ -149,14 +149,14 @@ def get_status():
 
 
 @app.route("/signals", methods=["GET"])
-@cache.cached(timeout=30)
+@cache.cached(timeout=300)
 def get_signals():
     signals = con.get_signals()
     return jsonify(signals)
 
 
 @app.route("/signal", methods=["GET"])
-@cache.cached(timeout=30)
+@cache.cached(timeout=30, query_string=True)
 def get_signal():
     details = request.args
     symbol = details.get("symbol")
