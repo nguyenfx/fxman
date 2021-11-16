@@ -105,14 +105,14 @@ class Controller:
     def get_signals(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM signals WHERE (JULIANDAY(Date('now')) - JULIANDAY(timestamp)) / 60 < 60 ORDER BY timestamp DESC "
+        statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp))  * 86400 / 60 < 60 ORDER BY timestamp DESC "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def get_signal(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT type * risk FROM signals WHERE symbol = ? AND  (JULIANDAY(Date('now')) - JULIANDAY(timestamp)) / 60 < 15 ORDER BY timestamp DESC "
+        statement = "SELECT type * risk FROM signals WHERE symbol = ? AND  (JULIANDAY('now') - JULIANDAY(timestamp))  * 86400 / 60 < 15 ORDER BY timestamp DESC "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
