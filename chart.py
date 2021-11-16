@@ -13,7 +13,8 @@ def gen_chart():
     sentiments = con.get_sentiments()
     sentiments.reverse()
     sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
-    symbols, values = zip(*sentiments)
+    symbols, values, timestamp = zip(*sentiments)
+    print(timestamp)
     values = np.asarray(values)
     colors = np.array(['#ff9100'] * len(values))
     colors[values >= 0] = '#00bfa5'
@@ -23,8 +24,7 @@ def gen_chart():
     bar_plot = plt.barh(symbols, values, color=colors, label="Sentiment", zorder=3)
     plt.bar_label(bar_plot, fontsize=6)
     plt.grid(linestyle="dotted", zorder=0)
-    today = datetime.utcnow()
-    plt.title("Market Sentiment - " + today.strftime('%Y-%m-%d %H:%M GMT'), fontsize=8)
+    plt.title("Market Sentiment " + timestamp[0] + " GMT", fontsize=8)
     plt.tight_layout()
     file = "static/sentiments.png"
     plt.savefig(file)

@@ -95,51 +95,32 @@ class Controller:
         return True
 
     def upsert_status(self, number, online, error):
-        today = datetime.utcnow()
-        epoch = datetime(1970, 1, 1)
-        timestamp = int((today - epoch).total_seconds())
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO status(number, online, timestamp, error) VALUES (?, ?, ?, ?) "
-        cursor.execute(statement, [number, online, timestamp, error])
+        statement = "INSERT OR REPLACE INTO status(number, online, error) VALUES (?, ?, ?) "
+        cursor.execute(statement, [number, online, error])
         db.commit()
         return True
 
     def get_signals(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM signals ORDER BY timestamp DESC "
+        statement = "SELECT * FROM signals WHERE (JULIANDAY(Date('now')) - JULIANDAY(timestamp)) / 60 > 240 ORDER BY timestamp DESC "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def get_signal(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM signals WHERE symbol = ? ORDER BY timestamp DESC "
+        statement = "SELECT type * risk FROM signals WHERE symbol = ? AND  (JULIANDAY(Date('now')) - JULIANDAY(timestamp)) / 60 > 240 ORDER BY timestamp DESC "
         cursor.execute(statement, [symbol])
-        signal = cursor.fetchone()
-        print(signal)
-        type = signal[2]
-        risk = signal[3]
-        time = signal[4]
-        today = datetime.utcnow()
-        epoch = datetime(1970, 1, 1)
-        timestamp = int((today - epoch).total_seconds())
-        if (timestamp - time) / 60 > 240:
-            if type == 0:
-                return -risk
-            elif type == 1:
-                return risk
-        return 0
+        return cursor.fetchone()
 
     def upsert_signal(self, number, symbol, type, risk):
-        today = datetime.utcnow()
-        epoch = datetime(1970, 1, 1)
-        timestamp = int((today - epoch).total_seconds())
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk, timestamp) VALUES (?, ?, ?, ?, ?) "
-        cursor.execute(statement, [number, symbol, type, risk, timestamp])
+        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk) VALUES (?, ?, ?, ?) "
+        cursor.execute(statement, [number, symbol, type, risk])
         db.commit()
         return True
 

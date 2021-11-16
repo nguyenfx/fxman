@@ -95,14 +95,15 @@ class Database:
             """,
             """CREATE TABLE IF NOT EXISTS sentiments(
                     symbol TEXT NOT NULL PRIMARY KEY,  
-                    value INTEGER NOT NULL DEFAULT 0
+                    value INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
                 )            
             """,
             """CREATE TABLE IF NOT EXISTS status(
                     number TEXT NOT NULL PRIMARY KEY,  
-                    online INTEGER NOT NULL DEFAULT 0,
-                    timestamp INTEGER NOT NULL DEFAULT 0,
-                    error INTEGER NOT NULL DEFAULT 0
+                    online INTEGER NOT NULL DEFAULT 0,                    
+                    error INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
                 )            
             """,
             """CREATE TABLE IF NOT EXISTS signals(
@@ -110,7 +111,7 @@ class Database:
                     symbol TEXT NOT NULL,  
                     type INTEGER NOT NULL DEFAULT -1,
                     risk INTEGER NOT NULL DEFAULT 0,
-                    timestamp INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                     UNIQUE(number, symbol, type)
                 )            
             """,
