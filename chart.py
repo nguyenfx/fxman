@@ -39,6 +39,32 @@ def gen_chart():
     file = "static/sentiments.png"
     plt.savefig(file)
     print("Charts generated:", file)
+    sentiments = con.get_sentiments()
+    sentiments.reverse()
+    sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
+    symbols, sens, cons, timestamp = zip(*sentiments)
+    sens = np.asarray(sens)
+    colors = np.array(['#ff9100'] * len(sens))
+    colors[sens >= 0] = '#00bfa5'
+    plt.figure(figsize=(4, 6))
+    plt.xticks([])
+    plt.yticks(fontsize=7)
+    bar_plot = plt.barh(symbols, sens, color=colors, label="Sentiment", zorder=3)
+    plt.bar_label(bar_plot, fontsize=7)
+    plt.grid(linestyle="dotted", zorder=0)
+    plt.twinx()
+    cons = np.asarray(cons)
+    cons = cons * 10
+    colors = np.array(['#ec407a'] * len(cons))
+    colors[cons >= 0] = '#3f51b5'
+    plt.xticks([])
+    plt.yticks([])
+    plt.barh(symbols, cons, color=colors, label="Contrarian", zorder=6)
+    plt.title("Market Sentiment & Contrarian\nUpdated " + timestamp[0] + " GMT, ©FXMan", fontsize=10)
+    plt.tight_layout()
+    file = "public/sentiments.png"
+    plt.savefig(file)
+    print("Charts generated:", file)
     con.calculate_last_statistic()
     accounts = con.get_accounts()
     for account in accounts:

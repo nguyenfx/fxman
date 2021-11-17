@@ -91,7 +91,7 @@
 							<td style="padding: 0px 0px"></td>
 						</tr>
 						<tr>
-							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
+							<td><img id="sen_image" src="sentiments.png"/></td>
 						</tr>
 						</tbody>
 					</table>
@@ -106,7 +106,8 @@
 							<td>Symbol</td>
 							<td>Type</td>
 							<td>Time</td>
-							<td>Price</td>
+							<td>Open price</td>
+							<td>Current price</td>
 							<td>Change</td>
 						</tr>
 						</thead>
@@ -120,9 +121,15 @@
 </body>
 </html>
 <script>
+
+function load_sentiments() {
+		var sen_image = document.getElementById("sen_image");
+        sen_image.src = "sentiments.png?" + timestamp();
+}
+
 function load_signals() {
     var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "https://fxman.mooo.com/fxman/signals?" + timestamp(), true)
+    xhr.open('GET', "signals.json?" + timestamp(), true)
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
