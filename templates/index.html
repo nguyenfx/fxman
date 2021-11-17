@@ -118,11 +118,12 @@
 					<table class="styled-table" id="signals" width="320">
 						<thead>
 						<tr>
-							<td>Account</td>
 							<td>Symbol</td>
 							<td>Type</td>
-							<td>Risk</td>
 							<td>Time</td>
+							<td>Open</td>
+							<td>Current</td>
+							<td>Change%</td>
 						</tr>
 						</thead>
 						<tbody></tbody>
@@ -285,24 +286,26 @@ function load_signals() {
             for (i = data.length - 1; i >= 0 ; i--) {
                 var row = tbody.insertRow(0);
                 var cell1 = row.insertCell(0);
-                cell1.innerHTML = data[i][0];
+                cell1.innerHTML = data[i][1];
                 var cell2 = row.insertCell(1);
-                cell2.innerHTML = data[i][1];
-                var cell3 = row.insertCell(2);
                 if(data[i][2] > 0) {
-                    cell3.classList.add('positive');
-                    cell3.innerHTML = "Buy";
+                    cell2.classList.add('positive');
+                    cell2.innerHTML = "Buy";
                 } else {
-                    cell3.classList.add('negative');
-                    cell3.innerHTML = "Sell";
+                    cell2.classList.add('negative');
+                    cell2.innerHTML = "Sell";
                 }
-                var cell4 = row.insertCell(3);
-                cell4.innerHTML = data[i][3];
-                var cell5 = row.insertCell(4);
+                var cell3 = row.insertCell(4);
                 var now = Math.floor((new Date()).getTime() / 1000);
-                var time = Math.floor(Date.parse(data[i][4] + " GMT") / 1000)
+                var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
 	            var diff = Math.floor((now - time) / 60);
-	            cell5.innerHTML = diff + " minutes ago";
+	            cell3.innerHTML = diff + " m ago";
+	            var cell4 = row.insertCell(0);
+                cell4.innerHTML = data[i][4];
+                var cell5 = row.insertCell(0);
+                cell5.innerHTML = data[i][5];
+                var cell6 = row.insertCell(0);
+                cell6.innerHTML = (data[i][5] - data[i][4]) / data[i][4] * 100;
 	            var row1 = tbody.insertRow(1);
 	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
 	            tradingview(data[i][1])
