@@ -96,7 +96,7 @@
 		<div style="display: table-cell;">
 			<div style="display: table-row;">
 				<div style="display: table-cell; colspan: 2">
-					<h2>Signals</h2>
+					<h3>Signals</h3>
 				</div>
 			</div>
 			<div style="display: table-row;">
@@ -177,7 +177,7 @@ function load_signals() {
                 var now = Math.floor((new Date()).getTime() / 1000);
                 var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
 	            var diff = Math.floor((now - time) / 60);
-	            cell3.innerHTML = diff + " m<br>ago";
+	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " minutes ago";
 	            var cell4 = row.insertCell(3);
                 cell4.innerHTML = data[i][4] + "<br>" + data[i][5];
                 var change = (data[i][5] - data[i][4]) / data[i][4] * 100;
@@ -204,7 +204,7 @@ function tradingview(symbol) {
 		  "width": 400,
 		  "height": 250,
 		  "symbol": "OANDA:" + symbol,
-		  "interval": "1440",
+		  "interval": "240",
 		  "timezone": "Etc/UTC",
 		  "theme": "light",
 		  "style": "1",

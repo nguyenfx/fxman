@@ -46,7 +46,7 @@ def gen_chart():
     sens = np.asarray(sens)
     colors = np.array(['#ff9100'] * len(sens))
     colors[sens >= 0] = '#00bfa5'
-    plt.figure(figsize=(3.8, 6))
+    plt.figure(figsize=(3.5, 6))
     plt.xticks([])
     plt.yticks(fontsize=7)
     bar_plot = plt.barh(symbols, sens, color=colors, label="Sentiment", zorder=3)
