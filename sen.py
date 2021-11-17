@@ -13,6 +13,7 @@ mfurl = "https://www.myfxbook.com/community/outlook"
 bnurl = "https://fapi.binance.com/futures/data/"
 bnapis = {'topLongShortAccountRatio', 'topLongShortPositionRatio', 'globalLongShortAccountRatio'}
 fcsurl = "https://storage.googleapis.com/public-sentiments-v3/fxcs-sentiments.json"
+dfurl = "https://www.dailyfx.com/sentiment-report"
 
 con = Controller()
 
@@ -62,6 +63,34 @@ def fc_fetch():
         con.upsert_sentiment("fc", symbol, sentiment, contrarian)
 
 
+def df_fetch():
+    response = requests.get(dfurl, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    content = soup.find(class_="dfx-articleBody__content")
+    rows = content.find_all("tr")
+    for row in rows[1:]:
+        symbol_row = row.find("td", {"data-heading": "SYMBOL"})
+        symbol_span = symbol_row.find(class_="gsstx")
+        symbol = symbol_span.text.replace("/", "").strip()
+        bias_row = row.find("td", {"data-heading": "TRADING BIAS"})
+        bias_span = bias_row.find(class_="gsstx")
+        bias = bias_span.text.strip()
+        if bias == "BULLISH":
+            contrarian = 1
+        elif bias == "BEARISH":
+            contrarian = -1
+        else:
+            contrarian = 0
+        long_row = row.find("td", {"data-heading": "NET-LONG%"})
+        long_span = long_row.find(class_="gsstx")
+        long = int(long_span.text.strip()[:-4])
+        short_row = row.find("td", {"data-heading": "NET-SHORT%"})
+        short_span = short_row.find(class_="gsstx")
+        short = int(short_span.text.strip()[:-4])
+        sentiment = long -short
+        con.upsert_sentiment("df", symbol, sentiment, contrarian)
+
+
 def bn_fetch():
     symbol = "BTCUSD"
     sumratio = 0
@@ -78,6 +107,7 @@ def fetch():
     ff_fetch()
     mf_fetch()
     fc_fetch()
+    df_fetch()
     bn_fetch()
     sentiments = con.get_sentiments()
     print(json.dumps(sentiments))

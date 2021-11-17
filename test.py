@@ -24,7 +24,33 @@ def test_all():
         stats = con.get_statistic(number)
         print(stats)
 
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 if __name__ == "__main__":
-    ff_fetch()
+    response = requests.get("https://www.dailyfx.com/sentiment-report", headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    content = soup.find(class_="dfx-articleBody__content")
+    rows = content.find_all("tr")
+    for row in rows[1:]:
+        symbol_row = row.find("td", {"data-heading": "SYMBOL"})
+        symbol_span = symbol_row.find(class_="gsstx")
+        symbol = symbol_span.text.replace("/", "").strip()
+        bias_row = row.find("td", {"data-heading": "TRADING BIAS"})
+        bias_span = bias_row.find(class_="gsstx")
+        bias = bias_span.text.strip()
+        if bias == "BULLISH":
+            contrarian = 1
+        elif bias == "BEARISH":
+            contrarian = -1
+        else:
+            contrarian = 0
+        long_row = row.find("td", {"data-heading": "NET-LONG%"})
+        long_span = long_row.find(class_="gsstx")
+        long = int(long_span.text.strip()[:-4])
+        short_row = row.find("td", {"data-heading": "NET-SHORT%"})
+        short_span = short_row.find(class_="gsstx")
+        short = int(short_span.text.strip()[:-4])
+        sentiment = long -short
+        con.upsert_sentiment("df", symbol, sentiment, contrarian)
 
