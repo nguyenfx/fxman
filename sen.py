@@ -101,6 +101,7 @@ def bn_fetch():
         sumratio += ratio
     sentiment = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
     con.upsert_sentiment("bn", symbol, sentiment, 0)
+    con.upsert_sentiment("mf", symbol, sentiment, 0)
 
 
 def fetch():
