@@ -380,7 +380,7 @@ function tradingview(symbol) {
 		  "width": 300,
 		  "height": 150,
 		  "symbol": "OANDA:" + symbol,
-		  "interval": "60",
+		  "interval": "1440",
 		  "timezone": "Etc/UTC",
 		  "theme": "light",
 		  "style": "1",
@@ -393,6 +393,10 @@ function tradingview(symbol) {
 		  "show_popup_button": true,
 		  "popup_width": "1000",
 		  "popup_height": "650",
+		  "studies": [
+			    "Stochastic@tv-basicstudies",
+			    "MAExp@tv-basicstudies"
+		  ],
 		  "container_id": "tradingview_" + symbol
 		}
 	  );
