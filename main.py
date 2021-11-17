@@ -201,7 +201,18 @@ def upsert_signal():
     symbol = details["symbol"]
     type = details["type"]
     risk = details["risk"]
-    result = con.upsert_signal(number, symbol, type, risk)
+    open_price = details["open_price"]
+    result = con.upsert_signal(number, symbol, type, risk, open_price)
+    return jsonify(result)
+
+
+@app.route("/price", methods=["POST"])
+def update_signal():
+    details = request.get_json()
+    symbol = details["symbol"]
+    type = details["type"]
+    current_price = details["current_price"]
+    result = con.update_signal(symbol, type, current_price)
     return jsonify(result)
 
 

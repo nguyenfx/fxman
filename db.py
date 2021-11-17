@@ -86,10 +86,10 @@ class Database:
             """CREATE TABLE IF NOT EXISTS statistic(
                     number INTEGER NOT NULL,                  
                     date TEXT NOT NULL,
-                    profit  REAL NOT NULL DEFAULT 0.0,
-                    balance  REAL NOT NULL DEFAULT 0.0,
-                    percent  REAL NOT NULL DEFAULT 0.0,
-                    growth  REAL NOT NULL DEFAULT 0.0,
+                    profit REAL NOT NULL DEFAULT 0.0,
+                    balance REAL NOT NULL DEFAULT 0.0,
+                    percent REAL NOT NULL DEFAULT 0.0,
+                    growth REAL NOT NULL DEFAULT 0.0,
                     UNIQUE(number, date)
                 )            
             """,
@@ -112,8 +112,10 @@ class Database:
             """CREATE TABLE IF NOT EXISTS signals(
                     number TEXT NOT NULL,
                     symbol TEXT NOT NULL,  
-                    type INTEGER NOT NULL DEFAULT -1,
+                    type INTEGER NOT NULL DEFAULT 0,
                     risk INTEGER NOT NULL DEFAULT 0,
+                    open_price REAL NOT NULL DEFAULT 0.0,
+                    current_price REAL NOT NULL DEFAULT 0.0,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                     UNIQUE(number, symbol, type)
                 )            

@@ -115,11 +115,19 @@ class Controller:
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
-    def upsert_signal(self, number, symbol, type, risk):
+    def upsert_signal(self, number, symbol, type, risk, open_price):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk) VALUES (?, ?, ?, ?) "
-        cursor.execute(statement, [number, symbol, type, risk])
+        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk, open_price, current_price) VALUES (?, ?, ?, ?, ?, ?) "
+        cursor.execute(statement, [number, symbol, type, risk, open_price, open_price])
+        db.commit()
+        return True
+
+    def update_signal(self, symbol, type, current_price):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "UPDATE signals SET current_price = ? WHERE symbol = ? AND type = ? "
+        cursor.execute(statement, [current_price, symbol, type])
         db.commit()
         return True
 
