@@ -282,6 +282,9 @@ function load_signals() {
             while (tbody.firstChild) {
                 tbody.firstChild.remove();
             }
+            if(data.length > 5) {
+                data = date.slide(0, 5);
+            }
             for (i = data.length - 1; i >= 0 ; i--) {
                 var row = tbody.insertRow(0);
                 var cell1 = row.insertCell(0);
@@ -312,7 +315,6 @@ function load_signals() {
 	            var row1 = tbody.insertRow(1);
 	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
 	            tradingview(data[i][1]);
-	            if (i == data.length - 5) break;
             }
         } else {
             console.error(users);
