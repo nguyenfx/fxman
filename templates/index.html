@@ -123,7 +123,7 @@
 							<td>Time</td>
 							<td>Open</td>
 							<td>Current</td>
-							<td>Change%</td>
+							<td>%</td>
 						</tr>
 						</thead>
 						<tbody></tbody>
@@ -299,13 +299,13 @@ function load_signals() {
                 var now = Math.floor((new Date()).getTime() / 1000);
                 var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
 	            var diff = Math.floor((now - time) / 60);
-	            cell3.innerHTML = diff + " m ago";
+	            cell3.innerHTML = diff + "ms ago";
 	            var cell4 = row.insertCell(3);
                 cell4.innerHTML = data[i][4];
                 var cell5 = row.insertCell(4);
                 cell5.innerHTML = data[i][5];
-                var cell6 = row.insertCell(4);
-                cell6.innerHTML = (data[i][5] - data[i][4]) / data[i][4] * 100;
+                var cell6 = row.insertCell(5);
+                cell6.innerHTML = ((data[i][5] - data[i][4]) / data[i][4] * 100) + "%";
 	            var row1 = tbody.insertRow(1);
 	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
 	            tradingview(data[i][1])
