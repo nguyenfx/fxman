@@ -93,6 +93,13 @@ class Database:
                     UNIQUE(number, date)
                 )            
             """,
+            """CREATE TABLE IF NOT EXISTS status(
+                    number TEXT NOT NULL PRIMARY KEY,  
+                    online INTEGER NOT NULL DEFAULT 0,                    
+                    error INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                )            
+            """,
             """CREATE TABLE IF NOT EXISTS sentiments(
                     site TEXT NOT NULL,
                     symbol TEXT NOT NULL,  
@@ -103,13 +110,6 @@ class Database:
                     UNIQUE(site, symbol, date)
                 )            
             """,
-            """CREATE TABLE IF NOT EXISTS status(
-                    number TEXT NOT NULL PRIMARY KEY,  
-                    online INTEGER NOT NULL DEFAULT 0,                    
-                    error INTEGER NOT NULL DEFAULT 0,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-                )            
-            """,
             """CREATE TABLE IF NOT EXISTS signals(
                     number TEXT NOT NULL,
                     symbol TEXT NOT NULL,  
@@ -118,7 +118,8 @@ class Database:
                     open_price REAL NOT NULL DEFAULT 0.0,
                     current_price REAL NOT NULL DEFAULT 0.0,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    UNIQUE(number, symbol, type)
+                    datehour TEXT NOT NULL DEFAULT '',
+                    UNIQUE(number, symbol, type, datehour)
                 )            
             """,
         ]
