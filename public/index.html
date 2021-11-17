@@ -42,6 +42,7 @@
           border-bottom: 2px solid #7b1fa2;
       }
 	
+	
 	</style>
 	<script src="https://s3.tradingview.com/tv.js" type="text/javascript"></script>
 	<title>FXMan Signals</title>
@@ -135,6 +136,124 @@
 </body>
 </html>
 <script>
-eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('9 O(){7 a=r.s("18");a.19="1a.1b?"+G()}9 P(){7 q=t 1c()q.1d(\'1e\',"1f.1g?"+G(),w)q.1h=9(){x(q.1i==4&&q.1j=="1k"){7 a=1l.Q(q.1m);7 b=r.s("1n").R(\'S\')[0];7 c=r.s("1o").R(\'S\')[0];T(b.y){b.y.U()}T(c.y){c.y.U()}1p(i=a.1q-1;i>=0;i--){7 d;x(i%2==0){d=b}z{d=c}7 e=d.V(0);7 f=e.u(0);f.8=a[i][1];7 g=e.u(1);x(a[i][2]>0){g.A.B(\'W\');g.8="1r"}z{g.A.B(\'X\');g.8="1s"}7 h=e.u(2);7 j=C.D((t E()).Y()/v);7 k=C.D(E.Q(a[i][6]+" Z")/v)7 l=C.D((j-k)/H);h.8=a[i][6]+" Z<10>"+l+" 1t 1u";7 m=e.u(3);m.8=a[i][4]+"<10>"+a[i][5];7 n=(a[i][5]-a[i][4])/a[i][4]*1v;7 o=e.u(4);x((a[i][2]>0&&n>=0)||(a[i][2]<0&&n<=0)){o.A.B(\'W\')}z{o.A.B(\'X\')}o.8=n.1w(2)+"%";7 p=d.V(1);p.8=\'<11 1x="5"><12 1y="13\'+a[i][1]+\'"></12></11>\'14(a[i][1])}}z{1z.1A(1B)}}q.1C(1D)}9 14(a){t 1E.1F({"1G":1H,"1I":1J,"1K":"1L:"+a,"1M":"1N","1O":"1P/1Q","1R":"1S","1T":"1","1U":"F","1V":"#1W","1X":15,"1Y":w,"1Z":w,"20":15,"21":w,"22":"23","24":"25","26":["27@I-J","28@I-J","29@I-J"],"2a":"13"+a})}9 G(){2b(C.D((t E()).Y()/2c))}9 16(){7 a=r.s("2d");7 b=r.s("2e");7 c=t E();a.8=c.17(\'F-K\').2f(0,c.17(\'F-K\').2g(\'(\'));b.8=c.2h(\'F-K\')}L(16,v);9 M(){O();P()}9 N(){2i.N()}M();L(M,5*H*v);L(N,2j*H*v);',62,144,'|||||||var|innerHTML|function||||||||||||||||||document|getElementById|new|insertCell|1000|true|if|firstChild|else|classList|add|Math|floor|Date|en|timestamp|60|tv|basicstudies|US|setInterval|loads|reload|load_sentiments|load_signals|parse|getElementsByTagName|tbody|while|remove|insertRow|positive|negative|getTime|GMT|br|td|div|tradingview_|tradingview|false|clock|toString|sen_image|src|sentiments|png|XMLHttpRequest|open|GET|signals|json|onload|readyState|status|200|JSON|responseText|signals1|signals2|for|length|Buy|Sell|minutes|ago|100|toFixed|colspan|id|console|error|users|send|null|TradingView|widget|width|400|height|250|symbol|OANDA|interval|240|timezone|Etc|UTC|theme|light|style|locale|toolbar_bg|f1f3f6|enable_publishing|hide_top_toolbar|hide_legend|save_image|show_popup_button|popup_width|980|popup_height|610|studies|MAExp|MACD|RSI|container_id|return|100000|local_time|gmt_time|substring|indexOf|toUTCString|location|30'.split('|'),0,{}))
+
+function load_sentiments() {
+		var sen_image = document.getElementById("sen_image");
+        sen_image.src = "sentiments.png?" + timestamp();
+}
+
+function load_signals() {
+    var xhr  = new XMLHttpRequest()
+    xhr.open('GET', "signals.json?" + timestamp(), true)
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var data = JSON.parse(xhr.responseText);
+            var tbody1 = document.getElementById("signals1").getElementsByTagName('tbody')[0];
+            var tbody2 = document.getElementById("signals2").getElementsByTagName('tbody')[0];
+            while (tbody1.firstChild) {
+                tbody1.firstChild.remove();
+            }
+            while (tbody2.firstChild) {
+                tbody2.firstChild.remove();
+            }
+            for (i = data.length - 1; i >= 0 ; i--) {
+                var tbody;
+                if(i % 2 == 0) {
+                    tbody = tbody1;
+                } else {
+                    tbody = tbody2;
+                }
+                var row = tbody.insertRow(0);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = data[i][1];
+                var cell2 = row.insertCell(1);
+                if(data[i][2] > 0) {
+                    cell2.classList.add('positive');
+                    cell2.innerHTML = "Buy";
+                } else {
+                    cell2.classList.add('negative');
+                    cell2.innerHTML = "Sell";
+                }
+                var cell3 = row.insertCell(2);
+                var now = Math.floor((new Date()).getTime() / 1000);
+                var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
+	            var diff = Math.floor((now - time) / 60);
+	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " minutes ago";
+	            var cell4 = row.insertCell(3);
+                cell4.innerHTML = data[i][4] + "<br>" + data[i][5];
+                var change = (data[i][5] - data[i][4]) / data[i][4] * 100;
+                var cell5 = row.insertCell(4);
+                if((data[i][2] > 0 && change >= 0) || (data[i][2] < 0 && change <= 0)){
+                    cell5.classList.add('positive');
+                } else {
+                    cell5.classList.add('negative');
+                }
+                cell5.innerHTML = change.toFixed(2) + "%";
+	            var row1 = tbody.insertRow(1);
+	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
+	            tradingview(data[i][1])
+            }
+        } else {
+            console.error(users);
+        }
+    }
+    xhr.send(null);
+}
+
+function tradingview(symbol) {
+	  new TradingView.widget({
+		  "width": 400,
+		  "height": 250,
+		  "symbol": "OANDA:" + symbol,
+		  "interval": "240",
+		  "timezone": "Etc/UTC",
+		  "theme": "light",
+		  "style": "1",
+		  "locale": "en",
+		  "toolbar_bg": "#f1f3f6",
+		  "enable_publishing": false,
+		  "hide_top_toolbar": true,
+		  "hide_legend": true,
+		  "save_image": false,
+		  "show_popup_button": true,
+		  "popup_width": "980",
+		  "popup_height": "610",
+		  "studies": [
+			    "MAExp@tv-basicstudies",
+                "MACD@tv-basicstudies",
+                "RSI@tv-basicstudies"
+		  ],
+		  "container_id": "tradingview_" + symbol
+		}
+	  );
+}
+
+function timestamp() {
+	return(Math.floor((new Date()).getTime() / 100000));
+}
+
+function clock() {
+	var local_time = document.getElementById("local_time");
+	var gmt_time = document.getElementById("gmt_time");
+	var date = new Date();
+	local_time.innerHTML = date.toString('en-US').substring(0, date.toString('en-US').indexOf('('));
+	gmt_time.innerHTML = date.toUTCString('en-US');
+}
+
+setInterval(clock, 1000);
+
+function loads() {
+  load_sentiments();
+  load_signals();
+}
+
+function reload() {
+	location.reload()
+}
+
+loads();
+setInterval(loads, 5 * 60 * 1000);
+setInterval(reload, 30 * 60 * 1000);
+
 
 </script>
