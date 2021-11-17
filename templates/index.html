@@ -299,7 +299,7 @@ function load_signals() {
                 var now = Math.floor((new Date()).getTime() / 1000);
                 var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
 	            var diff = Math.floor((now - time) / 60);
-	            cell3.innerHTML = diff + "ms ago";
+	            cell3.innerHTML = diff + "m";
 	            var cell4 = row.insertCell(3);
                 cell4.innerHTML = data[i][4];
                 var cell5 = row.insertCell(4);
@@ -377,7 +377,7 @@ function tradingview(symbol) {
 		  "width": 300,
 		  "height": 150,
 		  "symbol": "OANDA:" + symbol,
-		  "interval": "240",
+		  "interval": "60",
 		  "timezone": "Etc/UTC",
 		  "theme": "light",
 		  "style": "1",
