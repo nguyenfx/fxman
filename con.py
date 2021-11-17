@@ -115,10 +115,10 @@ class Controller:
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
-    def upsert_signal(self, number, symbol, type, risk, open_price):
+    def insert_signal(self, number, symbol, type, risk, open_price):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk, open_price, current_price) VALUES (?, ?, ?, ?, ?, ?) "
+        statement = "INSERT OR IGNORE INTO signals(number, symbol, type, risk, open_price, current_price) VALUES (?, ?, ?, ?, ?, ?) "
         cursor.execute(statement, [number, symbol, type, risk, open_price, open_price])
         db.commit()
         return True
