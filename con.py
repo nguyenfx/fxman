@@ -123,11 +123,11 @@ class Controller:
         db.commit()
         return True
 
-    def update_signal(self, symbol, type, current_price):
+    def update_signal(self, symbol, current_price):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "UPDATE signals SET current_price = ? WHERE symbol = ? AND type = ? "
-        cursor.execute(statement, [current_price, symbol, type])
+        statement = "UPDATE signals SET current_price = ? WHERE symbol = ? "
+        cursor.execute(statement, [current_price, symbol])
         db.commit()
         return True
 

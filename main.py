@@ -210,9 +210,8 @@ def upsert_signal():
 def update_signal():
     details = request.get_json()
     symbol = details["symbol"]
-    type = details["type"]
     current_price = details["current_price"]
-    result = con.update_signal(symbol, type, current_price)
+    result = con.update_signal(symbol, current_price)
     return jsonify(result)
 
 
