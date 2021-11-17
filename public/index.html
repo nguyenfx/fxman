@@ -44,6 +44,7 @@
 	
 	
 	
+	
 	</style>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-M4T3RN7503"></script>
 	<script>
@@ -53,6 +54,7 @@
 	
 	gtag('config', 'G-M4T3RN7503');
 
+	
 	</script>
 	<script src="https://s3.tradingview.com/tv.js" type="text/javascript"></script>
 	<title>FXMan Signals</title>
@@ -63,7 +65,6 @@
 		<div style="display: table-cell;">
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
-					<h3>Time</h3>
 					<table class="styled-table" width="400">
 						<thead>
 						<tr>
@@ -117,41 +118,32 @@
 			</div>
 		</div>
 		<div style="display: table-cell;">
-			<div style="display: table-row;">
-				<div style="display: table-cell; colspan: 2">
-					<h3>Signals</h3>
-				</div>
-			</div>
-			<div style="display: table-row;">
-				<div style="display: table-cell;">
-					<table class="styled-table" id="signals1" width="400">
-						<thead>
-						<tr>
-							<td>Symbol</td>
-							<td>Type</td>
-							<td>Time</td>
-							<td>Open price<br>Current price</td>
-							<td>Change</td>
-						</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-				<div style="display: table-cell;">
-					<table class="styled-table" id="signals2" width="400">
-						<thead>
-						<tr>
-							<td>Symbol</td>
-							<td>Type</td>
-							<td>Time</td>
-							<td>Open price<br>Current price</td>
-							<td>Change</td>
-						</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
+			<table class="styled-table" id="signals1" width="400">
+				<thead>
+				<tr>
+					<td>Symbol</td>
+					<td>Type</td>
+					<td>Time</td>
+					<td>Open price<br>Current price</td>
+					<td>Change</td>
+				</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+		<div style="display: table-cell;">
+			<table class="styled-table" id="signals2" width="400">
+				<thead>
+				<tr>
+					<td>Symbol</td>
+					<td>Type</td>
+					<td>Time</td>
+					<td>Open price<br>Current price</td>
+					<td>Change</td>
+				</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
 		</div>
 	</div>
 </div>
@@ -284,6 +276,7 @@ function reload() {
 loads();
 setInterval(loads, 5 * 60 * 1000);
 setInterval(reload, 30 * 60 * 1000);
+
 
 
 
