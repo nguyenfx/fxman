@@ -134,28 +134,40 @@ class Controller:
     def get_sentiments(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments GROUP BY symbol ORDER BY symbol "
+        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments WHERE " \
+                    "date = strftime('%Y-%m-%d', CURRENT_TIMESTAMP) GROUP BY symbol ORDER BY symbol "
         cursor.execute(statement)
+        return cursor.fetchall()
+
+    def get_sentiments(self, symbol):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments WHERE " \
+                    "symbol = ? GROUP BY date ORDER BY date "
+        cursor.execute(statement, [symbol])
         return cursor.fetchall()
 
     def get_sentiment(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT ROUND(AVG(sentiment) - 0.5) FROM sentiments WHERE symbol = ? GROUP BY symbol "
+        statement = "SELECT ROUND(AVG(sentiment) - 0.5) FROM sentiments WHERE symbol = ? AND date = strftime(" \
+                    "'%Y-%m-%d', CURRENT_TIMESTAMP) GROUP BY symbol "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
     def get_contrarian(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT SUM(contrarian) FROM sentiments WHERE symbol = ? GROUP BY symbol "
+        statement = "SELECT SUM(contrarian) FROM sentiments WHERE symbol = ? AND date = strftime('%Y-%m-%d', " \
+                    "CURRENT_TIMESTAMP) GROUP BY symbol "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
     def update_contrarian(self, symbol, contrarian):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "UPDATE sentiments SET contrarian = ? WHERE site = 'mf' AND symbol = ? "
+        statement = "UPDATE sentiments SET contrarian = ? WHERE site = 'mf' AND symbol = ? AND date = strftime(" \
+                    "'%Y-%m-%d', CURRENT_TIMESTAMP) "
         cursor.execute(statement, [contrarian, symbol])
         db.commit()
         return True
@@ -163,7 +175,8 @@ class Controller:
     def upsert_sentiment(self, site, symbol, sentiment, contrarian):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian) VALUES (?, ?, ?, ?) "
+        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian, date) VALUES (?, ?, ?, ?, " \
+                    "strftime('%Y-%m-%d', CURRENT_TIMESTAMP)) "
         cursor.execute(statement, [site, symbol, sentiment, contrarian])
         db.commit()
         return True
