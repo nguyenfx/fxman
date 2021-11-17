@@ -1,15 +1,18 @@
+import json
+
 import matplotlib.pyplot as plt
 import numpy as np
-from datetime import datetime
+
 from con import Controller
 
 Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
            "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
            "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "CADCHF", "XAUUSD", "BTCUSD"}
 
+con = Controller()
+
 
 def gen_chart():
-    con = Controller()
     sentiments = con.get_sentiments()
     sentiments.reverse()
     sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
@@ -122,5 +125,12 @@ def gen_chart():
         print("Charts generated:", file)
 
 
+def save_signal():
+    signals = con.get_signals()
+    with open('public/signals.json', 'w') as file:
+        json.dump(signals, file)
+
+
 if __name__ == "__main__":
     gen_chart()
+    save_signal()
