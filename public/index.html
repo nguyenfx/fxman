@@ -2,8 +2,8 @@
 <html dir="ltr" lang="en">
 <head>
 	<meta charset="utf-8">
-	<link rel="icon" type="image/png" sizes="32x32" href="/fxman/static/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/fxman/static/favicon-16x16.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 	<style>
 	  .table {
 	      padding: 0px 0px;
@@ -79,21 +79,6 @@
 			</div>
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
-					<h4>Terminals online status</h4>
-					<table class="styled-table" id="ter_status" width="320">
-						<thead>
-						<tr>
-							<td>Account</td>
-							<td>Last online</td>
-							<td>Last error code</td>
-						</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
-			<div style="display: table-row;">
-				<div style="display: table-cell;">
 					<h4>Market sentiments & contrarians</h4>
 					<table class="styled-table" width="320">
 						<thead>
@@ -129,149 +114,12 @@
 					</table>
 				</div>
 			</div>
-		
-		</div>
-		<div style="display: table-cell;">
-			<div style="display: table-row;">
-				<div style="display: table-cell;">
-					<h4>Accounts list</h4>
-					<table class="styled-table" id="accounts" width="960">
-						<thead>
-						<tr>
-							<td>Number</td>
-							<td>Server</td>
-							<td>Deposit</td>
-							<td>Credit</td>
-							<td>Withdraw</td>
-							<td>Balance</td>
-							<td>Equity</td>
-							<td>Margin</td>
-							<td>Deals</td>
-							<td>Net volume</td>
-							<td>Net profit</td>
-							<td>Positions</td>
-							<td>Float volume</td>
-							<td>Float loss</td>
-							<td>Deposit load</td>
-							<td>Drawdown</td>
-							<td>Last updated</td>
-						</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<div>
-	<div style="display: table-row;">
-		<div style="display: table-cell;">
-			<h4>Open positions</h4>
-			<table class="styled-table" id="positions" width="640">
-				<thead>
-				<tr>
-					<td>Ticket</td>
-					<td>Account</td>
-					<td>Open</td>
-					<td>Symbol</td>
-					<td>Type</td>
-					<td>Volume</td>
-					<td>Price</td>
-					<td>SL</td>
-					<td>TP</td>
-					<td>Comm</td>
-					<td>Swap</td>
-					<td>Profit</td>
-					<td>Magic</td>
-				</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-		<div style="display: table-cell;">
-			<h4>Closed deals</h4>
-			<table class="styled-table" id="deals" width="640">
-				<thead>
-				<tr>
-					<td>Ticket</td>
-					<td>Account</td>
-					<td>Closed</td>
-					<td>Symbol</td>
-					<td>Type</td>
-					<td>Volume</td>
-					<td>Price</td>
-					<td>SL</td>
-					<td>TP</td>
-					<td>Comm</td>
-					<td>Swap</td>
-					<td>Profit</td>
-					<td>Magic</td>
-				</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
 		</div>
 	</div>
 </div>
 </body>
 </html>
 <script>
-function load_sentiments() {
-    var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "https://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            var data = JSON.parse(xhr.responseText);
-            var sen_title = document.getElementById("sen_time");
-            var now = Math.floor((new Date()).getTime() / 1000);
-            var time = Math.floor(Date.parse(data[0][3] + " GMT") / 1000);
-            var diff = Math.floor((now - time) / 60);
-            sen_title.innerHTML = "Last updated " + diff + " minutes ago";
-            var sen_image = document.getElementById("sen_image");
-            sen_image.src = "/fxman/static/sentiments.png?" + timestamp();
-        } else {
-            console.error(users);
-        }
-    }
-    xhr.send(null);
-}
-
-function load_status() {
-    var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "https://fxman.mooo.com/fxman/status?" + timestamp(), true)
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            var data = JSON.parse(xhr.responseText);
-            var tbody = document.getElementById("ter_status").getElementsByTagName('tbody')[0];
-            while (tbody.firstChild) {
-                tbody.firstChild.remove();
-            }
-            for (i = data.length - 1; i >= 0 ; i--) {
-                var row = tbody.insertRow(0);
-                var cell1 = row.insertCell(0);
-                cell1.innerHTML = data[i][0];
-                var cell2 = row.insertCell(1);
-                var now = Math.floor((new Date()).getTime() / 1000);
-                var time = Math.floor(Date.parse(data[i][3] + " GMT") / 1000)
-	            var diff = Math.floor((now - time) / 60);
-	            if(data[i][1] == 0 || diff > 5) {
-                    cell2.classList.add('negative');
-                } else {
-                    cell2.classList.add('positive');
-                }
-	            cell2.innerHTML = data[i][3] + " GMT<br>" + diff + " minutes ago";
-	            var cell3 = row.insertCell(2);
-	            cell3.innerHTML = data[i][2];
-            }
-            
-        } else {
-            console.error(users);
-        }
-    }
-    xhr.send(null);
-}
-
 function load_signals() {
     var xhr  = new XMLHttpRequest()
     xhr.open('GET', "https://fxman.mooo.com/fxman/signals?" + timestamp(), true)
@@ -312,61 +160,6 @@ function load_signals() {
 	            var row1 = tbody.insertRow(1);
 	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
 	            tradingview(data[i][1])
-            }
-        } else {
-            console.error(users);
-        }
-    }
-    xhr.send(null);
-}
-
-function load(name) {
-    var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "https://fxman.mooo.com/fxman/" + name + "?" + timestamp(), true)
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            var data = JSON.parse(xhr.responseText);
-            var tbody = document.getElementById(name).getElementsByTagName('tbody')[0];
-            while (tbody.firstChild) {
-                tbody.firstChild.remove();
-            }
-            for (i = data.length - 1; i >= 0 ; i--) {
-                var row = tbody.insertRow(0);
-                for (j = data[i].length - 1; j >= 0; j--) {
-                    if(name == "accounts" && (j == 1 || j == 2)) {
-                        continue;
-                    }
-                    if((name == "positions" || name == "deals")) {
-                        if(j == data[i].length - 1) {
-                            continue;
-                        }
-                    }
-                    var cell = row.insertCell(0);
-                    cell.innerHTML = data[i][j];
-                    if((name == "accounts" && (j == 12 || j == 15)) || (name != "accounts" && j == 11)) {
-	                    if(data[i][j] > 0) {
-	                        cell.classList.add('positive');
-	                    } else if(data[i][j] < 0) {
-	                        cell.classList.add('negative');
-	                    }
-                    }
-                    if((name == "positions" || name == "deals")) {
-                        if(j == 4) {
-	                        if(data[i][j] == 0) {
-			                    cell.classList.add('positive');
-			                    cell.innerHTML = "Buy";
-			                } else {
-			                    cell.classList.add('negative');
-			                    cell.innerHTML = "Sell";
-	                        }
-	                    }
-                    }
-                }
-                if(name == "accounts") {
-                    var accountid = data[i][0];
-                    var row1 = tbody.insertRow(1);
-                    row1.innerHTML = '<td colspan=19 align="center"><img src="/fxman/static/d' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/m' + accountid + '.png?' + timestamp() + '"/><img src="/fxman/static/s' + accountid + '.png?'  + timestamp() + '"/></td>';
-                }
             }
         } else {
             console.error(users);
@@ -416,30 +209,16 @@ function clock() {
 
 setInterval(clock, 1000);
 
-function fast_loads() {
-  load_status();
-  load("accounts");
-}
-
-function slow_loads() {
+function loads() {
   load_sentiments();
   load_signals();
-  load("positions");
-  load("deals");
 }
 
 function reload() {
 	location.reload()
 }
 
-fast_loads();
-setInterval(fast_loads, 30 * 1000);
-slow_loads();
-setInterval(slow_loads, 300 * 1000);
+loads();
+setInterval(fast_loads, 5 * 60 * 1000);
 setInterval(reload, 30 * 60 * 1000);
-
-
-
-
-
 </script>
