@@ -94,24 +94,41 @@
 			</div>
 		</div>
 		<div style="display: table-cell;">
-			<h3>Signals</h3>
-			<table class="styled-table" id="signals" width="800">
-				<thead>
-				<tr>
-					<td>Symbol</td>
-					<td>Type</td>
-					<td>Time</td>
-					<td>Open price<br>Current price</td>
-					<td>Change</td>
-					<td>Symbol</td>
-					<td>Type</td>
-					<td>Time</td>
-					<td>Open price<br>Current price</td>
-					<td>Change</td>
-				</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
+			<div style="display: table-row;">
+				<div style="display: table-cell; colspan: 2">
+					<h2>Signals</h2>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<table class="styled-table" id="signals1" width="400">
+						<thead>
+						<tr>
+							<td>Symbol</td>
+							<td>Type</td>
+							<td>Time</td>
+							<td>Open price<br>Current price</td>
+							<td>Change</td>
+						</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div style="display: table-cell;">
+					<table class="styled-table" id="signals2" width="400">
+						<thead>
+						<tr>
+							<td>Symbol</td>
+							<td>Type</td>
+							<td>Time</td>
+							<td>Open price<br>Current price</td>
+							<td>Change</td>
+						</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -130,11 +147,21 @@ function load_signals() {
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
-            var tbody = document.getElementById("signals").getElementsByTagName('tbody')[0];
-            while (tbody.firstChild) {
-                tbody.firstChild.remove();
+            var tbody1 = document.getElementById("signals1").getElementsByTagName('tbody')[0];
+            var tbody2 = document.getElementById("signals2").getElementsByTagName('tbody')[0];
+            while (tbody1.firstChild) {
+                tbody1.firstChild.remove();
+            }
+            while (tbody2.firstChild) {
+                tbody2.firstChild.remove();
             }
             for (i = data.length - 1; i >= 0 ; i--) {
+                var tbody;
+                if(i % 2 == 0) {
+                    tbody = tbody1;
+                } else {
+                    tbody = tbody2;
+                }
                 var row = tbody.insertRow(0);
                 var cell1 = row.insertCell(0);
                 cell1.innerHTML = data[i][1];
