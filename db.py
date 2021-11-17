@@ -99,7 +99,7 @@ class Database:
                     sentiment INTEGER NOT NULL DEFAULT 0,
                     contrarian INTEGER NOT NULL DEFAULT 0,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    date TEXT NOT NULL DEFAULT strftime('%Y-%m-%d', CURRENT_TIMESTAMP),
+                    date TEXT NOT NULL DEFAULT '',
                     UNIQUE(site, symbol, date)
                 )            
             """,
