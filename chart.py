@@ -23,24 +23,20 @@ def gen_chart():
     bar_plot = plt.barh(symbols, sens, color=colors, label="Sentiment", zorder=3)
     plt.bar_label(bar_plot, fontsize=6)
     plt.grid(linestyle="dotted", zorder=0)
+    plt.twinx()
+    cons = np.asarray(cons)
+    cons = cons * 10
+    colors = np.array(['#ec407a'] * len(cons))
+    colors[cons >= 0] = '#3f51b5'
+    plt.xticks(fontsize=6)
+    plt.yticks([])
+    plt.barh(symbols, cons, color=colors, label="Contrarian", zorder=6)
     plt.title("Market Sentiment " + timestamp[0] + " GMT", fontsize=8)
     plt.tight_layout()
     file = "static/sentiments.png"
     plt.savefig(file)
     print("Charts generated:", file)
-    cons = np.asarray(cons).astype(float)
-    cons[cons == 0.0] = np.nan
-    colors = np.array(['#e53935'] * len(cons))
-    colors[cons >= 0] = '#00acc1'
-    plt.figure(figsize=(3, 2))
-    plt.xticks(rotation=90, fontsize=6, ha="right")
-    plt.yticks(fontsize=6)
-    plt.bar(symbols, cons, color=colors, label="Contrarian", zorder=3)
-    plt.title("Market Contrarian " + timestamp[0] + " GMT", fontsize=8)
-    plt.tight_layout()
-    file = "static/contrarians.png"
-    plt.savefig(file)
-    print("Charts generated:", file)
+
     con.calculate_last_statistic()
     accounts = con.get_accounts()
     for account in accounts:

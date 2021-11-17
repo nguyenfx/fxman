@@ -108,12 +108,6 @@
 						<tr>
 							<td><img id="sen_image" src="/fxman/static/sentiments.png"/></td>
 						</tr>
-						<tr>
-							<td style="padding: 0px 0px"></td>
-						</tr>
-						<tr>
-							<td><img id="con_image" src="/fxman/static/contrarians.png"/></td>
-						</tr>
 						</tbody>
 					</table>
 				</div>
@@ -236,8 +230,6 @@ function load_sentiments() {
             sen_title.innerHTML = "Last updated " + diff + " minutes ago";
             var sen_image = document.getElementById("sen_image");
             sen_image.src = "/fxman/static/sentiments.png?" + timestamp();
-            var con_image = document.getElementById("con_image");
-            con_image.src = "/fxman/static/contrarians.png?" + timestamp();
         } else {
             console.error(users);
         }
