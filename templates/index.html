@@ -283,7 +283,7 @@ function load_signals() {
                 tbody.firstChild.remove();
             }
             if(data.length > 5) {
-                data = data.slide(0, 5);
+                data = data.slice(0, 5);
             }
             for (i = data.length - 1; i >= 0 ; i--) {
                 var row = tbody.insertRow(0);
