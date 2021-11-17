@@ -13,7 +13,7 @@ Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD",
 con = Controller()
 
 
-def gen_chart():
+def sentiment_chart():
     sentiments = con.get_sentiments()
     sentiments.reverse()
     sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
@@ -47,7 +47,7 @@ def gen_chart():
     sens = np.asarray(sens)
     colors = np.array(['#ff9100'] * len(sens))
     colors[sens >= 0] = '#00bfa5'
-    plt.figure(figsize=(3.5, 6))
+    plt.figure(figsize=(3.5, 5))
     plt.xticks([])
     plt.yticks(fontsize=7)
     bar_plot = plt.barh(symbols, sens, color=colors, label="Sentiment", zorder=3)
@@ -71,6 +71,29 @@ def gen_chart():
     file = "public/sentiments.png"
     plt.savefig(file)
     print("Charts generated:", file)
+
+
+def symbol_chart():
+    for symbol in Symbols:
+        history = con.get_sentiment_history(symbol)
+        sentiment, date = zip(*history)
+        plt.figure(figsize=(3.5, 1.5))
+        plt.xticks([])
+        plt.yticks(fontsize=6)
+        plt.ylim([0, 100])
+        plt.plot(date, sentiment, color="#ffc400", label="Sentiment", zorder=6, alpha=0.7)
+        plt.fill_between(date, sentiment, color="#ffc400", alpha=0.3)
+        selling = mpatches.Patch(color='#ff9100', label='Short')
+        buying = mpatches.Patch(color='#00bfa5', label='Long')
+        plt.legend(handles=[selling, buying], prop={'size': 6}, loc='upper left')
+        plt.title(symbol + " daily sentiment", fontsize=8)
+        plt.tight_layout()
+        file = "public/sen" + symbol + ".png"
+        plt.savefig(file)
+        print("Charts generated:", file)
+
+
+def statistic_chart():
     con.calculate_last_statistic()
     accounts = con.get_accounts()
     for account in accounts:
@@ -164,5 +187,7 @@ def save_signal():
 
 
 if __name__ == "__main__":
-    gen_chart()
+    sentiment_chart()
+    symbol_chart()
+    statistic_chart()
     save_signal()
