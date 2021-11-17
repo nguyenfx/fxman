@@ -85,7 +85,6 @@
 			</div>
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
-					<h3>Market</h3>
 					<table class="styled-table" width="400">
 						<thead>
 						<tr>
@@ -99,6 +98,19 @@
 						<tr>
 							<td><img id="sen_image" src="sentiments.png"/></td>
 						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
+					<table class="styled-table" id="sentiments" width="400">
+						<thead>
+						<tr>
+							<td>Symbols sentiment history</td>
+						</tr>
+						</thead>
+						<tbody>
 						</tbody>
 					</table>
 				</div>
@@ -147,9 +159,22 @@
 </html>
 <script>
 
+symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
+           "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
+           "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "CADCHF", "XAUUSD", "BTCUSD"};
+
 function load_sentiments() {
 		var sen_image = document.getElementById("sen_image");
         sen_image.src = "sentiments.png?" + timestamp();
+        var tbody = document.getElementById("sentiments").getElementsByTagName('tbody')[0];
+        while (tbody.firstChild) {
+            tbody.firstChild.remove();
+        }
+        for (i = symbols.length - 1; i >= 0 ; i--) {
+             var row = tbody.insertRow(0);
+             var cell = row.insertCell(0);
+             cell.innerHTML = '<img src="sen"' + symbosl[i] + '.png?' + timestamp() + '">';
+        }
 }
 
 function load_signals() {
