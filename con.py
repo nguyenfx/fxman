@@ -139,7 +139,7 @@ class Controller:
         cursor.execute(statement)
         return cursor.fetchall()
 
-    def get_sentiments(self, symbol):
+    def get_sentiment_history(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
         statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments WHERE " \
