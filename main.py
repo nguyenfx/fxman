@@ -202,7 +202,7 @@ def upsert_signal():
     type = details["type"]
     risk = details["risk"]
     open_price = details["open_price"]
-    result = con.insert_signal(number, symbol, type, risk, open_price)
+    result = con.upsert_signal(number, symbol, type, risk, open_price)
     return jsonify(result)
 
 
