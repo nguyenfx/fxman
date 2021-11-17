@@ -1,5 +1,6 @@
 import json
 
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -60,7 +61,12 @@ def gen_chart():
     plt.xticks([])
     plt.yticks([])
     plt.barh(symbols, cons, color=colors, label="Contrarian", zorder=6)
-    plt.title("Market Sentiment & Contrarian\nUpdated " + timestamp[0] + " GMT, ©FXMan", fontsize=10)
+    selling = mpatches.Patch(color='#ff9100', label='Selling')
+    buying = mpatches.Patch(color='#00bfa5', label='Buying')
+    bearish = mpatches.Patch(color='#ec407a', label='Bearish')
+    bullish = mpatches.Patch(color='#3f51b5', label='Bullish')
+    plt.legend(handles=[selling, buying, bearish, bullish], prop={'size': 6})
+    plt.title("Updated " + timestamp[0] + " GMT, ©FXMan", fontsize=9)
     plt.tight_layout()
     file = "public/sentiments.png"
     plt.savefig(file)
