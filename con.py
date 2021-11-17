@@ -148,7 +148,8 @@ class Controller:
         cursor = db.cursor()
         statement = "UPDATE sentiments SET contrarian = ? WHERE site = 'mf' AND symbol = ? "
         cursor.execute(statement, [contrarian, symbol])
-        return cursor.fetchone()
+        db.commit()
+        return True
 
     def upsert_sentiment(self, site, symbol, sentiment, contrarian):
         db = self.get_db()
