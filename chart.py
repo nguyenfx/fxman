@@ -13,20 +13,32 @@ def gen_chart():
     sentiments = con.get_sentiments()
     sentiments.reverse()
     sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)
-    symbols, values, _, timestamp = zip(*sentiments)
-    print(timestamp)
-    values = np.asarray(values)
-    colors = np.array(['#ff9100'] * len(values))
-    colors[values >= 0] = '#00bfa5'
+    symbols, sens, cons, timestamp = zip(*sentiments)
+    sens = np.asarray(sens)
+    colors = np.array(['#ff9100'] * len(sens))
+    colors[sens >= 0] = '#00bfa5'
     plt.figure(figsize=(3, 4))
     plt.xticks(fontsize=6)
     plt.yticks(fontsize=6)
-    bar_plot = plt.barh(symbols, values, color=colors, label="Sentiment", zorder=3)
+    bar_plot = plt.barh(symbols, sens, color=colors, label="Sentiment", zorder=3)
     plt.bar_label(bar_plot, fontsize=6)
     plt.grid(linestyle="dotted", zorder=0)
     plt.title("Market Sentiment " + timestamp[0] + " GMT", fontsize=8)
     plt.tight_layout()
     file = "static/sentiments.png"
+    plt.savefig(file)
+    print("Charts generated:", file)
+    cons = np.asarray(cons).astype(float)
+    cons[cons == 0.0] = np.nan
+    colors = np.array(['#e53935'] * len(cons))
+    colors[cons >= 0] = '#00acc1'
+    plt.figure(figsize=(3, 2))
+    plt.xticks(rotation=90, fontsize=6, ha="right")
+    plt.yticks(fontsize=6)
+    plt.bar(symbols, cons, color=colors, label="Contrarian", zorder=3)
+    plt.title("Market Contrarian " + timestamp[0] + " GMT", fontsize=8)
+    plt.tight_layout()
+    file = "static/contrarians.png"
     plt.savefig(file)
     print("Charts generated:", file)
     con.calculate_last_statistic()
