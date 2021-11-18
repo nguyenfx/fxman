@@ -120,6 +120,7 @@
 						<thead>
 						<tr>
 							<td>Symbol</td>
+							<td>Contrarian</td>
 							<td>Trend</td>
 							<td>Entry</td>
 						</tr>
@@ -305,21 +306,30 @@ function load_tas() {
                 cell1.innerHTML = data[i][0];
                 var cell2 = row.insertCell(1);
                 cell2.innerHTML = "Neutral";
-	            if(data[i][1] < -1) {
+	            if(data[i][1] < 0) {
                     cell2.classList.add('negative');
-                    cell2.innerHTML = "Down";
-                } else if(data[i][1] > 1) {
+                    cell2.innerHTML = "Bearish";
+                } else if(data[i][1] > 0) {
                     cell2.classList.add('positive');
-                    cell2.innerHTML = "Up";
+                    cell2.innerHTML = "Bullish";
                 }
-	            var cell3 = row.insertCell(2);
-                cell3.innerHTML = "";
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = "Neutral";
 	            if(data[i][2] < -1) {
                     cell3.classList.add('negative');
-                    cell3.innerHTML = "Sell";
+                    cell3.innerHTML = "Down";
                 } else if(data[i][2] > 1) {
                     cell3.classList.add('positive');
-                    cell3.innerHTML = "Buy";
+                    cell3.innerHTML = "Up";
+                }
+	            var cell4 = row.insertCell(3);
+                cell4.innerHTML = "";
+	            if(data[i][3] < -1) {
+                    cell4.classList.add('negative');
+                    cell4.innerHTML = "Sell";
+                } else if(data[i][3] > 1) {
+                    cell4.classList.add('positive');
+                    cell4.innerHTML = "Buy";
                 }
             }
             

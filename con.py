@@ -184,10 +184,11 @@ class Controller:
     def get_tas(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "select distinct tas.symbol, sub1.ma, sub2.os from tas inner join (select symbol, sum(ma) as ma " \
+        statement = "select distinct tas.symbol, sub3.contrarian, sub1.ma, sub2.os from tas inner join (select symbol, sum(ma) as ma " \
                     "from tas where interval = '1d' or interval = '4h' group by symbol) as sub1 on tas.symbol = " \
                     "sub1.symbol inner join (select symbol, sum(os) as os from tas where interval = '1h' or interval " \
-                    "= '15m' group by symbol) as sub2 on tas.symbol = sub2.symbol "
+                    "= '15m' group by symbol) as sub2 on tas.symbol = sub2.symbol inner join (select symbol, sum(contrarian) as contrarian " \
+                    "from sentiments where date = strftime('%Y-%m-%d', CURRENT_TIMESTAMP) group by symbol) as sub3 on tas.symbol = sub3.symbol "
         cursor.execute(statement)
         return cursor.fetchall()
 
