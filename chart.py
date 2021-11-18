@@ -209,6 +209,8 @@ def find_signals():
             price = get_price(symbol)
             con.upsert_signal(0, symbol, -1, 1, price)
     signals = con.get_signals()
+    with open('public/tas.json', 'w') as file:
+        json.dump(tas, file)
     with open('public/signals.json', 'w') as file:
         json.dump(signals, file)
 
