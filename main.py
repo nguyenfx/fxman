@@ -164,6 +164,13 @@ def get_sentiments():
     return jsonify(sentiments)
 
 
+@app.route("/tas", methods=["GET"])
+@cache.cached(timeout=300)
+def get_tas():
+    signals = con.get_tas()
+    return jsonify(signals)
+
+
 @app.route("/status", methods=["GET"])
 @cache.cached(timeout=30)
 def get_status():
