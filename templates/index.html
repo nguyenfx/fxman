@@ -305,7 +305,7 @@ function load_tas() {
                 cell1.innerHTML = data[i][0];
                 var cell2 = row.insertCell(1);
                 cell2.innerHTML = "Neutral";
-	            if(data[i][1] < 1) {
+	            if(data[i][1] < -1) {
                     cell2.classList.add('negative');
                     cell2.innerHTML = "Down";
                 } else if(data[i][1] > 1) {
@@ -314,7 +314,7 @@ function load_tas() {
                 }
 	            var cell3 = row.insertCell(2);
                 cell3.innerHTML = "";
-	            if(data[i][2] < 1) {
+	            if(data[i][2] < -1) {
                     cell3.classList.add('negative');
                     cell3.innerHTML = "Sell";
                 } else if(data[i][2] > 1) {
