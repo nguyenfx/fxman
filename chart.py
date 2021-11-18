@@ -66,11 +66,12 @@ def sentiment_chart():
     bearish = mpatches.Patch(color='#ec407a', label='Bearish')
     bullish = mpatches.Patch(color='#3f51b5', label='Bullish')
     plt.legend(handles=[selling, buying, bearish, bullish], prop={'size': 6})
-    plt.title("Updated " + timestamp[0] + " GMT, ©FXMan", fontsize=9)
+    plt.title("Updated " + timestamp[0] + " GMT, ©FXMan", fontsize=8)
     plt.tight_layout()
     file = "public/sentiments.png"
     plt.savefig(file)
     print("Charts generated:", file)
+    plt.clf()
 
 
 def symbol_chart():
@@ -78,6 +79,9 @@ def symbol_chart():
         history = con.get_sentiment_history(symbol)
         sentiment, date = zip(*history)
         plt.figure(figsize=(3.5, 1.5))
+        plt.ylim([0, 100])
+        plt.yticks([])
+        plt.twinx()
         plt.xticks([])
         plt.yticks(fontsize=6)
         plt.ylim([0, 100])
@@ -86,11 +90,13 @@ def symbol_chart():
         selling = mpatches.Patch(color='#ff9100', label='Short')
         buying = mpatches.Patch(color='#00bfa5', label='Long')
         plt.legend(handles=[selling, buying], prop={'size': 6}, loc='upper left')
-        plt.title(symbol + " daily sentiment", fontsize=8)
+        plt.title(symbol, fontsize=7)
         plt.tight_layout()
         file = "public/sen" + symbol + ".png"
         plt.savefig(file)
         print("Charts generated:", file)
+        plt.cla()
+    plt.clf()
 
 
 def statistic_chart():
@@ -178,6 +184,8 @@ def statistic_chart():
         file = "static/s" + str(number) + ".png"
         plt.savefig(file)
         print("Charts generated:", file)
+        plt.cla()
+    plt.clf()
 
 
 def save_signal():
