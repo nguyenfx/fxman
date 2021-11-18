@@ -143,7 +143,8 @@ class Controller:
     def get_sentiment_history(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), date FROM sentiments WHERE symbol = ? GROUP BY date ORDER BY date LIMIT 20 "
+        statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), date FROM sentiments WHERE symbol = ? GROUP BY date " \
+                    "ORDER BY date LIMIT 10 "
         cursor.execute(statement, [symbol])
         return cursor.fetchall()
 

@@ -84,7 +84,7 @@ def symbol_chart():
     for symbol in Symbols:
         history = con.get_sentiment_history(symbol)
         sentiment, date = zip(*history)
-        plt.figure(figsize=(3.5, 1.5))
+        plt.figure(figsize=(2, 1.5))
         plt.ylim([0, 100])
         plt.yticks([])
         plt.twinx()
