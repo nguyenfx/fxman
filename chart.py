@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from con import Controller
+from ta import get_price
 
 Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
            "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
@@ -194,14 +195,26 @@ def statistic_chart():
     plt.clf()
 
 
-def save_signal():
+def find_signals():
+    tas = con.get_tas()
+    for ta in tas:
+        symbol = ta[0]
+        contrarian = ta[1]
+        trend = ta[2]
+        entry = ta[3]
+        if contrarian > 1 and trend > 1 and entry > 1:
+            price = get_price(symbol)
+            con.upsert_signal(0, symbol, 1, 1, price)
+        if contrarian < -1 and trend < -1 and entry < -1:
+            price = get_price(symbol)
+            con.upsert_signal(0, symbol, -1, 1, price)
     signals = con.get_signals()
     with open('public/signals.json', 'w') as file:
         json.dump(signals, file)
 
 
 if __name__ == "__main__":
-    sentiment_chart()
-    symbol_chart()
-    statistic_chart()
-    save_signal()
+    #sentiment_chart()
+    #symbol_chart()
+    #statistic_chart()
+    find_signals()
