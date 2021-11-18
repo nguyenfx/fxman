@@ -95,10 +95,10 @@ def find_signals():
         contrarian = ta[1]
         trend = ta[2]
         entry = ta[3]
-        if contrarian > 1 and trend > 1 and entry > 1:
+        if contrarian > 0 and trend > 1 and entry > 1:
             price = get_price(symbol)
             con.upsert_signal(0, symbol, 1, 1, price)
-        if contrarian < -1 and trend < -1 and entry < -1:
+        if contrarian < 0 and trend < -1 and entry < -1:
             price = get_price(symbol)
             con.upsert_signal(0, symbol, -1, 1, price)
     signals = con.get_signals()
