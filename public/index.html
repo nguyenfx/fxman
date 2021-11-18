@@ -182,7 +182,7 @@ function load_signals() {
             }
             for (i = data.length - 1; i >= 0 ; i--) {
                 var tbody;
-                if(i % 2 == 0) {
+                if(data[i][2] > 0) {
                     tbody = tbody1;
                 } else {
                     tbody = tbody2;
@@ -212,10 +212,10 @@ function load_signals() {
                 } else {
                     cell5.classList.add('negative');
                 }
-                cell5.innerHTML = change.toFixed(2) + "%";
-	            var row1 = tbody.insertRow(1);
-	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
-	            tradingview(data[i][1])
+                //cell5.innerHTML = change.toFixed(2) + "%";
+	            //var row1 = tbody.insertRow(1);
+	            //row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
+	            //tradingview(data[i][1])
             }
         } else {
             console.error(users);
