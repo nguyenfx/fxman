@@ -484,15 +484,12 @@ function clock() {
 
 setInterval(clock, 1000);
 
-function fast_loads() {
+function loads() {
   load_status();
-  load("accounts");
-}
-
-function slow_loads() {
   load_sentiments();
   load_tas();
   load_signals();
+  load("accounts");
   load("positions");
   load("deals");
 }
@@ -501,15 +498,8 @@ function reload() {
 	location.reload()
 }
 
-fast_loads();
+loads();
 setInterval(fast_loads, 30 * 1000);
-slow_loads();
-setInterval(slow_loads, 300 * 1000);
 setInterval(reload, 30 * 60 * 1000);
-
-
-
-
-
 
 </script>
