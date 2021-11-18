@@ -35,7 +35,12 @@ def sentiment_chart():
     plt.xticks([])
     plt.yticks([])
     plt.barh(symbols, cons, color=colors, label="Contrarian", zorder=6)
-    plt.title("Market Sentiment & Contrarian\n" + timestamp[0] + " GMT", fontsize=8)
+    selling = mpatches.Patch(color='#ff9100', label='Selling')
+    buying = mpatches.Patch(color='#00bfa5', label='Buying')
+    bearish = mpatches.Patch(color='#ec407a', label='Bearish')
+    bullish = mpatches.Patch(color='#3f51b5', label='Bullish')
+    plt.legend(handles=[selling, buying, bearish, bullish], prop={'size': 6})
+    plt.title("Updated " + timestamp[0] + " GMT", fontsize=7)
     plt.tight_layout()
     file = "static/sentiments.png"
     plt.savefig(file)
@@ -132,7 +137,7 @@ def statistic_chart():
         plt.plot(date, pos_growth, color='#00e676', label="Growth", zorder=9, alpha=0.7)
         plt.plot(date, neg_growth, color='#d500f9', label="Growth", zorder=9, alpha=0.7)
         plt.grid(linestyle="dotted", color='#9e9e9e', zorder=0)
-        plt.title("Daily profit, balance and growth", fontsize=8)
+        plt.title("Daily profit, balance and growth - " + str(number), fontsize=8)
         plt.tight_layout()
         file = "static/d" + str(number) + ".png"
         plt.savefig(file)
@@ -165,7 +170,7 @@ def statistic_chart():
         plt.plot(date, pos_growth, color='#00e676', label="Growth", zorder=9, alpha=0.7)
         plt.plot(date, neg_growth, color='#d500f9', label="Growth", zorder=9, alpha=0.7)
         plt.grid(linestyle="dotted", color='#9e9e9e', zorder=0)
-        plt.title("Monthly profit, balance and growth", fontsize=8)
+        plt.title("Monthly profit, balance and growth - " + str(number), fontsize=8)
         plt.tight_layout()
         file = "static/m" + str(number) + ".png"
         plt.savefig(file)
@@ -179,7 +184,7 @@ def statistic_chart():
         plt.xticks(rotation=45, fontsize=6, ha="right")
         plt.yticks(fontsize=6)
         plt.bar(x, y, color=colors, alpha=0.7)
-        plt.title("Symbols profit", fontsize=8)
+        plt.title("Symbols profit - " + str(number), fontsize=8)
         plt.tight_layout()
         file = "static/s" + str(number) + ".png"
         plt.savefig(file)
