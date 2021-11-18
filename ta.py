@@ -96,9 +96,7 @@ def find_signals():
         if contrarian < 0 and trend < -1 and entry < -1:
             price = get_price(symbol)
             con.upsert_signal(0, symbol, -1, 1, price)
-    signals = con.get_signals()
-    with open('public/tas.json', 'w') as file:
-        json.dump(tas, file)
+    signals = con.get_signals_delay()
     with open('public/signals.json', 'w') as file:
         json.dump(signals, file)
 
