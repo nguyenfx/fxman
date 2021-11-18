@@ -305,10 +305,10 @@ function load_tas() {
                 cell1.innerHTML = data[i][0];
                 var cell2 = row.insertCell(1);
                 cell2.innerHTML = "";
-	            if(data[i][1] < -1) {
+	            if(data[i][1] < 0) {
                     cell2.classList.add('negative');
                     cell2.innerHTML = "Bearish";
-                } else if(data[i][1] > 1) {
+                } else if(data[i][1] > 0) {
                     cell2.classList.add('positive');
                     cell2.innerHTML = "Bullish";
                 }
@@ -330,9 +330,9 @@ function load_tas() {
                     cell4.classList.add('positive');
                     cell4.innerHTML = "Buy";
                 }
-                if(data[i][1] < -1 && data[i][2] < -1 && data[i][3] < -1) {
+                if(data[i][1] < 0 && data[i][2] < -1 && data[i][3] < -1) {
                     row.classList.add('active-row');
-                } else if(data[i][1] > 1 && data[i][2] > 1 && data[i][3] > 1) {
+                } else if(data[i][1] > 0 && data[i][2] > 1 && data[i][3] > 1) {
                     row.classList.add('active-row');
                 }
             }
