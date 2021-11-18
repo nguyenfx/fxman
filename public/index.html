@@ -114,21 +114,41 @@
 				</div>
 			</div>
 		</div>
-		<div style="display: table-cell;">
-			<table class="styled-table" id="signals1" width="400">
-				<thead>
-				<tr>
-					<td>Symbol</td>
-					<td>Type</td>
-					<td>Time</td>
-					<td>Open price<br>Current price</td>
-					<td>Change</td>
-				</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
+		<div style="display: table-row;">
+			<div style="display: table-cell;">
+				<table class="styled-table" id="signals" width="800">
+					<thead>
+					<tr>
+						<td>Symbol</td>
+						<td>Type</td>
+						<td>Time</td>
+						<td>Open price<br>Current price</td>
+						<td>Change</td>
+					</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+			<div style="display: table-cell;"></div>
 		</div>
-		<div style="display: table-cell;">
+		<div style="display: table-row;">
+			<div style="display: table-cell;">
+				<div style="display: table-row;">
+					<div style="display: table-cell;">
+						<table class="styled-table" id="signals1" width="400">
+							<thead>
+							<tr>
+								<td>Symbol</td>
+								<td>Type</td>
+								<td>Time</td>
+								<td>Open price<br>Current price</td>
+								<td>Change</td>
+							</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<div style="display: table-cell;">
 			<table class="styled-table" id="signals2" width="400">
 				<thead>
 				<tr>
@@ -141,6 +161,9 @@
 				</thead>
 				<tbody></tbody>
 			</table>
+		</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -172,6 +195,36 @@ function load_signals() {
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             var data = JSON.parse(xhr.responseText);
+            var tbody = document.getElementById("signals").getElementsByTagName('tbody')[0];
+            var row = tbody.insertRow(0);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = data[0][1];
+            var cell2 = row.insertCell(1);
+            if(data[0][2] > 0) {
+                cell2.classList.add('positive');
+                cell2.innerHTML = "Buy";
+            } else {
+                cell2.classList.add('negative');
+                cell2.innerHTML = "Sell";
+            }
+            var cell3 = row.insertCell(2);
+            var now = Math.floor((new Date()).getTime() / 1000);
+            var time = Math.floor(Date.parse(data[0][6] + " GMT") / 1000)
+            var diff = Math.floor((now - time) / 60 / 60);
+            cell3.innerHTML = data[0][6] + " GMT<br>" + diff + " hours ago";
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = data[0][4] + "<br>" + data[0][5];
+            var change = (data[0][5] - data[0][4]) / data[0][4] * 100;
+            var cell5 = row.insertCell(4);
+            if((data[0][2] > 0 && change >= 0) || (data[0][2] < 0 && change <= 0)){
+                cell5.classList.add('positive');
+            } else {
+                cell5.classList.add('negative');
+            }
+            cell5.innerHTML = change.toFixed(2) + "%";
+            var row1 = tbody.insertRow(1);
+            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[0][1] + '"></div></td>'
+            tradingview(data[0][1])
             var tbody1 = document.getElementById("signals1").getElementsByTagName('tbody')[0];
             var tbody2 = document.getElementById("signals2").getElementsByTagName('tbody')[0];
             while (tbody1.firstChild) {
@@ -201,8 +254,8 @@ function load_signals() {
                 var cell3 = row.insertCell(2);
                 var now = Math.floor((new Date()).getTime() / 1000);
                 var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
-	            var diff = Math.floor((now - time) / 60);
-	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " minutes ago";
+	            var diff = Math.floor((now - time) / 60 / 60);
+	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " hours ago";
 	            var cell4 = row.insertCell(3);
                 cell4.innerHTML = data[i][4] + "<br>" + data[i][5];
                 var change = (data[i][5] - data[i][4]) / data[i][4] * 100;
@@ -226,8 +279,8 @@ function load_signals() {
 
 function tradingview(symbol) {
 	  new TradingView.widget({
-		  "width": 400,
-		  "height": 250,
+		  "width": 800,
+		  "height": 500,
 		  "symbol": "OANDA:" + symbol,
 		  "interval": "240",
 		  "timezone": "Etc/UTC",
