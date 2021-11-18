@@ -148,15 +148,6 @@ def get_contrarian():
         return "0"
 
 
-@app.route("/contrarian", methods=["POST"])
-def update_contrarian():
-    details = request.get_json()
-    symbol = details["symbol"]
-    contrarian = details["contrarian"]
-    result = con.update_contrarian(symbol, contrarian)
-    return jsonify(result)
-
-
 @app.route("/sentiments", methods=["GET"])
 @cache.cached(timeout=300)
 def get_sentiments():

@@ -163,15 +163,6 @@ class Controller:
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
-    def update_contrarian(self, symbol, contrarian):
-        db = self.get_db()
-        cursor = db.cursor()
-        statement = "UPDATE sentiments SET contrarian = ? WHERE site = 'mf' AND symbol = ? AND date = strftime(" \
-                    "'%Y-%m-%d', CURRENT_TIMESTAMP) "
-        cursor.execute(statement, [contrarian, symbol])
-        db.commit()
-        return True
-
     def upsert_sentiment(self, site, symbol, sentiment, contrarian):
         db = self.get_db()
         cursor = db.cursor()
