@@ -14,6 +14,7 @@ con = Controller()
 
 
 def sentiment_chart():
+    con.calculate_contrarian()
     sentiments = con.get_sentiments()
     sentiments.reverse()
     sentiments = filter(lambda sen: sen[0] in Symbols, sentiments)

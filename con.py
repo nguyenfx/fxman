@@ -199,6 +199,22 @@ class Controller:
         db.commit()
         return True
 
+    def calculate_contrarian(self):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "UPDATE sentiments SET contrarian = 0 WHERE site = 'mf' AND date = strftime('%Y-%m-%d', CURRENT_TIMESTAMP) "
+        cursor.execute(statement)
+        statement = "UPDATE sentiments SET contrarian = 1 WHERE site = 'mf' AND sentiment < -30 AND date = strftime(" \
+                    "'%Y-%m-%d', CURRENT_TIMESTAMP) AND (SELECT SUM(ma) FROM tas WHERE (interval = '1d' OR interval = " \
+                    "'4h') AND sentiments.symbol = tas.symbol) > 1 "
+        cursor.execute(statement)
+        statement = "UPDATE sentiments SET contrarian = -1 WHERE site = 'mf' AND sentiment > 30  AND date = strftime(" \
+                    "'%Y-%m-%d', CURRENT_TIMESTAMP) AND (SELECT SUM(ma) FROM tas WHERE (interval = '1d' OR interval = " \
+                    "'4h') AND sentiments.symbol = tas.symbol) < -1 "
+        cursor.execute(statement)
+        db.commit()
+        return True
+
     def get_statistic(self, number):
         db = self.get_db()
         cursor = db.cursor()
