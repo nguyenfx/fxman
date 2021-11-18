@@ -1,4 +1,5 @@
 import chart
+import ta
 from con import Controller
 import sen, json
 
@@ -30,11 +31,6 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 if __name__ == "__main__":
-    handle = TA_Handler(
-        symbol="BTCUSDT",
-        screener="crypto",
-        exchange="BINANCE",
-        interval=Interval.INTERVAL_4_HOURS
-    )
-    analysis = handle.get_analysis()
-    print(analysis.indicators["close"])
+    print(ta.get_price("BTCUSD"))
+    print(ta.get_price("XAUUSD"))
+    print(ta.get_price("EURUSD"))
