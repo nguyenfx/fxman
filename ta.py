@@ -88,5 +88,27 @@ def fetch():
     print(json.dumps(tas))
 
 
+def find_signals():
+    tas = con.get_tas()
+    for ta in tas:
+        symbol = ta[0]
+        contrarian = ta[1]
+        trend = ta[2]
+        entry = ta[3]
+        if contrarian > 1 and trend > 1 and entry > 1:
+            price = get_price(symbol)
+            con.upsert_signal(0, symbol, 1, 1, price)
+        if contrarian < -1 and trend < -1 and entry < -1:
+            price = get_price(symbol)
+            con.upsert_signal(0, symbol, -1, 1, price)
+    signals = con.get_signals()
+    with open('public/tas.json', 'w') as file:
+        json.dump(tas, file)
+    with open('public/signals.json', 'w') as file:
+        json.dump(signals, file)
+
+
 if __name__ == "__main__":
     fetch()
+    con.calculate_contrarian()
+    find_signals()
