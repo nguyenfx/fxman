@@ -115,6 +115,21 @@
 			</div>
 			<div style="display: table-row;">
 				<div style="display: table-cell;">
+					<h4>Technical analysis</h4>
+					<table class="styled-table" id="tas" width="320">
+						<thead>
+						<tr>
+							<td>Symbol</td>
+							<td>Trend</td>
+							<td>Entry</td>
+						</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<div style="display: table-row;">
+				<div style="display: table-cell;">
 					<h4>Trade signals</h4>
 					<table class="styled-table" id="signals" width="320">
 						<thead>
@@ -218,25 +233,6 @@
 </body>
 </html>
 <script>
-function load_sentiments() {
-    var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "https://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            var data = JSON.parse(xhr.responseText);
-            var sen_title = document.getElementById("sen_time");
-            var now = Math.floor((new Date()).getTime() / 1000);
-            var time = Math.floor(Date.parse(data[0][3] + " GMT") / 1000);
-            var diff = Math.floor((now - time) / 60);
-            sen_title.innerHTML = "Last updated " + diff + " minutes ago";
-            var sen_image = document.getElementById("sen_image");
-            sen_image.src = "/fxman/static/sentiments.png?" + timestamp();
-        } else {
-            console.error(users);
-        }
-    }
-    xhr.send(null);
-}
 
 function load_status() {
     var xhr  = new XMLHttpRequest()
@@ -264,6 +260,67 @@ function load_status() {
 	            cell2.innerHTML = data[i][3] + " GMT<br>" + diff + " minutes ago";
 	            var cell3 = row.insertCell(2);
 	            cell3.innerHTML = data[i][2];
+            }
+            
+        } else {
+            console.error(users);
+        }
+    }
+    xhr.send(null);
+}
+
+function load_sentiments() {
+    var xhr  = new XMLHttpRequest()
+    xhr.open('GET', "https://fxman.mooo.com/fxman/sentiments?" + timestamp(), true)
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var data = JSON.parse(xhr.responseText);
+            var sen_title = document.getElementById("sen_time");
+            var now = Math.floor((new Date()).getTime() / 1000);
+            var time = Math.floor(Date.parse(data[0][3] + " GMT") / 1000);
+            var diff = Math.floor((now - time) / 60);
+            sen_title.innerHTML = "Last updated " + diff + " minutes ago";
+            var sen_image = document.getElementById("sen_image");
+            sen_image.src = "/fxman/static/sentiments.png?" + timestamp();
+        } else {
+            console.error(users);
+        }
+    }
+    xhr.send(null);
+}
+
+function load_tas() {
+    var xhr  = new XMLHttpRequest()
+    xhr.open('GET', "https://fxman.mooo.com/fxman/tas?" + timestamp(), true)
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var data = JSON.parse(xhr.responseText);
+            var tbody = document.getElementById("tas").getElementsByTagName('tbody')[0];
+            while (tbody.firstChild) {
+                tbody.firstChild.remove();
+            }
+            for (i = data.length - 1; i >= 0 ; i--) {
+                var row = tbody.insertRow(0);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = data[i][0];
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = "Neutral";
+	            if(data[i][1] < 1) {
+                    cell2.classList.add('negative');
+                    cell2.innerHTML = "Down";
+                } else if(data[i][1] > 1) {
+                    cell2.classList.add('positive');
+                    cell2.innerHTML = "Up";
+                }
+	            var cell3 = row.insertCell(2);
+                cell3.innerHTML = "";
+	            if(data[i][2] < 1) {
+                    cell3.classList.add('negative');
+                    cell3.innerHTML = "Sell";
+                } else if(data[i][2] > 1) {
+                    cell3.classList.add('positive');
+                    cell3.innerHTML = "Buy";
+                }
             }
             
         } else {
@@ -423,6 +480,7 @@ function fast_loads() {
 
 function slow_loads() {
   load_sentiments();
+  load_tas();
   load_signals();
   load("positions");
   load("deals");
