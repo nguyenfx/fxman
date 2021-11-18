@@ -7,6 +7,11 @@ class Database:
 
     def __init__(self):
         self.db_connection = sqlite3.connect(DATABASE)
+        cursor = self.db_connection.cursor()
+        cursor.execute("pragma journal_mode = WAL")
+        cursor.execute("pragma synchronous = normal ")
+        cursor.execute("pragma temp_store = memory ")
+        cursor.execute("pragma mmap_size = 50000000")
         self.create_tables()
 
     def get_db_conn(self):
