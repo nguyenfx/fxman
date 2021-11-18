@@ -306,10 +306,10 @@ function load_tas() {
                 cell1.innerHTML = data[i][0];
                 var cell2 = row.insertCell(1);
                 cell2.innerHTML = "";
-	            if(data[i][1] < 0) {
+	            if(data[i][1] < -1) {
                     cell2.classList.add('negative');
                     cell2.innerHTML = "Bearish";
-                } else if(data[i][1] > 0) {
+                } else if(data[i][1] > 1) {
                     cell2.classList.add('positive');
                     cell2.innerHTML = "Bullish";
                 }
