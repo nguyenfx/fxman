@@ -181,6 +181,21 @@ class Controller:
         db.commit()
         return True
 
+    def get_tas(self):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "SELECT * FROM tas ORDER BY symbol, interval "
+        cursor.execute(statement)
+        return cursor.fetchall()
+
+    def upsert_ta(self, symbol, interval, ma, os):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "INSERT OR REPLACE INTO tas(symbol, interval, ma, os) VALUES (?, ?, ?, ?) "
+        cursor.execute(statement, [symbol, interval, ma, os])
+        db.commit()
+        return True
+
     def get_statistic(self, number):
         db = self.get_db()
         cursor = db.cursor()

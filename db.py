@@ -20,9 +20,10 @@ class Database:
             # """DROP TABLE IF EXISTS positions""",
             # """DROP INDEX IF EXISTS idx_position_ticket_number""",
             # """DROP TABLE IF EXISTS statistic""",
-            # """DROP TABLE IF EXISTS sentiments""",
             # """DROP TABLE IF EXISTS status""",
+            # """DROP TABLE IF EXISTS sentiments""",
             # """DROP TABLE IF EXISTS signals""",
+            # """DROP TABLE IF EXISTS tas""",
             """CREATE TABLE IF NOT EXISTS accounts(
                     number INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
@@ -120,6 +121,15 @@ class Database:
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                     datehour TEXT NOT NULL DEFAULT '',
                     UNIQUE(number, symbol, type, datehour)
+                )            
+            """,
+            """CREATE TABLE IF NOT EXISTS tas(
+                    symbol TEXT NOT NULL,  
+                    interval TEXT NOT NULL,
+                    ma INTEGER NOT NULL DEFAULT 0,
+                    os INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(symbol, interval)
                 )            
             """,
         ]
