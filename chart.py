@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from con import Controller
-from ta import get_price
 
 Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
            "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
@@ -84,7 +83,7 @@ def symbol_chart():
     for symbol in Symbols:
         history = con.get_sentiment_history(symbol)
         sentiment, date = zip(*history)
-        plt.figure(figsize=(2, 1.5))
+        plt.figure(figsize=(1.8, 1.4))
         plt.ylim([0, 100])
         plt.yticks([])
         plt.twinx()

@@ -5,42 +5,46 @@
 	<link href="favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
 	<link href="favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
 	<style>
-	  .table {
-	      padding: 0px 0px;
-	  }
-      .styled-table {
-          border-collapse: collapse;
-          margin: 3px 0;
-          font-size: 0.7em;
-          font-family: sans-serif;
-          min-width: 400px;
-          max-width: 1200px;
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      }
-      .styled-table thead tr {
-          background-color: #7b1fa2;
-          color: #ffffff;
-          text-align: left;
-      }
-      .styled-table th,
-      .styled-table td {
-          padding: 3px 5px;
-      }
-      .styled-table td.positive {
-          color: #3f51b5;
-      }
-      .styled-table td.negative {
-          color: #f44336;
-      }
-      .styled-table tbody tr {
-          border-bottom: 1px solid #dddddd;
-      }
-      .styled-table tbody tr:last-of-type {
-          border-bottom: 2px solid #7b1fa2;
-      }
-	
-	
-	
+		.table {
+			padding: 0px 0px;
+		}
+		.styled-table {
+			border-collapse: collapse;
+			margin: 5px 0;
+			font-size: 0.8em;
+			font-family: sans-serif;
+			min-width: 400px;
+			max-width: 1200px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		.styled-table thead tr {
+			background-color: #7b1fa2;
+			color: #ffffff;
+			text-align: left;
+		}
+		.styled-table th,
+		.styled-table td {
+			padding: 3px 5px;
+		}
+		.styled-table td.positive {
+			color: #3f51b5;
+		}
+		.styled-table td.negative {
+			color: #f44336;
+		}
+		.styled-table tbody tr {
+			border-bottom: 1px solid #dddddd;
+		}
+		.styled-table tbody tr:nth-of-type(odd) {
+			background-color: #f3f3f3;
+		}
+		.styled-table tbody tr:last-of-type {
+			border-bottom: 2px solid #7b1fa2;
+		}
+		.styled-table tbody tr.active-row {
+			font-weight: bold;
+			color: #333333;
+		}
 	
 	</style>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-M4T3RN7503"></script>
@@ -184,8 +188,10 @@ function load_sentiments() {
         }
         for (i = symbols.length - 1; i >= 0 ; i--) {
              var row = tbody.insertRow(0);
-             var cell = row.insertCell(0);
-             cell.innerHTML = '<img src="sen' + symbols[i] + '.png?' + timestamp() + '">';
+             var row1 = tbody.insertRow(1);
+             var cell = row1.insertCell(0);
+             cell.innerHTML = '<img src="sen' + symbols[i] + '.png?' + timestamp() + '"><img src="sen' + symbols[i - 1] + '.png?' + timestamp() + '">';
+             i--;
         }
 }
 
@@ -201,6 +207,7 @@ function load_signals() {
             }
             for (i = 4; i >= 0 ; i--) {
 	            var row = tbody.insertRow(0);
+	            row.classList.add('active-row');
 	            var cell1 = row.insertCell(0);
 	            cell1.innerHTML = data[i][1];
 	            var cell2 = row.insertCell(1);
@@ -330,7 +337,7 @@ function reload() {
 }
 
 loads();
-setInterval(loads, 5 * 60 * 1000);
+setInterval(loads, 1 * 60 * 1000);
 setInterval(reload, 30 * 60 * 1000);
 
 
