@@ -208,7 +208,7 @@ function load_signals() {
             while (tbody.firstChild) {
                 tbody.firstChild.remove();
             }
-            for (i = 4; i >= 0 ; i--) {
+            for (i = 2; i >= 0 ; i--) {
 	            var row = tbody.insertRow(0);
 	            row.classList.add('active-row');
 	            var cell1 = row.insertCell(0);
@@ -248,7 +248,7 @@ function load_signals() {
             while (tbody2.firstChild) {
                 tbody2.firstChild.remove();
             }
-            for (i = data.length - 1; i >= 5 ; i--) {
+            for (i = data.length - 1; i > 2 ; i--) {
                 var tbody;
                 if(data[i][2] > 0) {
                     tbody = tbody1;
