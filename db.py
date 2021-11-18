@@ -128,6 +128,7 @@ class Database:
                     UNIQUE(number, symbol, type, datehour)
                 )            
             """,
+            """CREATE INDEX IF NOT EXISTS idx_signals_symbol ON signals(symbol)""",
             """CREATE TABLE IF NOT EXISTS tas(
                     symbol TEXT NOT NULL,  
                     interval TEXT NOT NULL,
