@@ -2,6 +2,8 @@ import chart
 from con import Controller
 import sen, json
 
+from tradingview_ta import TA_Handler, Interval
+
 import requests
 from bs4 import BeautifulSoup
 from sen import ff_fetch
@@ -28,5 +30,11 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 if __name__ == "__main__":
-    tas = con.get_tas()
-    print(tas)
+    handle = TA_Handler(
+        symbol="BTCUSDT",
+        screener="crypto",
+        exchange="BINANCE",
+        interval=Interval.INTERVAL_4_HOURS
+    )
+    analysis = handle.get_analysis()
+    print(analysis.indicators["close"])

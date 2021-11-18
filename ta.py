@@ -13,6 +13,32 @@ Intervals = {Interval.INTERVAL_1_DAY, Interval.INTERVAL_4_HOURS, Interval.INTERV
 con = Controller()
 
 
+def get_price(symbol):
+    if symbol == "XAUUSD":
+        handle = TA_Handler(
+            symbol="GOLD",
+            screener="cfd",
+            exchange="TVC",
+            interval=Interval.INTERVAL_1_MINUTE
+        )
+    elif symbol == "BTCUSD":
+        handle = TA_Handler(
+            symbol="BTCUSDT",
+            screener="crypto",
+            exchange="BINANCE",
+            interval=Interval.INTERVAL_1_MINUTE
+        )
+    else:
+        handle = TA_Handler(
+            symbol=symbol,
+            screener="forex",
+            exchange="FX_IDC",
+            interval=Interval.INTERVAL_1_MINUTE
+        )
+    analysis = handle.get_analysis()
+    return analysis.indicators["close"]
+
+
 def upsert(symbol, timeframe, analysis):
     ma = 0
     if analysis.moving_averages['RECOMMENDATION'] == "STRONG_BUY" or analysis.moving_averages[

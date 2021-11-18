@@ -214,7 +214,7 @@ def find_signals():
 
 
 if __name__ == "__main__":
-    #sentiment_chart()
-    #symbol_chart()
-    #statistic_chart()
+    sentiment_chart()
+    symbol_chart()
+    statistic_chart()
     find_signals()
