@@ -144,40 +144,30 @@ class Controller:
     def get_sentiments(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments WHERE " \
-                    "date = strftime('%Y-%m-%d', CURRENT_TIMESTAMP) GROUP BY symbol ORDER BY symbol "
+        statement = "SELECT symbol, ROUND(AVG(sentiment) - 0.5), SUM(contrarian), timestamp FROM sentiments " \
+                    "WHERE date = DATE('now') GROUP BY symbol ORDER BY symbol "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def get_sentiment_history(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), date FROM sentiments WHERE symbol = ? GROUP BY date " \
-                    "ORDER BY date LIMIT 10 "
+        statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), date FROM sentiments WHERE symbol = ? " \
+                    "GROUP BY date ORDER BY date LIMIT 10 "
         cursor.execute(statement, [symbol])
         return cursor.fetchall()
-
-    def get_sentiment(self, symbol):
-        db = self.get_db()
-        cursor = db.cursor()
-        statement = "SELECT ROUND(AVG(sentiment) - 0.5) FROM sentiments WHERE symbol = ? AND date = strftime(" \
-                    "'%Y-%m-%d', CURRENT_TIMESTAMP) GROUP BY symbol "
-        cursor.execute(statement, [symbol])
-        return cursor.fetchone()
 
     def get_contrarian(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT SUM(contrarian) FROM sentiments WHERE symbol = ? AND date = strftime('%Y-%m-%d', " \
-                    "CURRENT_TIMESTAMP) GROUP BY symbol "
+        statement = "SELECT SUM(contrarian) FROM sentiments WHERE symbol = ? AND date = DATE('now') GROUP BY symbol "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
     def upsert_sentiment(self, site, symbol, sentiment, contrarian):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian, date) VALUES (?, ?, ?, ?, " \
-                    "strftime('%Y-%m-%d', CURRENT_TIMESTAMP)) "
+        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian, date) VALUES (?, ?, ?, ?, DATE('now')) "
         cursor.execute(statement, [site, symbol, sentiment, contrarian])
         db.commit()
         return True
@@ -189,7 +179,7 @@ class Controller:
                     "from tas where interval = '1d' or interval = '4h' group by symbol) as sub1 on tas.symbol = " \
                     "sub1.symbol inner join (select symbol, sum(os) as os from tas where interval = '1h' or interval " \
                     "= '15m' group by symbol) as sub2 on tas.symbol = sub2.symbol inner join (select symbol, sum(contrarian) as contrarian " \
-                    "from sentiments where date = strftime('%Y-%m-%d', CURRENT_TIMESTAMP) group by symbol) as sub3 on tas.symbol = sub3.symbol "
+                    "from sentiments where date = DATE('now') group by symbol) as sub3 on tas.symbol = sub3.symbol "
         cursor.execute(statement)
         return cursor.fetchall()
 
@@ -204,15 +194,20 @@ class Controller:
     def calculate_contrarian(self):
         db = self.get_db()
         cursor = db.cursor()
-        #statement = "UPDATE sentiments SET contrarian = 0 WHERE site = 'mf' AND date = strftime('%Y-%m-%d', CURRENT_TIMESTAMP) "
-        #cursor.execute(statement)
-        statement = "UPDATE sentiments SET contrarian = 1 WHERE site = 'mf' AND sentiment < -30 AND date = strftime(" \
-                    "'%Y-%m-%d', CURRENT_TIMESTAMP) AND (SELECT SUM(ma) FROM tas WHERE (interval = '1d' OR interval = " \
-                    "'4h') AND sentiments.symbol = tas.symbol) > 1 "
+        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian, date) " \
+                    "SELECT 'avg', symbol, ROUND(AVG(sentiment) - 0.5), 0, date FROM sentiments " \
+                    "WHERE site != 'avg' AND date = DATE('now') GROUP BY symbol, date "
         cursor.execute(statement)
-        statement = "UPDATE sentiments SET contrarian = -1 WHERE site = 'mf' AND sentiment > 30  AND date = strftime(" \
-                    "'%Y-%m-%d', CURRENT_TIMESTAMP) AND (SELECT SUM(ma) FROM tas WHERE (interval = '1d' OR interval = " \
-                    "'4h') AND sentiments.symbol = tas.symbol) < -1 "
+        statement = "UPDATE sentiments SET contrarian = (CASE " \
+                    "    WHEN (sentiment < -40 OR (sentiment < -20 AND sentiment < (SELECT sentiment FROM sentiments WHERE site = 'avg' AND date = DATE(date,'-1 day')))) " \
+                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND interval = '1d' OR interval= '4h') > 1 " \
+                    "        THEN 1 " \
+                    "    WHEN (sentiment > 40 OR (sentiment > 20 AND sentiment > (SELECT sentiment FROM sentiments WHERE site = 'avg' AND date = DATE(date,'-1 day')))) " \
+                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND interval = '1d' OR interval= '4h') < 1 " \
+                    "        THEN -1 " \
+                    "    ELSE 0 " \
+                    "END) " \
+                    "WHERE site = 'avg' AND date = DATE('now') "
         cursor.execute(statement)
         db.commit()
         return True
