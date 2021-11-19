@@ -203,7 +203,7 @@ class Controller:
                     "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND interval = '1d' OR interval= '4h') > 1 " \
                     "        THEN 1 " \
                     "    WHEN (sentiment > 40 OR (sentiment > 20 AND sentiment > (SELECT sentiment FROM sentiments WHERE site = 'avg' AND date = DATE(date,'-1 day')))) " \
-                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND interval = '1d' OR interval= '4h') < 1 " \
+                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND interval = '1d' OR interval= '4h') < -1 " \
                     "        THEN -1 " \
                     "    ELSE 0 " \
                     "END) " \
