@@ -47,17 +47,13 @@
 			font-weight: bold;
 			color: #333333;
 		}
-	
 	</style>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-M4T3RN7503"></script>
 	<script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
 	gtag('js', new Date());
-	
 	gtag('config', 'G-M4T3RN7503');
-
-	
 	</script>
 	<script type="text/javascript">
 	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -134,6 +130,7 @@
 		</div>
 		<div style="display: table-row;">
 			<div style="display: table-cell;">
+				<h6>* The free signals are 1 hour delay</h6>
 				<table class="styled-table" id="signals" width="800">
 					<thead>
 					<tr>
@@ -188,171 +185,5 @@
 </body>
 </html>
 <script>
-
-var symbols = ["EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
-           "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
-           "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "CADCHF", "XAUUSD", "BTCUSD"];
-
-function load_sentiments() {
-		var sen_image = document.getElementById("sen_image");
-        sen_image.src = "sentiments.png?" + timestamp();
-        var tbody = document.getElementById("sentiments").getElementsByTagName('tbody')[0];
-        while (tbody.firstChild) {
-            tbody.firstChild.remove();
-        }
-        for (i = symbols.length - 1; i >= 0 ; i--) {
-             var row = tbody.insertRow(0);
-             var row1 = tbody.insertRow(1);
-             var cell = row1.insertCell(0);
-             cell.innerHTML = '<img src="sen' + symbols[i] + '.png?' + timestamp() + '"><img src="sen' + symbols[i - 1] + '.png?' + timestamp() + '">';
-             i--;
-        }
-}
-
-function load_signals() {
-    var xhr  = new XMLHttpRequest()
-    xhr.open('GET', "signals.json?" + timestamp(), true)
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            var data = JSON.parse(xhr.responseText);
-            var tbody = document.getElementById("signals").getElementsByTagName('tbody')[0];
-            while (tbody.firstChild) {
-                tbody.firstChild.remove();
-            }
-            for (i = 2; i >= 0 ; i--) {
-	            var row = tbody.insertRow(0);
-	            row.classList.add('active-row');
-	            var cell1 = row.insertCell(0);
-	            cell1.innerHTML = data[i][1];
-	            var cell2 = row.insertCell(1);
-	            if(data[i][2] > 0) {
-	                cell2.classList.add('positive');
-	                cell2.innerHTML = "Buy";
-	            } else {
-	                cell2.classList.add('negative');
-	                cell2.innerHTML = "Sell";
-	            }
-	            var cell3 = row.insertCell(2);
-	            var now = Math.floor((new Date()).getTime() / 1000);
-	            var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
-	            var diff = Math.floor((now - time) / 60 / 60);
-	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " hours ago";
-	            var cell4 = row.insertCell(3);
-	            cell4.innerHTML = data[i][4] + "<br>" + data[i][5];
-	            var change = (data[i][5] - data[i][4]) / data[i][4] * 100;
-	            var cell5 = row.insertCell(4);
-	            if((data[i][2] > 0 && change >= 0) || (data[i][2] < 0 && change <= 0)){
-	                cell5.classList.add('positive');
-	            } else {
-	                cell5.classList.add('negative');
-	            }
-	            cell5.innerHTML = change.toFixed(2) + "%";
-	            var row1 = tbody.insertRow(1);
-	            row1.innerHTML = '<td colspan="5"><div id="tradingview_' + data[i][1] + '"></div></td>'
-	            tradingview(data[i][1]);
-	        }
-            var tbody1 = document.getElementById("signals1").getElementsByTagName('tbody')[0];
-            var tbody2 = document.getElementById("signals2").getElementsByTagName('tbody')[0];
-            while (tbody1.firstChild) {
-                tbody1.firstChild.remove();
-            }
-            while (tbody2.firstChild) {
-                tbody2.firstChild.remove();
-            }
-            for (i = data.length - 1; i > 2 ; i--) {
-                var tbody;
-                if(data[i][2] > 0) {
-                    tbody = tbody1;
-                } else {
-                    tbody = tbody2;
-                }
-                var row = tbody.insertRow(0);
-                var cell1 = row.insertCell(0);
-                cell1.innerHTML = data[i][1];
-                var cell2 = row.insertCell(1);
-                if(data[i][2] > 0) {
-                    cell2.classList.add('positive');
-                    cell2.innerHTML = "Buy";
-                } else {
-                    cell2.classList.add('negative');
-                    cell2.innerHTML = "Sell";
-                }
-                var cell3 = row.insertCell(2);
-                var now = Math.floor((new Date()).getTime() / 1000);
-                var time = Math.floor(Date.parse(data[i][6] + " GMT") / 1000)
-	            var diff = Math.floor((now - time) / 60 / 60);
-	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " hours ago";
-	            var cell4 = row.insertCell(3);
-                cell4.innerHTML = data[i][4] + "<br>" + data[i][5];
-                var change = (data[i][5] - data[i][4]) / data[i][4] * 100;
-                var cell5 = row.insertCell(4);
-                if((data[i][2] > 0 && change >= 0) || (data[i][2] < 0 && change <= 0)){
-                    cell5.classList.add('positive');
-                } else {
-                    cell5.classList.add('negative');
-                }
-                cell5.innerHTML = change.toFixed(2) + "%";
-            }
-        } else {
-            console.error(users);
-        }
-    }
-    xhr.send(null);
-}
-
-function tradingview(symbol) {
-	  new TradingView.widget({
-		  "width": 800,
-		  "height": 400,
-		  "symbol": "OANDA:" + symbol,
-		  "interval": "60",
-		  "timezone": "Etc/UTC",
-		  "theme": "light",
-		  "style": "1",
-		  "locale": "en",
-		  "toolbar_bg": "#f1f3f6",
-		  "enable_publishing": false,
-		  "enable_publishing": false,
-		  "save_image": false,
-		  "show_popup_button": true,
-		  "popup_width": "980",
-		  "popup_height": "610",
-		    "studies": [
-			    "MAExp@tv-basicstudies",
-			    "MACD@tv-basicstudies",
-			    "RSI@tv-basicstudies",
-			  ],
-		  "container_id": "tradingview_" + symbol
-		}
-	  );
-}
-
-function timestamp() {
-	return(Math.floor((new Date()).getTime() / 100000));
-}
-
-function clock() {
-	var local_time = document.getElementById("local_time");
-	var gmt_time = document.getElementById("gmt_time");
-	var date = new Date();
-	local_time.innerHTML = date.toString('en-US').substring(0, date.toString('en-US').indexOf('('));
-	gmt_time.innerHTML = date.toUTCString('en-US');
-}
-
-setInterval(clock, 1000);
-
-function loads() {
-  load_sentiments();
-  load_signals();
-}
-
-function reload() {
-	location.reload()
-}
-
-loads();
-setInterval(loads, 1 * 60 * 1000);
-setInterval(reload, 30 * 60 * 1000);
-
-
+var _0x4c749a=_0x4671;(function(_0x17ed97,_0x514a98){var _0x18324a=_0x4671,_0x1fa185=_0x17ed97();while(!![]){try{var _0x3de81b=parseInt(_0x18324a(0x159))/0x1*(-parseInt(_0x18324a(0x11f))/0x2)+parseInt(_0x18324a(0x134))/0x3+parseInt(_0x18324a(0x13d))/0x4+parseInt(_0x18324a(0x141))/0x5+-parseInt(_0x18324a(0x128))/0x6*(parseInt(_0x18324a(0x16f))/0x7)+-parseInt(_0x18324a(0x151))/0x8*(-parseInt(_0x18324a(0x137))/0x9)+-parseInt(_0x18324a(0x138))/0xa;if(_0x3de81b===_0x514a98)break;else _0x1fa185['push'](_0x1fa185['shift']());}catch(_0x389026){_0x1fa185['push'](_0x1fa185['shift']());}}}(_0x8caf,0x517e1));function _0x8caf(){var _0x43f282=['443816vyUvyC','USDJPY','MACD@tv-basicstudies','length','sentiments','\x22><img\x20src=\x22sen','onload','insertCell','4126VNchnB','\x20GMT','\x22></div></td>','GBPNZD','signals1','610','innerHTML','classList','\x20GMT<br>','toFixed','<td\x20colspan=\x225\x22><div\x20id=\x22tradingview_','<img\x20src=\x22sen','getElementsByTagName','negative','positive','toString','signals2','RSI@tv-basicstudies','AUDCHF','EURCAD','USDCAD','readyState','3831002hkxeSy','GBPJPY','getElementById','OANDA:','local_time','MAExp@tv-basicstudies','Sell','2TxqCtT','CADCHF','.png?','tbody','CADJPY','EURNZD','NZDUSD','AUDNZD','light','6GyEvbU','tradingview_','error','EURJPY','BTCUSD','200','reload','EURUSD','EURGBP','EURCHF','AUDCAD','signals.json?','1382592tofPoK','<br>','980','9kVXUww','4996460xjhHuH','src','Buy','substring','GBPCHF','935096WYHAxh','active-row','signals','floor','3173680tmSmMZ','\x20hours\x20ago','status','widget','sentiments.png?','CHFJPY','firstChild','toUTCString','add','Etc/UTC','send','getTime','insertRow','sen_image','remove','parse'];_0x8caf=function(){return _0x43f282;};return _0x8caf();}var symbols=[_0x4c749a(0x12f),'GBPUSD','AUDUSD',_0x4c749a(0x125),'USDCHF',_0x4c749a(0x152),_0x4c749a(0x16d),_0x4c749a(0x12b),_0x4c749a(0x119),'AUDJPY','NZDJPY',_0x4c749a(0x146),_0x4c749a(0x123),_0x4c749a(0x130),'EURAUD',_0x4c749a(0x124),_0x4c749a(0x131),_0x4c749a(0x16c),'GBPAUD',_0x4c749a(0x15c),_0x4c749a(0x13c),'GBPCAD',_0x4c749a(0x126),_0x4c749a(0x16b),_0x4c749a(0x132),'NZDCHF','NZDCAD',_0x4c749a(0x120),'XAUUSD',_0x4c749a(0x12c)];function _0x4671(_0x998921,_0x4fa83b){var _0x8cafe0=_0x8caf();return _0x4671=function(_0x46715e,_0x488e20){_0x46715e=_0x46715e-0x119;var _0x227a2b=_0x8cafe0[_0x46715e];return _0x227a2b;},_0x4671(_0x998921,_0x4fa83b);}function load_sentiments(){var _0x5700e9=_0x4c749a,_0x4f905e=document['getElementById'](_0x5700e9(0x14e));_0x4f905e[_0x5700e9(0x139)]=_0x5700e9(0x145)+timestamp();var _0x113fbb=document[_0x5700e9(0x11a)](_0x5700e9(0x155))[_0x5700e9(0x165)](_0x5700e9(0x122))[0x0];while(_0x113fbb['firstChild']){_0x113fbb[_0x5700e9(0x147)][_0x5700e9(0x14f)]();}for(i=symbols[_0x5700e9(0x154)]-0x1;i>=0x0;i--){var _0x5f3918=_0x113fbb[_0x5700e9(0x14d)](0x0),_0xe2c698=_0x113fbb[_0x5700e9(0x14d)](0x1),_0x413609=_0xe2c698[_0x5700e9(0x158)](0x0);_0x413609[_0x5700e9(0x15f)]=_0x5700e9(0x164)+symbols[i]+_0x5700e9(0x121)+timestamp()+_0x5700e9(0x156)+symbols[i-0x1]+'.png?'+timestamp()+'\x22>',i--;}}function load_signals(){var _0x117d14=_0x4c749a,_0x321a66=new XMLHttpRequest();_0x321a66['open']('GET',_0x117d14(0x133)+timestamp(),!![]),_0x321a66[_0x117d14(0x157)]=function(){var _0x217c6d=_0x117d14;if(_0x321a66[_0x217c6d(0x16e)]==0x4&&_0x321a66[_0x217c6d(0x143)]==_0x217c6d(0x12d)){var _0x387880=JSON[_0x217c6d(0x150)](_0x321a66['responseText']),_0x52fbea=document['getElementById'](_0x217c6d(0x13f))[_0x217c6d(0x165)]('tbody')[0x0];while(_0x52fbea[_0x217c6d(0x147)]){_0x52fbea[_0x217c6d(0x147)][_0x217c6d(0x14f)]();}for(i=0x2;i>=0x0;i--){var _0x58ac10=_0x52fbea[_0x217c6d(0x14d)](0x0);_0x58ac10[_0x217c6d(0x160)][_0x217c6d(0x149)](_0x217c6d(0x13e));var _0x27952f=_0x58ac10[_0x217c6d(0x158)](0x0);_0x27952f[_0x217c6d(0x15f)]=_0x387880[i][0x1];var _0x5dfe85=_0x58ac10[_0x217c6d(0x158)](0x1);_0x387880[i][0x2]>0x0?(_0x5dfe85[_0x217c6d(0x160)]['add'](_0x217c6d(0x167)),_0x5dfe85[_0x217c6d(0x15f)]=_0x217c6d(0x13a)):(_0x5dfe85[_0x217c6d(0x160)][_0x217c6d(0x149)]('negative'),_0x5dfe85[_0x217c6d(0x15f)]='Sell');var _0x3e461c=_0x58ac10[_0x217c6d(0x158)](0x2),_0x16124d=Math[_0x217c6d(0x140)](new Date()[_0x217c6d(0x14c)]()/0x3e8),_0x1cbabb=Math['floor'](Date['parse'](_0x387880[i][0x6]+'\x20GMT')/0x3e8),_0x485505=Math[_0x217c6d(0x140)]((_0x16124d-_0x1cbabb)/0x3c/0x3c);_0x3e461c['innerHTML']=_0x387880[i][0x6]+'\x20GMT<br>'+_0x485505+_0x217c6d(0x142);var _0x2cee97=_0x58ac10['insertCell'](0x3);_0x2cee97['innerHTML']=_0x387880[i][0x4]+'<br>'+_0x387880[i][0x5];var _0xfb4bbf=(_0x387880[i][0x5]-_0x387880[i][0x4])/_0x387880[i][0x4]*0x64,_0x532d65=_0x58ac10[_0x217c6d(0x158)](0x4);_0x387880[i][0x2]>0x0&&_0xfb4bbf>=0x0||_0x387880[i][0x2]<0x0&&_0xfb4bbf<=0x0?_0x532d65[_0x217c6d(0x160)][_0x217c6d(0x149)]('positive'):_0x532d65[_0x217c6d(0x160)][_0x217c6d(0x149)](_0x217c6d(0x166));_0x532d65[_0x217c6d(0x15f)]=_0xfb4bbf[_0x217c6d(0x162)](0x2)+'%';var _0x5ed3b6=_0x52fbea[_0x217c6d(0x14d)](0x1);_0x5ed3b6[_0x217c6d(0x15f)]=_0x217c6d(0x163)+_0x387880[i][0x1]+_0x217c6d(0x15b),tradingview(_0x387880[i][0x1]);}var _0x40099b=document[_0x217c6d(0x11a)](_0x217c6d(0x15d))[_0x217c6d(0x165)](_0x217c6d(0x122))[0x0],_0x3b1be3=document[_0x217c6d(0x11a)](_0x217c6d(0x169))['getElementsByTagName'](_0x217c6d(0x122))[0x0];while(_0x40099b[_0x217c6d(0x147)]){_0x40099b[_0x217c6d(0x147)][_0x217c6d(0x14f)]();}while(_0x3b1be3[_0x217c6d(0x147)]){_0x3b1be3[_0x217c6d(0x147)][_0x217c6d(0x14f)]();}for(i=_0x387880[_0x217c6d(0x154)]-0x1;i>0x2;i--){var _0x52fbea;_0x387880[i][0x2]>0x0?_0x52fbea=_0x40099b:_0x52fbea=_0x3b1be3;var _0x58ac10=_0x52fbea[_0x217c6d(0x14d)](0x0),_0x27952f=_0x58ac10[_0x217c6d(0x158)](0x0);_0x27952f['innerHTML']=_0x387880[i][0x1];var _0x5dfe85=_0x58ac10['insertCell'](0x1);_0x387880[i][0x2]>0x0?(_0x5dfe85[_0x217c6d(0x160)][_0x217c6d(0x149)](_0x217c6d(0x167)),_0x5dfe85[_0x217c6d(0x15f)]=_0x217c6d(0x13a)):(_0x5dfe85[_0x217c6d(0x160)][_0x217c6d(0x149)]('negative'),_0x5dfe85[_0x217c6d(0x15f)]=_0x217c6d(0x11e));var _0x3e461c=_0x58ac10[_0x217c6d(0x158)](0x2),_0x16124d=Math['floor'](new Date()[_0x217c6d(0x14c)]()/0x3e8),_0x1cbabb=Math[_0x217c6d(0x140)](Date['parse'](_0x387880[i][0x6]+_0x217c6d(0x15a))/0x3e8),_0x485505=Math[_0x217c6d(0x140)]((_0x16124d-_0x1cbabb)/0x3c/0x3c);_0x3e461c['innerHTML']=_0x387880[i][0x6]+_0x217c6d(0x161)+_0x485505+_0x217c6d(0x142);var _0x2cee97=_0x58ac10['insertCell'](0x3);_0x2cee97[_0x217c6d(0x15f)]=_0x387880[i][0x4]+_0x217c6d(0x135)+_0x387880[i][0x5];var _0xfb4bbf=(_0x387880[i][0x5]-_0x387880[i][0x4])/_0x387880[i][0x4]*0x64,_0x532d65=_0x58ac10[_0x217c6d(0x158)](0x4);_0x387880[i][0x2]>0x0&&_0xfb4bbf>=0x0||_0x387880[i][0x2]<0x0&&_0xfb4bbf<=0x0?_0x532d65['classList'][_0x217c6d(0x149)](_0x217c6d(0x167)):_0x532d65['classList'][_0x217c6d(0x149)](_0x217c6d(0x166)),_0x532d65[_0x217c6d(0x15f)]=_0xfb4bbf['toFixed'](0x2)+'%';}}else console[_0x217c6d(0x12a)](users);},_0x321a66[_0x117d14(0x14b)](null);}function tradingview(_0x2416d6){var _0x58c901=_0x4c749a;new TradingView[(_0x58c901(0x144))]({'width':0x320,'height':0x190,'symbol':_0x58c901(0x11b)+_0x2416d6,'interval':'60','timezone':_0x58c901(0x14a),'theme':_0x58c901(0x127),'style':'1','locale':'en','toolbar_bg':'#f1f3f6','enable_publishing':![],'enable_publishing':![],'save_image':![],'show_popup_button':!![],'popup_width':_0x58c901(0x136),'popup_height':_0x58c901(0x15e),'studies':[_0x58c901(0x11d),_0x58c901(0x153),_0x58c901(0x16a)],'container_id':_0x58c901(0x129)+_0x2416d6});}function timestamp(){return Math['floor'](new Date()['getTime']()/0x186a0);}function clock(){var _0x2e5b34=_0x4c749a,_0x3bf3d9=document[_0x2e5b34(0x11a)](_0x2e5b34(0x11c)),_0x176eba=document[_0x2e5b34(0x11a)]('gmt_time'),_0x5e4a92=new Date();_0x3bf3d9[_0x2e5b34(0x15f)]=_0x5e4a92[_0x2e5b34(0x168)]('en-US')[_0x2e5b34(0x13b)](0x0,_0x5e4a92[_0x2e5b34(0x168)]('en-US')['indexOf']('(')),_0x176eba[_0x2e5b34(0x15f)]=_0x5e4a92[_0x2e5b34(0x148)]('en-US');}setInterval(clock,0x3e8);function loads(){load_sentiments(),load_signals();}function reload(){var _0xd8bdbb=_0x4c749a;location[_0xd8bdbb(0x12e)]();}loads(),setInterval(loads,0x1*0x3c*0x3e8),setInterval(reload,0x1e*0x3c*0x3e8);
 </script>
