@@ -123,6 +123,8 @@ class Database:
                     risk INTEGER NOT NULL DEFAULT 0,
                     open_price REAL NOT NULL DEFAULT 0.0,
                     current_price REAL NOT NULL DEFAULT 0.0,
+                    max_price REAL NOT NULL DEFAULT 0.0,
+                    min_price REAL NOT NULL DEFAULT 0.0,
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                     datehour TEXT NOT NULL DEFAULT '',
                     UNIQUE(number, symbol, type, datehour)
