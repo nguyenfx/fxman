@@ -32,3 +32,4 @@ headers = {
 
 if __name__ == "__main__":
     con.calculate_contrarian()
+    ta.find_signals()

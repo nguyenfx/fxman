@@ -103,16 +103,19 @@ class Controller:
     def get_signals(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 1440 ORDER " \
-                    "BY timestamp DESC "
+        statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 1440 " \
+                    "AND (symbol = 'BTCUSD' OR (strftime('%w',date('now')) > 1 AND strftime('%w',date('now')) < 5)) " \
+                    "ORDER BY timestamp DESC "
         cursor.execute(statement)
         return cursor.fetchall()
 
     def get_signals_delay(self):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 > 60 AND (" \
-                    "JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 1440 * 30 ORDER BY timestamp DESC "
+        statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 > 60 " \
+                    "AND (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 1440 * 30 " \
+                    "AND (symbol = 'BTCUSD' OR (strftime('%w',date('now')) > 1 AND strftime('%w',date('now')) < 5)) " \
+                    "ORDER BY timestamp DESC "
         cursor.execute(statement)
         return cursor.fetchall()
 
