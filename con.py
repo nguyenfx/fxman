@@ -104,7 +104,6 @@ class Controller:
         db = self.get_db()
         cursor = db.cursor()
         statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 1440 " \
-                    "AND (symbol = 'BTCUSD' OR (strftime('%w',date('now')) > 1 AND strftime('%w',date('now')) < 5)) " \
                     "ORDER BY timestamp DESC "
         cursor.execute(statement)
         return cursor.fetchall()
@@ -114,7 +113,6 @@ class Controller:
         cursor = db.cursor()
         statement = "SELECT * FROM signals WHERE (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 > 60 " \
                     "AND (JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 1440 * 30 " \
-                    "AND (symbol = 'BTCUSD' OR (strftime('%w',date('now')) > 1 AND strftime('%w',date('now')) < 5)) " \
                     "ORDER BY timestamp DESC "
         cursor.execute(statement)
         return cursor.fetchall()
@@ -182,7 +180,8 @@ class Controller:
                     "from tas where interval = '1d' or interval = '4h' group by symbol) as sub1 on tas.symbol = " \
                     "sub1.symbol inner join (select symbol, sum(os) as os from tas where interval = '1h' or interval " \
                     "= '15m' group by symbol) as sub2 on tas.symbol = sub2.symbol inner join (select symbol, sum(contrarian) as contrarian " \
-                    "from sentiments where date = DATE('now') group by symbol) as sub3 on tas.symbol = sub3.symbol "
+                    "from sentiments where date = DATE('now') group by symbol) as sub3 on tas.symbol = sub3.symbol " \
+                    "AND (tas.symbol = 'BTCUSD' OR (strftime('%w',date('now')) > 1 AND strftime('%w',date('now')) < 5)) "
         cursor.execute(statement)
         return cursor.fetchall()
 
