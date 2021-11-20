@@ -116,6 +116,17 @@ class Database:
                     UNIQUE(site, symbol, date)
                 )            
             """,
+            """CREATE INDEX IF NOT EXISTS idx_sentiment ON sentiments(site, symbol, date)""",
+            """CREATE TABLE IF NOT EXISTS tas(
+                    symbol TEXT NOT NULL,  
+                    interval TEXT NOT NULL,
+                    ma INTEGER NOT NULL DEFAULT 0,
+                    os INTEGER NOT NULL DEFAULT 0,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(symbol, interval)
+                )            
+            """,
+            """CREATE INDEX IF NOT EXISTS idx_tas_interval_symbol ON tas(symbol, interval)""",
             """CREATE TABLE IF NOT EXISTS signals(
                     number TEXT NOT NULL,
                     symbol TEXT NOT NULL,  
@@ -131,15 +142,6 @@ class Database:
                 )            
             """,
             """CREATE INDEX IF NOT EXISTS idx_signals_symbol ON signals(symbol)""",
-            """CREATE TABLE IF NOT EXISTS tas(
-                    symbol TEXT NOT NULL,  
-                    interval TEXT NOT NULL,
-                    ma INTEGER NOT NULL DEFAULT 0,
-                    os INTEGER NOT NULL DEFAULT 0,
-                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                    UNIQUE(symbol, interval)
-                )            
-            """,
             """CREATE TRIGGER IF NOT EXISTS update_max_price
                AFTER UPDATE ON signals
                WHEN new.current_price > old.max_price
