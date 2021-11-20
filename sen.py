@@ -97,9 +97,9 @@ def bn_fetch():
     for api in bnapis:
         response = requests.get(bnurl + api + "?symbol=BTCUSDT&period=4h", headers=headers)
         rows = json.loads(response.text)
-        ratio = float(rows[-1]['longShortRatio'])
-        sum += (ratio - 1) / (ratio + 1)
-    sentiment = int(sum / len(bnapis) * 100)
+        sum += float(rows[-1]['longShortRatio'])
+    ratio = sum / len(bnapis)
+    sentiment = int((ratio - 1) / (ratio + 1) * 100)
     con.upsert_sentiment("bn", symbol, sentiment, 0)
 
 
