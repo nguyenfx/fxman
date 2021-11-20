@@ -154,7 +154,7 @@ class Controller:
         db = self.get_db()
         cursor = db.cursor()
         statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), substr(date, 3) FROM sentiments WHERE symbol = ? " \
-                    "GROUP BY date ORDER BY date LIMIT 20 "
+                    "GROUP BY date ORDER BY date DESC LIMIT 20 "
         cursor.execute(statement, [symbol])
         return cursor.fetchall()
 

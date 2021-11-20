@@ -82,6 +82,7 @@ def sentiment_chart():
 def symbol_chart():
     for symbol in Symbols:
         history = con.get_sentiment_history(symbol)
+        history.reverse()
         sentiment, date = zip(*history)
         plt.figure(figsize=(3.5, 2))
         plt.xticks(rotation=45, fontsize=6, ha="right")
