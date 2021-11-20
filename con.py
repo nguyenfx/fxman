@@ -128,7 +128,7 @@ class Controller:
     def upsert_signal(self, number, symbol, type, risk, open_price):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO signals(number, symbol, type, risk, open_price, current_price, max_price, min_price, datehour) " \
+        statement = "INSERT OR IGNORE INTO signals(number, symbol, type, risk, open_price, current_price, max_price, min_price, datehour) " \
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H', CURRENT_TIMESTAMP)) "
         cursor.execute(statement, [number, symbol, type, risk, open_price, open_price, open_price, open_price])
         db.commit()
