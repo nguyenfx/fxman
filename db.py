@@ -140,6 +140,20 @@ class Database:
                     UNIQUE(symbol, interval)
                 )            
             """,
+            """CREATE TRIGGER IF NOT EXISTS update_max_price
+               AFTER UPDATE ON signals
+               WHEN new.current_price > old.max_price
+                BEGIN
+                   UPDATE signals SET max_price = current_price WHERE symbol = new.symbol;
+                END;
+            """,
+            """CREATE TRIGGER IF NOT EXISTS update_min_price
+               AFTER UPDATE ON signals
+               WHEN new.current_price < old.min_price
+                BEGIN
+                   UPDATE signals SET min_price = current_price WHERE symbol = new.symbol;
+                END;
+            """
         ]
         db_conn = self.get_db_conn()
         cursor = db_conn.cursor()
