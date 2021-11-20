@@ -153,8 +153,8 @@ class Controller:
     def get_sentiment_history(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), date FROM sentiments WHERE symbol = ? " \
-                    "GROUP BY date ORDER BY date LIMIT 10 "
+        statement = "SELECT ROUND(50 + AVG(sentiment) / 2 - 0.5), substr(date, 3) FROM sentiments WHERE symbol = ? " \
+                    "GROUP BY date ORDER BY date LIMIT 20 "
         cursor.execute(statement, [symbol])
         return cursor.fetchall()
 
@@ -170,6 +170,14 @@ class Controller:
         cursor = db.cursor()
         statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian, date) VALUES (?, ?, ?, ?, DATE('now')) "
         cursor.execute(statement, [site, symbol, sentiment, contrarian])
+        db.commit()
+        return True
+
+    def upsert_sentiment_date(self, site, symbol, sentiment, contrarian, date):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "INSERT OR REPLACE INTO sentiments(site, symbol, sentiment, contrarian, date) VALUES (?, ?, ?, ?, ?) "
+        cursor.execute(statement, [site, symbol, sentiment, contrarian, date])
         db.commit()
         return True
 

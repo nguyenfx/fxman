@@ -83,8 +83,8 @@ def symbol_chart():
     for symbol in Symbols:
         history = con.get_sentiment_history(symbol)
         sentiment, date = zip(*history)
-        plt.figure(figsize=(1.8, 1.4))
-        plt.xticks([])
+        plt.figure(figsize=(3.5, 2))
+        plt.xticks(rotation=45, fontsize=6, ha="right")
         plt.yticks([])
         plt.ylim([0, 100])
         bg = np.full(len(sentiment), 100)
