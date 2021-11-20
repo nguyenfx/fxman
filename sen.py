@@ -93,15 +93,14 @@ def df_fetch():
 
 def bn_fetch():
     symbol = "BTCUSD"
-    sumratio = 0
+    sum = 0
     for api in bnapis:
         response = requests.get(bnurl + api + "?symbol=BTCUSDT&period=4h", headers=headers)
         rows = json.loads(response.text)
         ratio = float(rows[-1]['longShortRatio'])
-        sumratio += ratio
-    sentiment = int((sumratio / 3 - 1) / (sumratio / 3 + 1) * 100)
+        sum += (ratio - 1) / (ratio + 1)
+    sentiment = int(sum / len(bnapis) * 100)
     con.upsert_sentiment("bn", symbol, sentiment, 0)
-    con.upsert_sentiment("mf", symbol, sentiment, 0)
 
 
 def fetch():
