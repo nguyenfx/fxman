@@ -120,8 +120,8 @@ class Controller:
     def get_signal(self, symbol):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT type * risk FROM signals WHERE symbol = ? AND  (JULIANDAY('now') - JULIANDAY(timestamp))  " \
-                    "* 86400 / 60 < 60 ORDER BY timestamp DESC "
+        statement = "SELECT type * risk FROM signals WHERE symbol = ? AND " \
+                    "(JULIANDAY('now') - JULIANDAY(timestamp)) * 86400 / 60 < 60 ORDER BY timestamp DESC "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
@@ -233,8 +233,8 @@ class Controller:
     def get_symbol_profits(self, number):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? AND (type = 0 " \
-                    "OR type = 1) GROUP BY symbol ORDER BY sprofit DESC "
+        statement = "SELECT symbol, SUM(profit - commission + swap) AS sprofit FROM deals WHERE number = ? " \
+                    "AND (type = 0 OR type = 1) GROUP BY symbol ORDER BY sprofit DESC "
         cursor.execute(statement, [number])
         return cursor.fetchall()
 
