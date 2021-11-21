@@ -8,7 +8,7 @@ from con import Controller
 
 Symbols = {"EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCHF", "USDJPY", "USDCAD", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY",
            "CHFJPY", "CADJPY", "EURGBP", "EURAUD", "EURNZD", "EURCHF", "EURCAD", "GBPAUD", "GBPNZD", "GBPCHF", "GBPCAD",
-           "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "CADCHF", "XAUUSD", "BTCUSD"}
+           "AUDNZD", "AUDCHF", "AUDCAD", "NZDCHF", "NZDCAD", "CADCHF", "XAUUSD", "BTCUSD", "ETHUSD"}
 
 con = Controller()
 

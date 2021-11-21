@@ -91,11 +91,10 @@ def df_fetch():
         con.upsert_sentiment("df", symbol, sentiment, contrarian)
 
 
-def bn_fetch():
-    symbol = "BTCUSD"
+def bn_fetch(name):
     sum = 0
     for api in bnapis:
-        response = requests.get(bnurl + api + "?symbol=BTCUSDT&period=4h", headers=headers)
+        response = requests.get(bnurl + api + "?symbol=" + name + "USDT&period=4h", headers=headers)
         rows = json.loads(response.text)
         if api == "topLongShortPositionRatio":
             sum += float(rows[-1]['longShortRatio']) * 2
@@ -103,7 +102,7 @@ def bn_fetch():
             sum += float(rows[-1]['longShortRatio'])
     ratio = sum / (len(bnapis) + 1)
     sentiment = int((ratio - 1) / (ratio + 1) * 100)
-    con.upsert_sentiment("bn", symbol, sentiment, 0)
+    con.upsert_sentiment("bn", name + "USD", sentiment, 0)
 
 
 def fetch():
@@ -111,7 +110,8 @@ def fetch():
     mf_fetch()
     fc_fetch()
     df_fetch()
-    bn_fetch()
+    bn_fetch("BTC")
+    bn_fetch("ETH")
     sentiments = con.get_sentiments()
     print(json.dumps(sentiments))
 

@@ -79,6 +79,14 @@ def fetch():
         )
         analysis = handle.get_analysis()
         upsert("BTCUSD", interval, analysis)
+        handle = TA_Handler(
+            symbol="ETHUSDT",
+            screener="crypto",
+            exchange="BINANCE",
+            interval=interval
+        )
+        analysis = handle.get_analysis()
+        upsert("ETHUSD", interval, analysis)
     tas = con.get_tas()
     print(json.dumps(tas))
 

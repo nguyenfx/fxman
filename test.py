@@ -34,14 +34,12 @@ headers = {
 bnurl = "https://fapi.binance.com/futures/data/"
 bnapis = ['topLongShortAccountRatio', 'topLongShortPositionRatio', 'globalLongShortAccountRatio']
 
-
-if __name__ == "__main__":
-    symbol = "BTCUSD"
-    response = requests.get(bnurl + bnapis[0] + "?symbol=BTCUSDT&period=1d", headers=headers)
+def fetch(name):
+    response = requests.get(bnurl + bnapis[0] + "?symbol=" + name + "USDT&period=1d", headers=headers)
     rows0 = json.loads(response.text)
-    response = requests.get(bnurl + bnapis[1] + "?symbol=BTCUSDT&period=1d", headers=headers)
+    response = requests.get(bnurl + bnapis[1] + "?symbol=" + name + "USDT&period=1d", headers=headers)
     rows1 = json.loads(response.text)
-    response = requests.get(bnurl + bnapis[2] + "?symbol=BTCUSDT&period=1d", headers=headers)
+    response = requests.get(bnurl + bnapis[2] + "?symbol=" + name + "USDT&period=1d", headers=headers)
     rows2 = json.loads(response.text)
     for i in range(len(rows0)):
         date0 = datetime.fromtimestamp(rows0[i]['timestamp'] / 1000)
@@ -50,7 +48,11 @@ if __name__ == "__main__":
         sum = float(rows0[i]['longShortRatio']) + float(rows1[i]['longShortRatio']) * 2 + float(rows2[i]['longShortRatio'])
         ratio = sum / 4
         sentiment = int((ratio - 1) / (ratio + 1) * 100)
-        con.upsert_sentiment_date('bn', 'BTCUSD', sentiment, 0, date0.strftime('%Y-%m-%d'))
-        con.upsert_sentiment_date('avg', 'BTCUSD', sentiment, 0, date0.strftime('%Y-%m-%d'))
+        con.upsert_sentiment_date('bn', name + "USD", sentiment, 0, date0.strftime('%Y-%m-%d'))
+        con.upsert_sentiment_date('avg', name + "USD", sentiment, 0, date0.strftime('%Y-%m-%d'))
         print(date0.strftime('%Y-%m-%d'), sentiment)
 
+
+if __name__ == "__main__":
+    fetch("BTC")
+    fetch("ETH")
