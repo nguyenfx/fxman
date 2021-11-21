@@ -323,10 +323,10 @@ function load_tas() {
                 }
 	            var cell4 = row.insertCell(3);
                 cell4.innerHTML = "";
-	            if(data[i][3] < -1) {
+	            if(data[i][3] < -2) {
                     cell4.classList.add('negative');
                     cell4.innerHTML = "Sell";
-                } else if(data[i][3] > 1) {
+                } else if(data[i][3] > 2) {
                     cell4.classList.add('positive');
                     cell4.innerHTML = "Buy";
                 }

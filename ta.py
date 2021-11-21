@@ -11,6 +11,7 @@ Symbols = ["FX_IDC:EURUSD", "FX_IDC:GBPUSD", "FX_IDC:AUDUSD", "FX_IDC:NZDUSD", "
            "FX_IDC:AUDCAD", "FX_IDC:NZDCHF", "FX_IDC:NZDCAD", "FX_IDC:CADCHF"]
 
 Intervals = {Interval.INTERVAL_1_DAY, Interval.INTERVAL_4_HOURS, Interval.INTERVAL_1_HOUR, Interval.INTERVAL_15_MINUTES}
+Ratings = {"NEUTRAL": 0, "BUY": 1, "STRONG_BUY": 2, "SELL": -1, "STRONG_SELL": -2}
 
 con = Controller()
 
@@ -42,18 +43,8 @@ def get_price(symbol):
 
 
 def upsert(symbol, timeframe, analysis):
-    ma = 0
-    if analysis.moving_averages['RECOMMENDATION'] == "STRONG_BUY" or analysis.moving_averages[
-        'RECOMMENDATION'] == "BUY":
-        ma = 1
-    elif analysis.moving_averages['RECOMMENDATION'] == "STRONG_SELL" or analysis.moving_averages[
-        'RECOMMENDATION'] == "SELL":
-        ma = -1
-    os = 0
-    if analysis.oscillators['RECOMMENDATION'] == "STRONG_BUY" or analysis.oscillators['RECOMMENDATION'] == "BUY":
-        os = 1
-    elif analysis.oscillators['RECOMMENDATION'] == "STRONG_SELL" or analysis.oscillators['RECOMMENDATION'] == "SELL":
-        os = -1
+    ma = Ratings[analysis.moving_averages['RECOMMENDATION']]
+    os = Ratings[analysis.oscillators['RECOMMENDATION']]
     con.upsert_ta(symbol, timeframe, ma, os)
 
 
@@ -98,10 +89,10 @@ def find_signals():
         contrarian = ta[1]
         trend = ta[2]
         entry = ta[3]
-        if contrarian > 0 and trend > 1 and entry > 1:
+        if contrarian > 0 and trend > 1 and entry > 2:
             price = get_price(symbol)
             con.upsert_signal(0, symbol, 1, 1, price)
-        if contrarian < 0 and trend < -1 and entry < -1:
+        if contrarian < 0 and trend < -1 and entry < -2:
             price = get_price(symbol)
             con.upsert_signal(0, symbol, -1, 1, price)
     signals = con.get_signals_delay()
