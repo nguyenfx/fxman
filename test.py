@@ -47,8 +47,8 @@ if __name__ == "__main__":
         date0 = datetime.fromtimestamp(rows0[i]['timestamp'] / 1000)
         date1 = datetime.fromtimestamp(rows1[i]['timestamp'] / 1000)
         date2 = datetime.fromtimestamp(rows2[i]['timestamp'] / 1000)
-        sum = float(rows0[i]['longShortRatio']) + float(rows1[i]['longShortRatio']) + float(rows2[i]['longShortRatio'])
-        ratio = sum / 3
+        sum = float(rows0[i]['longShortRatio']) + float(rows1[i]['longShortRatio']) * 2 + float(rows2[i]['longShortRatio'])
+        ratio = sum / 4
         sentiment = int((ratio - 1) / (ratio + 1) * 100)
         con.upsert_sentiment_date('bn', 'BTCUSD', sentiment, 0, date0.strftime('%Y-%m-%d'))
         con.upsert_sentiment_date('avg', 'BTCUSD', sentiment, 0, date0.strftime('%Y-%m-%d'))
