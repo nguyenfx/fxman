@@ -91,10 +91,10 @@ def find_signals():
         entry = ta[3]
         if contrarian > 0 and trend > 1 and entry > 2:
             price = get_price(symbol)
-            con.upsert_signal(0, symbol, 1, 1, price)
+            con.insert_signal(0, symbol, 1, 1, price)
         if contrarian < 0 and trend < -1 and entry < -2:
             price = get_price(symbol)
-            con.upsert_signal(0, symbol, -1, 1, price)
+            con.insert_signal(0, symbol, -1, 1, price)
     signals = con.get_signals_delay()
     with open('public/signals.json', 'w') as file:
         json.dump(signals, file)
@@ -103,4 +103,5 @@ def find_signals():
 if __name__ == "__main__":
     fetch()
     con.calculate_contrarian()
+    con.update_signals_mm()
     find_signals()

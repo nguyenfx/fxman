@@ -143,14 +143,6 @@ class Database:
                 )            
             """,
             """CREATE INDEX IF NOT EXISTS idx_signals_symbol ON signals(symbol)""",
-            """CREATE TRIGGER IF NOT EXISTS update_min_max_price
-                   AFTER UPDATE ON signals
-                   WHEN new.current_price > old.max_price OR new.current_price < old.min_price
-                    BEGIN
-                       UPDATE signals SET max_price = current_price WHERE symbol = new.symbol AND max_price < new.current_price;
-                       UPDATE signals SET min_price = current_price WHERE symbol = new.symbol AND min_price > new.current_price;
-                    END;
-            """,
         ]
         db_conn = self.get_db_conn()
         cursor = db_conn.cursor()

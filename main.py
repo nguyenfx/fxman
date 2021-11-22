@@ -178,14 +178,14 @@ def get_signal():
 
 
 @app.route("/signal", methods=["POST"])
-def upsert_signal():
+def insert_signal():
     details = request.get_json()
     number = details["number"]
     symbol = details["symbol"]
     type = details["type"]
     risk = details["risk"]
     open_price = details["open_price"]
-    result = con.upsert_signal(number, symbol, type, risk, open_price)
+    result = con.insert_signal(number, symbol, type, risk, open_price)
     return jsonify(result)
 
 

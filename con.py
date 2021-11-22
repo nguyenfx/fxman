@@ -125,7 +125,7 @@ class Controller:
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
-    def upsert_signal(self, number, symbol, type, risk, open_price):
+    def insert_signal(self, number, symbol, type, risk, open_price):
         db = self.get_db()
         cursor = db.cursor()
         statement = "INSERT OR IGNORE INTO signals(number, symbol, type, risk, open_price, current_price, max_price, min_price, datehour) " \
@@ -139,6 +139,16 @@ class Controller:
         cursor = db.cursor()
         statement = "UPDATE signals SET current_price = ? WHERE symbol = ? "
         cursor.execute(statement, [current_price, symbol])
+        db.commit()
+        return True
+
+    def update_signals_mm(self):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "UPDATE signals SET max_price = current_price WHERE max_price < current_price "
+        cursor.execute(statement)
+        statement = "UPDATE signals SET min_price = current_price WHERE min_price > current_price "
+        cursor.execute(statement)
         db.commit()
         return True
 
