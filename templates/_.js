@@ -171,8 +171,11 @@ function tradingview(symbol) {
 function topips(symbol, type, change) {
     var pips = 0;
     var digits = 0.0001;
-    if(symbol.search("JPY") > 0 || symbol.search("BTC") > 0 || symbol.search("ETH") > 0) {
+    if(symbol.search("JPY") > 0) {
         digits = 0.01;
+    }
+    if(symbol.search("BTC") > 0 || symbol.search("ETH") > 0) {
+        digits = 1;
     }
     if(type == 1) {
         pips = change / digits;
