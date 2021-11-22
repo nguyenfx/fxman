@@ -52,11 +52,12 @@ function load_signals() {
 	            cell3.innerHTML = data[i][6] + " GMT<br>" + diff + " hours ago";
 	            var cell4 = row.insertCell(3);
 	            cell4.innerHTML = data[i][4] + "<br>" + data[i][5];
-	            var change = (data[i][5] - data[i][4]) / data[i][4] * 100;
-	            var max_up = (data[i][8] - data[i][4]) / data[i][4] * 100;
-                var max_down = (data[i][9] - data[i][4]) / data[i][4] * 100;
+	            var change = data[i][5] - data[i][4];
+	            var changep = (data[i][5] - data[i][4]) / data[i][4] * 100;
+	            var max_up = data[i][8] - data[i][4];
+                var max_down = data[i][9] - data[i][4];
                 var cell5 = row.insertCell(4);
-                cell5.innerHTML = change.toFixed(2) + "%<br>" + topips(data[i][1], data[i][2], change) + " pips";
+                cell5.innerHTML = changep.toFixed(2) + "%<br>" + topips(data[i][1], data[i][2], change) + " pips";
                 var cell6 = row.insertCell(5);
                 if(data[i][2] > 0){
                     if(change >= 0){
