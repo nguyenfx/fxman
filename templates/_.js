@@ -125,11 +125,6 @@ function load_signals() {
 	                    cell5.classList.add('negative');
 	                }
 	                cell6.innerHTML = topips(data[i][1], data[i][2], max_up) + " pips<br>" + topips(data[i][1], data[i][2], max_down) + " pips";
-	                if(max_up > max_down){
-	                    cell6.classList.add('positive');
-	                } else {
-	                    cell6.classList.add('negative');
-	                }
                 } else {
                     if(change <= 0){
 	                    cell5.classList.add('positive');
@@ -137,11 +132,6 @@ function load_signals() {
 	                    cell5.classList.add('negative');
 	                }
 	                cell6.innerHTML = topips(data[i][1], data[i][2], max_down * -1) + " pips<br>" + topips(data[i][1], data[i][2], max_up * -1) + " pips";
-	                if(max_up < max_down){
-	                    cell6.classList.add('positive');
-	                } else {
-	                    cell6.classList.add('negative');
-	                }
                 }
             }
         } else {
