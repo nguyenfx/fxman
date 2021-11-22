@@ -114,7 +114,7 @@ function load_signals() {
                 var change = data[i][5] - data[i][4];
                 var changep = (data[i][5] - data[i][4]) / data[i][4] * 100;
                 var max_up = data[i][8] - data[i][4];
-                var max_down = data[i][4] - data[i][9];
+                var max_down = data[i][9] - data[i][4];
                 var cell5 = row.insertCell(4);
                 cell5.innerHTML = changep.toFixed(2) + "%<br>" + topips(data[i][1], data[i][2], change) + " pips";
                 var cell6 = row.insertCell(5);
@@ -125,6 +125,11 @@ function load_signals() {
 	                    cell5.classList.add('negative');
 	                }
 	                cell6.innerHTML = topips(data[i][1], data[i][2], max_up) + " pips<br>" + topips(data[i][1], data[i][2], max_down) + " pips";
+	                if(max_up > max_down){
+	                    cell6.classList.add('positive');
+	                } else {
+	                    cell6.classList.add('negative');
+	                }
                 } else {
                     if(change <= 0){
 	                    cell5.classList.add('positive');
@@ -132,6 +137,11 @@ function load_signals() {
 	                    cell5.classList.add('negative');
 	                }
 	                cell6.innerHTML = topips(data[i][1], data[i][2], max_down * -1) + " pips<br>" + topips(data[i][1], data[i][2], max_up * -1) + " pips";
+	                if(max_up < max_down){
+	                    cell6.classList.add('positive');
+	                } else {
+	                    cell6.classList.add('negative');
+	                }
                 }
             }
         } else {
