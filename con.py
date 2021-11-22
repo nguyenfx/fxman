@@ -189,7 +189,7 @@ class Controller:
                     "sub1.symbol inner join (select symbol, sum(os) as os from tas where interval = '1h' or interval " \
                     "= '15m' group by symbol) as sub2 on tas.symbol = sub2.symbol inner join (select symbol, sum(contrarian) as contrarian " \
                     "from sentiments where date = DATE('now') group by symbol) as sub3 on tas.symbol = sub3.symbol " \
-                    "AND (tas.symbol = 'BTCUSD' OR tas.symbol = 'ETHUSD' OR (strftime('%w',date('now')) > 1 AND strftime('%w',date('now')) < 5)) "
+                    "AND (tas.symbol = 'BTCUSD' OR tas.symbol = 'ETHUSD' OR (strftime('%w',date('now')) > 0 AND strftime('%w',date('now')) < 6)) "
         cursor.execute(statement)
         return cursor.fetchall()
 
