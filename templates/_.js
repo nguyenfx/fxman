@@ -174,6 +174,9 @@ function topips(symbol, type, change) {
     if(symbol.search("JPY") >= 0) {
         digits = 0.01;
     }
+    if(symbol.search("XAU") >= 0) {
+        digits = 0.1;
+    }
     if(symbol.search("BTC") >= 0 || symbol.search("ETH") >= 0) {
         digits = 1;
     }
