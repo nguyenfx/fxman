@@ -73,36 +73,6 @@
 	  // Initialize Firebase
 	  const app = initializeApp(firebaseConfig);
 	  const analytics = getAnalytics(app);
-	  var ui = new firebaseui.auth.AuthUI(firebase.auth());
-	  var uiConfig = {
-		  callbacks: {
-		    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-		      // User successfully signed in.
-		      // Return type determines whether we continue the redirect automatically
-		      // or whether we leave that to developer to handle.
-		      return true;
-		    },
-		    uiShown: function() {
-		      // The widget is rendered.
-		      // Hide the loader.
-		      document.getElementById('loader').style.display = 'none';
-		    }
-		  },
-		  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-		  signInFlow: 'popup',
-		  signInSuccessUrl: 'index.html',
-		  signInOptions: [
-		    // Leave the lines as is for the providers you want to offer your users.
-		    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-		    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-		    firebase.auth.PhoneAuthProvider.PROVIDER_ID
-		  ],
-		  // Terms of service url.
-		  tosUrl: 'index.html',
-		  // Privacy policy url.
-		  privacyPolicyUrl: 'index.html',
-		};
-		
 	</script>
 	
 	<script src="https://s3.tradingview.com/tv.js"></script>
@@ -305,6 +275,35 @@
 </body>
 </html>
 <script>
+	  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+	  var uiConfig = {
+		  callbacks: {
+		    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+		      // User successfully signed in.
+		      // Return type determines whether we continue the redirect automatically
+		      // or whether we leave that to developer to handle.
+		      return true;
+		    },
+		    uiShown: function() {
+		      // The widget is rendered.
+		      // Hide the loader.
+		      document.getElementById('loader').style.display = 'none';
+		    }
+		  },
+		  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+		  signInFlow: 'popup',
+		  signInSuccessUrl: 'index.html',
+		  signInOptions: [
+		    // Leave the lines as is for the providers you want to offer your users.
+		    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+		    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+		    firebase.auth.PhoneAuthProvider.PROVIDER_ID
+		  ],
+		  // Terms of service url.
+		  tosUrl: 'index.html',
+		  // Privacy policy url.
+		  privacyPolicyUrl: 'index.html',
+		};
 ui.start('#firebaseui-auth-container', uiConfig);
 function _0x4fe9(i,e){var t=_0x6d71();return(_0x4fe9=function(i,e){return t[i-=358]})(i,e)}var _0x171b50=_0x4fe9;!function(){for(var i=_0x4fe9,e=_0x6d71();;)try{if(922321==-parseInt(i(397))*(parseInt(i(415))/2)+-parseInt(i(383))/3+parseInt(i(395))/4*(parseInt(i(442))/5)+-parseInt(i(406))/6+-parseInt(i(420))/7*(parseInt(i(402))/8)+parseInt(i(358))/9+parseInt(i(389))/10*(parseInt(i(434))/11))break;e.push(e.shift())}catch(i){e.push(e.shift())}}();var symbols=[_0x171b50(398),_0x171b50(447),_0x171b50(407),_0x171b50(404),_0x171b50(456),_0x171b50(450),"NZDUSD",_0x171b50(372),"USDJPY",_0x171b50(361),_0x171b50(443),_0x171b50(408),_0x171b50(403),_0x171b50(368),_0x171b50(418),_0x171b50(444),_0x171b50(432),_0x171b50(454),_0x171b50(373),_0x171b50(365),_0x171b50(378),"GBPAUD",_0x171b50(416),_0x171b50(439),_0x171b50(376),_0x171b50(441),"AUDCHF",_0x171b50(430),"NZDCHF","NZDCAD",_0x171b50(449)];function load_sentiments(){var e=_0x171b50;document[e(370)](e(396))[e(414)]=e(391)+timestamp();for(var t=document[e(370)](e(392))[e(411)](e(401))[0];t[e(375)];)t[e(375)][e(438)]();for(i=symbols[e(428)]-1;0<=i;i--){t[e(413)](0);t[e(413)](1)[e(386)](0)[e(400)]=e(453)+symbols[i]+e(379)+timestamp()+'">'}}function load_signals(){var m=_0x171b50,D=new XMLHttpRequest;D[m(374)](m(363),m(452)+timestamp(),!0),D[m(448)]=function(){var e=m;if(4==D[e(366)]&&D[e(446)]==e(440)){for(var t=JSON.parse(D[e(382)]),s=document[e(370)]("signals")[e(411)](e(401))[0];s[e(375)];)s[e(375)][e(438)]();for(i=2;0<=i;i--){(u=s[e(413)](0))[e(394)].add(e(431)),u[e(386)](0)[e(400)]=t[i][1];var n=u.insertCell(1);0<t[i][2]?(n[e(394)][e(371)](e(451)),n.innerHTML=e(412)):(n.classList[e(371)](e(380)),n[e(400)]=e(435));var a=u[e(386)](2),r=Math.floor((new Date)[e(384)]()/1e3),o=Math[e(425)](Date[e(422)](t[i][6]+e(421))/1e3),l=Math[e(425)]((r-o)/60/60);a[e(400)]=t[i][6]+e(377)+l+e(409),u[e(386)](3)[e(400)]=t[i][4]+e(410)+t[i][5];var p=t[i][5]-t[i][4],d=(t[i][5]-t[i][4])/t[i][4]*100,_=t[i][8]-t[i][4],b=t[i][9]-t[i][4];(v=u[e(386)](4))[e(400)]=d.toFixed(2)+e(426)+topips(t[i][1],t[i][2],p)+" pips";var c=u[e(386)](5);0<t[i][2]?(0<=p?v[e(394)].add("positive"):v[e(394)][e(371)](e(380)),c.innerHTML=topips(t[i][1],t[i][2],_)+e(433)+topips(t[i][1],t[i][2],b)+e(385)):(p<=0?v[e(394)][e(371)](e(451)):v[e(394)].add(e(380)),c[e(400)]=topips(t[i][1],t[i][2],-1*b)+" pips<br>"+topips(t[i][1],t[i][2],-1*_)+e(385)),s[e(413)](1)[e(400)]='<td colspan="6"><div id="tradingview_'+t[i][1]+e(369),tradingview(t[i][1])}for(var u,x=document[e(370)](e(429))[e(411)](e(401))[0],f=document[e(370)](e(455)).getElementsByTagName("tbody")[0];x.firstChild;)x[e(375)].remove();for(;f[e(375)];)f[e(375)][e(438)]();for(i=t.length-1;2<i;i--){(u=(s=0<t[i][2]?x:f)[e(413)](0)).insertCell(0)[e(400)]=t[i][1];n=u.insertCell(1);0<t[i][2]?(n.classList.add(e(451)),n[e(400)]=e(412)):(n[e(394)][e(371)](e(380)),n[e(400)]="Sell");a=u[e(386)](2),r=Math.floor((new Date).getTime()/1e3),o=Math.floor(Date[e(422)](t[i][6]+e(421))/1e3),l=Math.floor((r-o)/60/60);a.innerHTML=t[i][6][e(399)](0,t[i][6].length-3),e(409),u[e(386)](3)[e(400)]=t[i][4]+e(410)+t[i][5];var v,p=t[i][5]-t[i][4],d=(t[i][5]-t[i][4])/t[i][4]*100,_=t[i][8]-t[i][4],b=t[i][9]-t[i][4];(v=u[e(386)](4))[e(400)]=d[e(419)](2)+e(426)+topips(t[i][1],t[i][2],p)+" pips";c=u[e(386)](5);0<t[i][2]?(0<=p?v[e(394)][e(371)](e(451)):v.classList[e(371)](e(380)),c[e(400)]=topips(t[i][1],t[i][2],_)+e(433)+topips(t[i][1],t[i][2],b)+" pips"):(p<=0?v[e(394)][e(371)]("positive"):v[e(394)][e(371)](e(380)),c[e(400)]=topips(t[i][1],t[i][2],-1*b)+e(433)+topips(t[i][1],t[i][2],-1*_)+e(385))}}else console[e(437)](users)},D[m(405)](null)}function tradingview(i){var e=_0x171b50;new TradingView.widget({width:800,height:400,symbol:e(390)+i,interval:"60",timezone:e(417),theme:e(388),style:"1",locale:"en",toolbar_bg:e(423),enable_publishing:!1,save_image:!1,show_popup_button:!0,popup_width:"980",popup_height:"610",studies:["MAExp@tv-basicstudies","MACD@tv-basicstudies",e(424)],container_id:e(393)+i})}function topips(i,e,t){var s=_0x171b50,n=1e-4;return 0<=i.search(s(381))&&(n=.01),0<=i.search("XAU")&&(n=.1),(0<=i[s(364)](s(387))||0<=i.search(s(367)))&&(n=1),(t/n)[s(419)](0)}function timestamp(){var i=_0x171b50;return Math[i(425)]((new Date)[i(384)]()/1e5)}function clock(){var i=_0x171b50,e=document[i(370)](i(427)),t=document[i(370)](i(436)),s=new Date;e[i(400)]=s[i(359)](i(362))[i(399)](0,s[i(359)](i(362))[i(445)]("(")),t[i(400)]=s[i(457)](i(362))}function loads(){load_sentiments(),load_signals()}function reload(){location[_0x171b50(360)]()}function _0x6d71(){var i=["remove","GBPCHF","200","AUDNZD","130QuYhTu","EURJPY","CADJPY","indexOf","status","ETHUSD","onload","CADCHF","AUDUSD","positive","signals.json?",'<img src="sen',"EURAUD","signals2","GBPUSD","toUTCString","11140164eNsgvH","toString","reload","USDCAD","en-US","GET","search","EURCHF","readyState","ETH","NZDJPY",'"></div></td>',"getElementById","add","USDCHF","EURNZD","open","firstChild","GBPCAD"," GMT<br>","EURCAD",".png?","negative","JPY","responseText","4431045AqnMyP","getTime"," pips","insertCell","BTC","light","30ABjnDF","OANDA:","sentiments.png?","sentiments","tradingview_","classList","202396lfEDPE","sen_image","1327mBshlI","BTCUSD","substring","innerHTML","tbody","80fWZXat","AUDJPY","EURUSD","send","54576SYIJQe","XAUUSD","GBPJPY"," hours ago","<br>","getElementsByTagName","Buy","insertRow","src","140aOeAGB","GBPNZD","Etc/UTC","CHFJPY","toFixed","1263577lIZKFJ"," GMT","parse","#f1f3f6","RSI@tv-basicstudies","floor","%<br>","local_time","length","signals1","AUDCAD","active-row","EURGBP"," pips<br>","6427894yeOnpl","Sell","gmt_time","error"];return(_0x6d71=function(){return i})()}setInterval(clock,1e3),loads(),setInterval(loads,6e4),setInterval(reload,18e5);
 </script>
