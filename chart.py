@@ -85,7 +85,7 @@ def symbol_chart():
         history.reverse()
         sentiment, date = zip(*history)
         plt.figure(figsize=(3.5, 2))
-        plt.xticks(rotation=90, fontsize=6, ha="right")
+        plt.xticks(rotation=45, fontsize=6, ha="right")
         plt.yticks([])
         plt.ylim([0, 100])
         bg = np.full(len(sentiment), 100)
@@ -187,7 +187,7 @@ def statistic_chart():
         colors = np.array(['#f44336'] * len(y))
         colors[y >= 0] = '#3d5afe'
         plt.figure(figsize=(4, 2))
-        plt.xticks(rotation=45, fontsize=6, ha="right")
+        plt.xticks(rotation=90, fontsize=6, ha="right")
         plt.yticks(fontsize=6)
         plt.bar(x, y, color=colors, alpha=0.7)
         plt.title("Symbols profit - " + str(number), fontsize=8)
