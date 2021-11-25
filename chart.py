@@ -85,7 +85,7 @@ def symbol_chart():
         history.reverse()
         sentiment, date = zip(*history)
         plt.figure(figsize=(3.5, 2))
-        plt.xticks(rotation=45, fontsize=6, ha="right")
+        plt.xticks(rotation=90, fontsize=6, ha="right")
         plt.yticks([])
         plt.ylim([0, 100])
         bg = np.full(len(sentiment), 100)
@@ -128,7 +128,7 @@ def statistic_chart():
         pos_growth[pos_growth < 0] = np.nan
         neg_growth[neg_growth > 0] = np.nan
         plt.figure(figsize=(9, 2))
-        plt.xticks(rotation=90, fontsize=6, ha="right")
+        plt.xticks(rotation=45, fontsize=6, ha="right")
         plt.yticks(fontsize=6)
         plt.ylabel("Balance", size=7)
         plt.plot(date, balance, color="#ffc400", label="Balance", zorder=6, alpha=0.7)
