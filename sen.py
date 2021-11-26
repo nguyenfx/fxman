@@ -88,7 +88,8 @@ def df_fetch():
         short_span = short_row.find(class_="gsstx")
         short = int(short_span.text.strip()[:-4])
         sentiment = long -short
-        con.upsert_sentiment("df", symbol, sentiment, contrarian)
+        con.upsert_sentiment("df", symbol, sentiment, 0)
+        # con.upsert_sentiment("df", symbol, sentiment, contrarian)
 
 
 def bn_fetch(name):
