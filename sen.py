@@ -95,7 +95,7 @@ def df_fetch():
 def bn_fetch(name):
     sum = 0
     for api in bnapis:
-        response = requests.get(bnurl + api + "?symbol=" + name + "USDT&period=4h", headers=headers)
+        response = requests.get(bnurl + api + "?symbol=" + name + "USDT&period=1h", headers=headers)
         rows = json.loads(response.text)
         if api == "topLongShortPositionRatio":
             sum += float(rows[-1]['longShortRatio']) * 2
