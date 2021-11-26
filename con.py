@@ -219,10 +219,10 @@ class Controller:
         cursor.execute(statement)
         statement = "UPDATE sentiments SET contrarian = (CASE " \
                     "    WHEN (sentiment < -40 OR (sentiment < -20 AND sentiment < (SELECT sentiment FROM sentiments AS sub WHERE sub.site = 'avg' AND sub.symbol = sentiments.symbol AND sub.date = DATE(sentiments.date,'-1 day')))) " \
-                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND (interval = '1d' OR interval= '4h')) > 1 " \
+                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND (interval = '1d' OR interval= '4h')) > 0 " \
                     "        THEN 1 " \
                     "    WHEN (sentiment > 40 OR (sentiment > 20 AND sentiment > (SELECT sentiment FROM sentiments AS sub WHERE sub.site = 'avg' AND sub.symbol = sentiments.symbol AND sub.date = DATE(sentiments.date,'-1 day')))) " \
-                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND (interval = '1d' OR interval= '4h')) < -1 " \
+                    "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND (interval = '1d' OR interval= '4h')) < 0 " \
                     "        THEN -1 " \
                     "    ELSE 0 " \
                     "END) " \
