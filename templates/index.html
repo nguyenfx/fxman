@@ -337,7 +337,7 @@ function load_tas() {
                     row.classList.add('active-row');
                 }
                 var cell5 = row.insertCell(4);
-                cell5.innerHTML = '<a href="javascript:buy();">Buy</a><a href="javascript:sell();">Sell</a>';
+                cell5.innerHTML = '<a href="javascript:buy(\'' + data[i][0] + '\');">Buy</a>&nbsp&nbsp&nbsp<a href="javascript:sell(\'' + data[i][0] + '\');">Sell</a>';
             }
             
         } else {
