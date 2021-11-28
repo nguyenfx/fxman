@@ -3,6 +3,7 @@ from flask_caching import Cache
 from uwsgidecorators import postfork
 
 import sen
+import ta
 from con import Controller
 
 con = Controller()
@@ -185,16 +186,9 @@ def insert_signal():
     type = details["type"]
     risk = details["risk"]
     open_price = details["open_price"]
+    if not open_price > 0:
+        open_price = ta.get_price(symbol)
     result = con.insert_signal(number, symbol, type, risk, open_price)
-    return jsonify(result)
-
-
-@app.route("/price", methods=["POST"])
-def update_signal():
-    details = request.get_json()
-    symbol = details["symbol"]
-    current_price = details["current_price"]
-    result = con.update_signal(symbol, current_price)
     return jsonify(result)
 
 

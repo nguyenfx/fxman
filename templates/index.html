@@ -122,6 +122,7 @@
 							<td>Contrarian</td>
 							<td>Trend</td>
 							<td>Entry</td>
+							<td>Command</td>
 						</tr>
 						</thead>
 						<tbody></tbody>
@@ -335,6 +336,8 @@ function load_tas() {
                 } else if(data[i][1] > 0 && data[i][2] > 1 && data[i][3] > 2) {
                     row.classList.add('active-row');
                 }
+                var cell5 = row.insertCell(4);
+                cell5.innerHTML = '<a href="javascript:buy();">Buy</a><a href="javascript:sell();">Sell</a>';
             }
             
         } else {
@@ -480,6 +483,31 @@ function clock() {
 	var date = new Date();
 	local_time.innerHTML = date.toString('en-US').substring(0, date.toString('en-US').indexOf('('));
 	gmt_time.innerHTML = date.toUTCString('en-US');
+}
+
+function buy(symbol) {
+	var data = {"number": 1,
+				"symbol": symbol,
+				"type": 1,
+				"risk": 1,
+				"open_price": 0
+				};
+	post("signal", data);
+	return false;
+}
+
+function sell(symbol) {
+	var data = {"number": 1,
+				"symbol": symbol,
+				"type": -1,
+				"risk": 1,
+				"open_price": 0
+				};
+	post("signal", data);
+}
+
+function post(url, data) {
+  return fetch(url, {method: "POST", headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
 }
 
 setInterval(clock, 1000);
