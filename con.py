@@ -231,18 +231,18 @@ class Controller:
         db.commit()
         return True
 
-    def upsert_ohlcv(self, symbol, open, high, low, close, volume):
+    def upsert_indicator(self, symbol, open, high, low, close, volume, wpr, ema20):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "INSERT OR REPLACE INTO ohlcv(symbol, open, high, low, close, volume, datehour) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H', CURRENT_TIMESTAMP)) "
-        cursor.execute(statement, [symbol, open, high, low, close, volume])
+        statement = "INSERT OR REPLACE INTO indicators(symbol, open, high, low, close, volume, wpr, ema20, datehour) VALUES (?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H', CURRENT_TIMESTAMP)) "
+        cursor.execute(statement, [symbol, open, high, low, close, volume, wpr, ema20])
         db.commit()
         return True
 
-    def get_ohlcv(self, symbol, shift):
+    def get_indicator(self, symbol, shift):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT symbol, open, high, low, close, volume, datehour FROM ohlcv WHERE symbol = ? AND datehour = strftime('%Y-%m-%d %H', DATETIME(CURRENT_TIMESTAMP,'-" + str(shift) + " hours')) "
+        statement = "SELECT open, high, low, close, volume, wpr, ema20 FROM indicators WHERE symbol = ? AND datehour = strftime('%Y-%m-%d %H', DATETIME(CURRENT_TIMESTAMP,'-" + str(shift) + " hours')) "
         cursor.execute(statement, [symbol])
         return cursor.fetchone()
 
