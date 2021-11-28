@@ -90,6 +90,23 @@ def find_signals():
         contrarian = ta[1]
         trend = ta[2]
         entry = ta[3]
+        ohlcv0 = con.get_ohlcv(symbol, 0)
+        open0 = ohlcv0[1]
+        high0 = ohlcv0[2]
+        low0 = ohlcv0[3]
+        close0 = ohlcv0[4]
+        volume0 = ohlcv0[5]
+        ohlcv1 = con.get_ohlcv(symbol, 1)
+        open1 = ohlcv1[1]
+        high1 = ohlcv1[2]
+        low1 = ohlcv1[3]
+        close1 = ohlcv1[4]
+        volume1 = ohlcv1[5]
+        divergence = (high0 - low0 > (high1 - low1) * 1.2 and volume0 * 1.2 < volume1) or ((high0 - low0) * 1.2 < high1 - low1 and volume0 > volume1 * 1.2)
+        if close0 > open0 and close1 < open1 and divergence:
+            entry += 1
+        if close0 < open0 and close1 > open1 and divergence:
+            entry += -1
         if contrarian > 0 and trend > 1 and entry > 2:
             price = get_price(symbol)
             con.insert_signal(0, symbol, 1, 1, price)

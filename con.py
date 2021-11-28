@@ -239,6 +239,13 @@ class Controller:
         db.commit()
         return True
 
+    def get_ohlcv(self, symbol, shift):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "SELECT symbol, open, high, low, close, volume, datehour FROM ohlcv WHERE symbol = ? AND datehour = strftime('%Y-%m-%d %H', DATETIME(CURRENT_TIMESTAMP,'-" + str(shift) + " hours')) "
+        cursor.execute(statement, [symbol])
+        return cursor.fetchone()
+
     def get_statistic(self, number):
         db = self.get_db()
         cursor = db.cursor()
