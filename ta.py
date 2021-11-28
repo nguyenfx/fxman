@@ -46,6 +46,8 @@ def upsert(symbol, timeframe, analysis):
     ma = Ratings[analysis.moving_averages['RECOMMENDATION']]
     os = Ratings[analysis.oscillators['RECOMMENDATION']]
     con.upsert_ta(symbol, timeframe, ma, os)
+    if timeframe == Interval.INTERVAL_15_MINUTES:
+        con.update_signal(symbol, analysis.indicators["close"])
     if timeframe == Interval.INTERVAL_1_HOUR:
         con.upsert_indicator(symbol, analysis.indicators["open"], analysis.indicators["high"], analysis.indicators["low"],
                              analysis.indicators["close"], analysis.indicators["volume"], analysis.indicators["W.R"], analysis.indicators["EMA20"])
