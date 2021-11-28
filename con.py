@@ -231,6 +231,14 @@ class Controller:
         db.commit()
         return True
 
+    def upsert_ohlcv(self, symbol, open, high, low, close, volume):
+        db = self.get_db()
+        cursor = db.cursor()
+        statement = "INSERT OR REPLACE INTO ohlcv(symbol, open, high, low, close, volume, datehour) VALUES (?, ?, ?, ?, ?, ?, strftime('%Y-%m-%d %H', CURRENT_TIMESTAMP)) "
+        cursor.execute(statement, [symbol, open, high, low, close, volume])
+        db.commit()
+        return True
+
     def get_statistic(self, number):
         db = self.get_db()
         cursor = db.cursor()

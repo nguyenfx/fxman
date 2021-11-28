@@ -143,6 +143,19 @@ class Database:
                 )            
             """,
             """CREATE INDEX IF NOT EXISTS idx_signals_symbol ON signals(symbol)""",
+            """CREATE TABLE IF NOT EXISTS ohlcv(
+                    symbol TEXT NOT NULL,
+                    open REAL NOT NULL DEFAULT 0.0,
+                    high REAL NOT NULL DEFAULT 0.0,
+                    low REAL NOT NULL DEFAULT 0.0,
+                    close REAL NOT NULL DEFAULT 0.0,
+                    volume REAL NOT NULL DEFAULT 0.0,
+                    datehour TEXT NOT NULL DEFAULT '',
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,                    
+                    UNIQUE(symbol, datehour)
+                )            
+            """,
+            """CREATE INDEX IF NOT EXISTS idx_ohlcv_symbol_datehour ON ohlcv(symbol, datehour)""",
         ]
         db_conn = self.get_db_conn()
         cursor = db_conn.cursor()

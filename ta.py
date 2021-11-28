@@ -46,6 +46,7 @@ def upsert(symbol, timeframe, analysis):
     ma = Ratings[analysis.moving_averages['RECOMMENDATION']]
     os = Ratings[analysis.oscillators['RECOMMENDATION']]
     con.upsert_ta(symbol, timeframe, ma, os)
+    con.upsert_ohlcv(symbol, analysis.indicators["open"], analysis.indicators["high"], analysis.indicators["low"], analysis.indicators["close"], analysis.indicators["volume"])
 
 
 def fetch():
