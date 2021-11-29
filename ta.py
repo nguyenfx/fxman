@@ -108,9 +108,11 @@ def find_signals():
         if contrarian > 0 and trend > 1 and entry > 2:
             price = get_price(symbol)
             con.insert_signal(0, symbol, 1, 1, price)
+            print("Signal " + symbol + " contrarian:" + str(contrarian) + " trend:" + str(trend) + " entry:" + str(entry))
         if contrarian < 0 and trend < -1 and entry < -2:
             price = get_price(symbol)
             con.insert_signal(0, symbol, -1, 1, price)
+            print("Signal " + symbol + " contrarian:" + str(contrarian) + " trend:" + str(trend) + " entry:" + str(entry))
     signals = con.get_signals_delay()
     with open('public/signals.json', 'w') as file:
         json.dump(signals, file)
