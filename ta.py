@@ -101,9 +101,9 @@ def find_signals():
             entry += 1
         if close1 < open1 and close2 > open2 and divergence:
             entry += -1
-        if low1 < ema1 < close1 and wpr2 < -50 < wpr1:
+        if low1 < ema1 < close1 and wpr2 < -55 and -45 < wpr1:
             entry += 1
-        if high1 > ema1 > close1 and wpr2 > -50 > wpr1:
+        if high1 > ema1 > close1 and wpr2 > -45 and -55 > wpr1:
             entry += -1
         if contrarian > 0 and trend > 1 and entry > 2:
             price = get_price(symbol)
