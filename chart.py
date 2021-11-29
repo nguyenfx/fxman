@@ -111,7 +111,7 @@ def symbol_chart():
 
 
 def statistic_chart():
-    con.calculate_last_statistic()
+    con.calculate_all_statistic()
     accounts = con.get_accounts()
     for account in accounts:
         number = account[0]
