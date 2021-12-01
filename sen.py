@@ -60,7 +60,8 @@ def fc_fetch():
             contrarian = -1
         else:
             contrarian = 0
-        con.upsert_sentiment("fc", symbol, sentiment, contrarian)
+        con.upsert_sentiment("fc", symbol, sentiment, 0)
+        # con.upsert_sentiment("fc", symbol, sentiment, contrarian)
 
 
 def df_fetch():
