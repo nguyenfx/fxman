@@ -249,7 +249,7 @@ class Controller:
     def get_statistic(self, number):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT number, substr(date, 3) AS date, profit, balance, percent, growth FROM statistic WHERE number = ? " \
+        statement = "SELECT number, substr(date, 3) AS date, ROUND(profit - 0.5) AS profit, balance, percent, growth FROM statistic WHERE number = ? " \
                     "ORDER BY date "
         cursor.execute(statement, [number])
         return cursor.fetchall()
@@ -257,7 +257,7 @@ class Controller:
     def get_statistic_m(self, number):
         db = self.get_db()
         cursor = db.cursor()
-        statement = "SELECT number, strftime('%Y-%m', date) AS month, SUM(profit), AVG(balance), SUM(percent), " \
+        statement = "SELECT number, strftime('%Y-%m', date) AS month, ROUND(SUM(profit) - 0.5) AS profit, AVG(balance), SUM(percent), " \
                     "AVG(growth) FROM statistic WHERE number = ? GROUP BY month ORDER BY month "
         cursor.execute(statement, [number])
         return cursor.fetchall()
