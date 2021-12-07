@@ -53,6 +53,17 @@ def fetch(name):
         print(date0.strftime('%Y-%m-%d'), sentiment)
 
 
+def tatest():
+    handle = TA_Handler(
+        symbol="BTCUSDT",
+        screener="crypto",
+        exchange="BINANCE",
+        interval=Interval.INTERVAL_15_MINUTES
+    )
+    analysis = handle.get_analysis()
+    print(analysis.time)
+    print(analysis.indicators)
+
+
 if __name__ == "__main__":
-    fetch("BTC")
-    fetch("ETH")
+    con.calculate_contrarian()
