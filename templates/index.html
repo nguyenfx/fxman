@@ -338,9 +338,9 @@ function load_tas() {
                 }
                 var cell5 = row.insertCell(4);
                 cell5.innerHTML = '';
-                if(data[i][1] < 0) {
+                if(data[i][2] < 0) {
                     cell5.innerHTML = '<a href="javascript:sell(\'' + data[i][0] + '\');">Sell</a>';
-                } else if(data[i][1] > 0) {
+                } else if(data[i][2] > 0) {
                     cell5.innerHTML = '<a href="javascript:buy(\'' + data[i][0] + '\');">Buy</a>';
                 }
                 
