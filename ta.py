@@ -105,11 +105,11 @@ def find_signals():
             entry += 1
         if high1 > ema1 > close1 and wpr2 > -45 and -55 > wpr1:
             entry += -1
-        if contrarian > 0 and trend > 1 and entry > 2:
+        if contrarian > 0 and trend > 1 and entry > 1:
             price = get_price(symbol)
             con.insert_signal(0, symbol, 1, 1, price)
             print("Signal " + symbol + " contrarian:" + str(contrarian) + " trend:" + str(trend) + " entry:" + str(entry))
-        if contrarian < 0 and trend < -1 and entry < -2:
+        if contrarian < 0 and trend < -1 and entry < -1:
             price = get_price(symbol)
             con.insert_signal(0, symbol, -1, 1, price)
             print("Signal " + symbol + " contrarian:" + str(contrarian) + " trend:" + str(trend) + " entry:" + str(entry))
