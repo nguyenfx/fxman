@@ -12,7 +12,7 @@ ffurl = "https://www.forexfactory.com/explorerapi.php?content=positions&do=posit
 mfurl = "https://www.myfxbook.com/community/outlook"
 bnurl = "https://fapi.binance.com/futures/data/"
 bnapis = {'topLongShortAccountRatio', 'topLongShortPositionRatio', 'globalLongShortAccountRatio'}
-fcsurl = "https://storage.googleapis.com/public-sentiments-v3/fxcs-sentiments.json"
+fcsurl = "https://storage.googleapis.com/public-sentiments-v4/fxcs-sentiments.json"
 dfurl = "https://www.dailyfx.com/sentiment-report"
 
 con = Controller()
