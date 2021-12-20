@@ -218,10 +218,10 @@ class Controller:
                     "WHERE site != 'avg' AND date = DATE('now') GROUP BY symbol, date "
         cursor.execute(statement)
         statement = "UPDATE sentiments SET contrarian = (CASE " \
-                    "    WHEN (sentiment < -5 AND sentiment < (SELECT sentiment FROM sentiments AS sub WHERE sub.site = 'avg' AND sub.symbol = sentiments.symbol AND sub.date = DATE(sentiments.date,'-1 day'))) " \
+                    "    WHEN (sentiment > -60 AND sentiment < -5 AND sentiment < (SELECT sentiment FROM sentiments AS sub WHERE sub.site = 'avg' AND sub.symbol = sentiments.symbol AND sub.date = DATE(sentiments.date,'-1 day'))) " \
                     "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND (interval = '1d' OR interval= '4h')) > 1 " \
                     "        THEN 1 " \
-                    "    WHEN (sentiment > 5 AND sentiment > (SELECT sentiment FROM sentiments AS sub WHERE sub.site = 'avg' AND sub.symbol = sentiments.symbol AND sub.date = DATE(sentiments.date,'-1 day'))) " \
+                    "    WHEN (sentiment < 60 AND sentiment > 5 AND sentiment > (SELECT sentiment FROM sentiments AS sub WHERE sub.site = 'avg' AND sub.symbol = sentiments.symbol AND sub.date = DATE(sentiments.date,'-1 day'))) " \
                     "        AND (SELECT SUM(ma) FROM tas WHERE sentiments.symbol = tas.symbol AND (interval = '1d' OR interval= '4h')) < -1 " \
                     "        THEN -1 " \
                     "    ELSE 0 " \
