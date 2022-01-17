@@ -1,4 +1,4 @@
 # fxman
-Forex and Crypto marekt sentiment/contrarian analysis
+Forex and Crypto market sentiment/contrarian analysis
 
 Live demo: https://fxman.mooo.com/
